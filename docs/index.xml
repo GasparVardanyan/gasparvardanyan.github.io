@@ -12,9 +12,52 @@
       <pubDate>Tue, 26 Jul 2022 03:40:04 +0400</pubDate>
       
       <guid>https://gasparvardanyan.github.io/coding/</guid>
-      <description>Minimalism In computing, minimalism refers to the application of minimalist philosophies and principles in the design and use of hardware and software. Minimalism, in this sense, means designing systems that use the least hardware and software resources possible.
-Wikipedia
-Worse is better In The Rise of Worse is Better, Gabriel claimed that &amp;ldquo;Worse-is-Better&amp;rdquo; is a model of software design and implementation which has the following characteristics (in approximately descending order of importance):</description>
+      <description>&lt;h2 id=&#34;minimalism&#34;&gt;Minimalism&lt;/h2&gt;
+&lt;p&gt;In computing, minimalism refers to the application of minimalist philosophies and principles in the design and use of hardware and software. Minimalism, in this sense, means designing systems that use the least hardware and software resources possible.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://en.wikipedia.org/wiki/Minimalism_(computing)&#34;&gt;Wikipedia&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;worse-is-better&#34;&gt;Worse is better&lt;/h2&gt;
+&lt;p&gt;&lt;em&gt;In The Rise of Worse is Better, Gabriel claimed that &amp;ldquo;Worse-is-Better&amp;rdquo; is a model of software design and implementation which has the following characteristics (in approximately descending order of importance):&lt;/em&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Simplicity&lt;/strong&gt;. The design must be simple, both in implementation and interface. It is more important for the implementation to be simple than the interface. Simplicity is the most important consideration in a design.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Correctness&lt;/strong&gt;. The design should be correct in all observable aspects, but It is slightly better to be simple than correct.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Consistency&lt;/strong&gt;. The design must not be overly inconsistent. Consistency can be sacrificed for simplicity in some cases, but it is better to drop those parts of the design that deal with less common circumstances than to introduce either complexity or inconsistency in the implementation.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Completeness&lt;/strong&gt;. The design must cover as many important situations as is practical. All reasonably expected cases should be covered. Completeness can be sacrificed in favor of any other quality. In fact, completeness must be sacrificed whenever implementation simplicity is jeopardized. Consistency can be sacrificed to achieve completeness if simplicity is retained; especially worthless is consistency of interface.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Gabriel argued that early &lt;strong&gt;Unix&lt;/strong&gt; and &lt;strong&gt;C&lt;/strong&gt;, developed by &lt;strong&gt;Bell Labs&lt;/strong&gt;, are &lt;strong&gt;examples&lt;/strong&gt; of this &lt;strong&gt;design approach&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://en.wikipedia.org/wiki/Worse_is_better&#34;&gt;Wikipedia&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;kiss-keep-it-simple-stupid&#34;&gt;KISS (keep it simple, stupid)&lt;/h2&gt;
+&lt;p&gt;The KISS principle states that most systems work &lt;strong&gt;best&lt;/strong&gt; if they are kept &lt;strong&gt;simple&lt;/strong&gt; rather than made &lt;strong&gt;complicated&lt;/strong&gt;; therefore, &lt;strong&gt;simplicity&lt;/strong&gt; should be a &lt;strong&gt;key&lt;/strong&gt; goal in design, and unnecessary &lt;strong&gt;complexity&lt;/strong&gt; should be &lt;strong&gt;avoided&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://en.wikipedia.org/wiki/KISS_principle&#34;&gt;Wikipedia&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;the-suckless-philosophy-manifest&#34;&gt;The Suckless&amp;rsquo; philosophy (manifest)&lt;/h2&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Many (open source) hackers are proud if they achieve large amounts of code, because they believe the more lines of code they&amp;rsquo;ve written, the more progress they have made. The more progress they have made, the more skilled they are. This is simply a delusion.&lt;/p&gt;
+&lt;p&gt;Most hackers actually don&amp;rsquo;t care much about code quality. Thus, if they get something working which seems to solve a problem, they stick with it. If this kind of software development is applied to the same source code throughout its entire life-cycle, we&amp;rsquo;re left with large amounts of code, a totally screwed code structure, and a flawed system design. This is because of a lack of conceptual clarity and integrity in the development process.&lt;/p&gt;
+&lt;p&gt;Code complexity is the mother of bloated, hard to use, and totally inconsistent software. With complex code, problems are solved in suboptimal ways, valuable resources are endlessly tied up, performance slows to a halt, and vulnerabilities become a commonplace. The only solution is to scrap the entire project and rewrite it from scratch.&lt;/p&gt;
+&lt;p&gt;The bad news: quality rewrites rarely happen, because hackers are proud of large amounts of code. They think they understand the complexity in the code, thus there&amp;rsquo;s no need to rewrite it. They think of themselves as masterminds, understanding what others can never hope to grasp. To these types, complex software is the ideal.&lt;/p&gt;
+&lt;p&gt;Ingenious ideas are simple. Ingenious software is simple. Simplicity is the heart of the Unix philosophy. The more code lines you have removed, the more progress you have made. As the number of lines of code in your software shrinks, the more skilled you have become and the less your software sucks.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;a href=&#34;https://suckless.org/philosophy/&#34;&gt;Website&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;the-unix-philosophy&#34;&gt;The Unix philosophy&lt;/h2&gt;
+&lt;p&gt;The Unix philosophy, originated by Ken Thompson, is a set of cultural norms and philosophical approaches to minimalist, modular software development.
+The Unix philosophy emphasizes building &lt;strong&gt;simple&lt;/strong&gt;, &lt;strong&gt;short&lt;/strong&gt;, &lt;strong&gt;clear&lt;/strong&gt;, &lt;strong&gt;modular&lt;/strong&gt;, and &lt;strong&gt;extensible&lt;/strong&gt; code that can be &lt;strong&gt;easily&lt;/strong&gt; maintained and repurposed by developers other than its creators. The Unix philosophy favors composability as opposed to monolithic design.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;UNIX is basically a simple operating system, but you have to be a genius to understand the simplicity.&lt;/p&gt;
+&lt;p&gt;&amp;ndash; &lt;a href=&#34;http://genius.cat-v.org/dennis-ritchie/&#34;&gt;Dennis Ritchie&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;a href=&#34;https://en.wikipedia.org/wiki/Unix_philosophy&#34;&gt;Wikipedia&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;dry-dont-repeat-yourself&#34;&gt;DRY (don&amp;rsquo;t repeat yourself)&lt;/h2&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Every piece of knowledge must have a single, unambiguous, authoritative representation within a system.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;a href=&#34;https://en.wikipedia.org/wiki/Don%27t_repeat_yourself&#34;&gt;Wikipedia&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;yagni-you-arent-gonna-need-it&#34;&gt;YAGNI (you aren&amp;rsquo;t gonna need it)&lt;/h2&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Always implement things when you actually need them, never when you just foresee that you need them.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;a href=&#34;https://en.wikipedia.org/wiki/You_aren%27t_gonna_need_it&#34;&gt;Wikipedia&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;coding-style&#34;&gt;Coding Style&lt;/h2&gt;
+&lt;p&gt;As clean as possible. Strict syntax.&lt;/p&gt;
+</description>
     </item>
     
   </channel>
