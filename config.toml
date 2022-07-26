@@ -1,0 +1,40 @@
+baseURL = 'https://gasparvardanyan.github.io/'
+languageCode = 'en-us'
+title = 'Gaspar Vardanyan'
+
+theme = 'solar-theme-hugo'
+pygmentsStyle = "solarized-dark"
+
+[params]
+  scheme = "dark" # light, dark, gray or preference
+  description = "gaspar's personel website"
+
+[menu]
+  [[menu.main]]
+    name = "Feed"
+    url = "/index.xml"
+  [[menu.main]]
+	name = "Coding"
+	url = "/coding/"
+
+  [[menu.other]]
+    name = "GitLab"
+    url = "https://gitlab.com/GasparVardanyan"
+  [[menu.other]]
+    name = "GitHub"
+    url = "https://github.com/GasparVardanyan"
+  [[menu.other]]
+    name = "Mastodon"
+    url = "https://թութ.հայ/web/@gaspar"
+  [[menu.other]]
+    name = "Reddit"
+    url = "https://www.reddit.com/user/GasparVardanyan/"
+  [[menu.other]]
+    name = "Jabber"
+    url = "https://mov.im/?contact/gaspar%40jabber.am"
+  [[menu.other]]
+    name = "Matrix"
+    url = "https://matrix.to/#/@gaspar_m:matrix.org"
+  [[menu.other]]
+    name = "Email"
+    url = "mailto:gaspar_pm@proton.me"

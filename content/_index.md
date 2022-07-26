@@ -1,0 +1,25 @@
+---
+title: "Gaspar Vardanyan"
+---
+
+
+
+* ## **Improvis** Team Member
+  Software Engineer at [Improvis](https://improvis.ai/)
+
+* ## **FOSS** Contributor
+
+  * ### Suckless patches:
+    * [dwm's dynamicscratchpads patch](https://dwm.suckless.org/patches/dynamicscratchpads/)
+    * [st's autocomplete patch](https://st.suckless.org/patches/autocomplete/)
+    * tabbed support in [st's newterm patch](https://st.suckless.org/patches/newterm/)
+    * xtheme patches for [dwm](https://dwm.suckless.org/patches/xtheme/), [st](https://st.suckless.org/patches/xtheme/), [dmenu](https://tools.suckless.org/dmenu/patches/xtheme/) and [tabbed](https://tools.suckless.org/tabbed/patches/xtheme/)
+
+  * ### BlackArch tools:
+    * [the gcrypt file encryption tool](https://gitlab.com/GasparVardanyan/gcrypt)
+
+  * ### Other:
+    * [gcrypt's gdir extension](https://gitlab.com/GasparVardanyan/gdir/)
+    * [desktop related stuff](https://gitlab.com/users/GasparVardanyan/projects)
+    * [some time ago there was a thing called Adobe Flash](https://github.com/GasparVardanyan/a3dutils)
+    * ... [and some other projects](https://github.com/GasparVardanyan?tab=repositories)
