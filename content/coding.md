@@ -1,5 +1,5 @@
 ---
-title: "Coding"
+title: "Coding Principles I Follow"
 date: 2022-07-26T03:40:04+04:00
 ---
 
