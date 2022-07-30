@@ -10,31 +10,44 @@ pygmentsStyle = "solarized-dark"
   description = "gaspar's personel website"
 
 [menu]
-  [[menu.main]]
+  [[menu.1main]]
     name = "Feed"
     url = "/index.xml"
-  [[menu.main]]
+  [[menu.1main]]
 	name = "Coding"
 	url = "/coding/"
 
-  [[menu.other]]
+  [[menu.2social]]
     name = "GitLab"
     url = "https://gitlab.com/GasparVardanyan"
-  [[menu.other]]
+  [[menu.2social]]
     name = "GitHub"
     url = "https://github.com/GasparVardanyan"
-  [[menu.other]]
+  [[menu.2social]]
     name = "Mastodon"
     url = "https://թութ.հայ/web/@gaspar"
-  [[menu.other]]
+  [[menu.2social]]
     name = "Reddit"
     url = "https://www.reddit.com/user/GasparVardanyan/"
-  [[menu.other]]
+  [[menu.2social]]
     name = "Jabber"
     url = "https://mov.im/?contact/gaspar%40jabber.am"
-  [[menu.other]]
+  [[menu.2social]]
     name = "Matrix"
     url = "https://matrix.to/#/@gaspar_m:matrix.org"
-  [[menu.other]]
+  [[menu.2social]]
     name = "Email"
     url = "mailto:gaspar_pm@proton.me"
+
+  # [[menu.3other]]
+  #   name = "Avatar"
+  #   url = "/gaspar.jpg"
+  # [[menu.3other]]
+  #   name = "PGP"
+  #   url = "/gaspar.asc"
+  # [[menu.3other]]
+  #   name = "SSH"
+  #   url = "/gaspar.pub"
+  # [[menu.3other]]
+  #   name = "Monero"
+  #   url = "/gaspar.monero"
