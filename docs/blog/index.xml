@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Blogs on Gaspar Vardanyan</title>
+    <link>https://gasparvardanyan.github.io/blog/</link>
+    <description>Recent content in Blogs on Gaspar Vardanyan</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 19 Aug 2022 01:52:43 +0400</lastBuildDate><atom:link href="https://gasparvardanyan.github.io/blog/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Easy Channel List Player</title>
+      <link>https://gasparvardanyan.github.io/blog/easy-channel-list-player/</link>
+      <pubDate>Fri, 19 Aug 2022 01:52:43 +0400</pubDate>
+      
+      <guid>https://gasparvardanyan.github.io/blog/easy-channel-list-player/</guid>
+      <description>&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;#!/bin/sh
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#586e75&#34;&gt;# SHELL SCRIPT TO RANDOMELY PLAY A MUSIC FROM CHANNELS LIST&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#586e75&#34;&gt;# HINT: PRESS &amp;#39;q&amp;#39; TO PLAY THE NEXT MUSIC&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;l&lt;/span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;$(&lt;/span&gt;ls ~/.config/ytfzf/subscriptions-* | sed &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#39;s/^.*subscriptions-//&amp;#39;&lt;/span&gt; | dmenu -p &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#39;list: &amp;#39;&lt;/span&gt; -l 20&lt;span style=&#34;color:#719e07&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;[&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;$l&lt;/span&gt;&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;&lt;/span&gt; !&lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#39;&amp;#39;&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;then&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&lt;span style=&#34;color:#268bd2&#34;&gt;t&lt;/span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;$(&lt;/span&gt;mktemp&lt;span style=&#34;color:#719e07&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	cp ~/.config/ytfzf/subscriptions-&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;$l&lt;/span&gt;&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;$t&lt;/span&gt;&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&lt;span style=&#34;color:#268bd2&#34;&gt;YTFZF_SUBSCRIPTIONS_FILE&lt;/span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;$t&lt;/span&gt;&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;&lt;/span&gt; ytfzf -cSI -r -l -m
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;fi&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;-&amp;gt; [ ~ ] :: ls .config/ytfzf/
+ subscriptions-armmus   subscriptions-classic   subscriptions-dub    subscriptions-rock
+ subscriptions-blues    subscriptions-dark      subscriptions-funk   subscriptions-sensual
+ subscriptions-chill    subscriptions-deep      subscriptions-mix    subscriptions-synthwave
+-&amp;gt; [ ~ ] :: \cat .config/ytfzf/subscriptions-blues
+https://yewtu.be/channel/UCYY_YLVWFI_IZ51Eu6x9bgA
+https://yewtu.be/channel/UClfiK5XMFRDwEX0aQVdJVog
+https://yewtu.be/channel/UCtM8in_qEBSzv47sVVpxbUQ
+-&amp;gt; [ ~ ] ::
+&lt;/code&gt;&lt;/pre&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -7,7 +7,8 @@ pygmentsStyle = "solarized-dark"
 
 [params]
   scheme = "dark" # light, dark, gray or preference
-  description = "gaspar's personel website"
+  # description = "gaspar's personel website"
+  description = "btw i use arch :d"
 
 [menu]
   [[menu.1main]]
@@ -16,6 +17,9 @@ pygmentsStyle = "solarized-dark"
   [[menu.1main]]
 	name = "Coding"
 	url = "/coding/"
+  [[menu.1main]]
+	name = "Blog"
+	url = "/blog/"
 
   [[menu.2social]]
     name = "GitLab"

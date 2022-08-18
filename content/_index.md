@@ -23,3 +23,5 @@ title: "Gaspar Vardanyan"
     * [desktop related stuff](https://gitlab.com/users/GasparVardanyan/projects)
     * [some time ago there was a thing called Adobe Flash](https://github.com/GasparVardanyan/a3dutils)
     * ... [and some other projects](https://github.com/GasparVardanyan?tab=repositories)
+  <!--  -->
+  <!-- ![GitHub Statistics](https://github-readme-stats.vercel.app/api?username=GasparVardanyan&show_icons=true&theme=solarized-dark&hide_border=true) -->

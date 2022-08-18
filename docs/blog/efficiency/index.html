@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width">
+		
+
+		<title>Efficiency</title>
+
+		
+		<link rel="stylesheet" href="https://gasparvardanyan.github.io/css/colors-dark.min.04ff1d6d2078fa65747fb72cef57eee0015c1b56e56c24eed85082032b2182f4.css">
+
+		<style>
+.copyright {
+	text-align: right;
+}
+</style>
+
+	</head>
+	<body>
+		<header id="header">
+			<h1><a href="https://gasparvardanyan.github.io/">Gaspar Vardanyan</a></h1>
+			<p>btw i use arch :d</p>
+		</header>
+
+		<div id="page">
+			<div id="sidebar">
+				<nav>
+	
+		<ul class="nav">
+			
+				<li><a href="/blog/"><span>Blog</span></a></li>
+			
+				<li><a href="/coding/"><span>Coding</span></a></li>
+			
+				<li><a href="/index.xml"><span>Feed</span></a></li>
+			
+		</ul>
+	
+		<ul class="nav">
+			
+				<li><a href="mailto:gaspar_pm@proton.me"><span>Email</span></a></li>
+			
+				<li><a href="https://github.com/GasparVardanyan"><span>GitHub</span></a></li>
+			
+				<li><a href="https://gitlab.com/GasparVardanyan"><span>GitLab</span></a></li>
+			
+				<li><a href="https://mov.im/?contact/gaspar%40jabber.am"><span>Jabber</span></a></li>
+			
+				<li><a rel="me" href="https://%d5%a9%d5%b8%d6%82%d5%a9.%d5%b0%d5%a1%d5%b5/web/@gaspar"><span>Mastodon</span></a></li>
+			
+				<li><a href="https://matrix.to/#/@gaspar_m:matrix.org"><span>Matrix</span></a></li>
+			
+				<li><a href="https://www.reddit.com/user/GasparVardanyan/"><span>Reddit</span></a></li>
+			
+		</ul>
+	
+</nav>
+
+			</div>
+
+			<div id="content">
+				
+	<article class="post">
+		<h1><a href="https://gasparvardanyan.github.io/blog/efficiency/">Efficiency</a> </h1>
+
+		<div class="post-content"><p>There are a couple less known/used techniques to boost working/learning efficiency. They are simple to follow. There are a lot of awesome tools to efficiently organize your work, but ofcourse I&rsquo;ll suggest only the FOSS ones, and mostly cli/tui ones ))</p>
+<p>So starting from the simplest one, I suggest to use <strong>todo managers</strong>.</p>
+<ul>
+<li>There is a simple <a href="https://tools.suckless.org/dmenu/">dmenu</a>-based <a href="https://tools.suckless.org/dmenu/scripts/todo">shell script</a> on Suckless&rsquo; website to organize todos. This script saves todos in <strong>~/.todo</strong>, just names or small hints, every element is in a separate line, so you can get the todo&rsquo;s count (<em>wc -c ~/.todo | cut -d &rsquo; &rsquo; -f 1</em>) and put it on your statusbar (if you use TWMs or something that much extensible). Also you can do something like this in your <strong>~/.xinitrc</strong> to regularly get notified about remaining todos count:</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#719e07">while</span> :; <span style="color:#719e07">do</span> <span style="color:#268bd2">todos</span><span style="color:#719e07">=</span><span style="color:#719e07">$(</span>cat ~/.todo 2&gt;/dev/null | wc -l<span style="color:#719e07">)</span>; <span style="color:#719e07">[</span> <span style="color:#268bd2">$todos</span> !<span style="color:#719e07">=</span> <span style="color:#2aa198">0</span> <span style="color:#719e07">]</span> <span style="color:#719e07">&amp;&amp;</span> dunstify todo <span style="color:#2aa198">&#34;you have </span><span style="color:#268bd2">$todos</span><span style="color:#2aa198"> todos!&#34;</span>; sleep <span style="color:#719e07">$((</span> <span style="color:#2aa198">60</span> <span style="color:#719e07">*</span> <span style="color:#2aa198">60</span> <span style="color:#719e07">))</span>; <span style="color:#719e07">done</span> &amp;
+</span></span></code></pre></div><ul>
+<li>Emacs have an <strong>Org mode</strong> and there&rsquo;s a vim plugin called <a href="https://github.com/jceb/vim-orgmode">vim-orgmode</a> to
+organize your todos. It&rsquo;s an editor mode for note keeping, project planning and managing todo lists.</li>
+<li>And the next tool I suggest to manage todos is <a href="https://github.com/todotxt/todo.txt-cli">todo-txt.cli</a>. It seems a very cool alternative to the previously mentioned dmenu-based shell script.</li>
+</ul>
+<p>The next thechnique is called <strong>Timeboxing</strong>. A comprehensive time-management system inspired by time-boxing is the <a href="">Pomodoro Technique</a> by Francesco Cirillo. This one suggests to break your time to working/resting periods</p>
+<h1 id="httpsenwikipediaorgwikiincremental_reading"><a href="https://en.wikipedia.org/wiki/Incremental_reading">https://en.wikipedia.org/wiki/Incremental_reading</a></h1>
+</div>
+
+		<p class="meta">Posted on <span class="postdate">30. July 2022</span></p>
+	</article>
+
+			</div>
+
+			<footer id="footer">
+				
+				
+				
+				
+				
+				
+
+				<div align="right"><p><a href="/gaspar.monero">monero wallet</a> | <a href="/gaspar.asc">pgp public key</a> | <a href="/gaspar.pub">ssh public key</a> | <a href="https://github.com/GasparVardanyan/gasparvardanyan.github.io/">source</a></p></div>
+
+
+			</footer>
+		</div>
+	</body>
+</html>
