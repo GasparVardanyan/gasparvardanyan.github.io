@@ -12,7 +12,7 @@ title: "Gaspar Vardanyan"
   * ### Suckless patches:
     * [st's autocomplete patch](https://st.suckless.org/patches/autocomplete/)
     * [dwm's exitmenu patch](https://dwm.suckless.org/patches/exitmenu/)
-    * [dwm's scratchtagwins patch](https://dwm.suckless.org/patches/namedscratchpa/)
+    * [dwm's scratchtagwins patch](https://dwm.suckless.org/patches/namedscratchpads/)
     * [dwm's dynamicscratchpads patch](https://dwm.suckless.org/patches/dynamicscratchpads/)
     * tabbed support in [st's newterm patch](https://st.suckless.org/patches/newterm/)
     * xtheme patches for [dwm](https://dwm.suckless.org/patches/xtheme/), [st](https://st.suckless.org/patches/xtheme/), [dmenu](https://tools.suckless.org/dmenu/patches/xtheme/) and [tabbed](https://tools.suckless.org/tabbed/patches/xtheme/)
