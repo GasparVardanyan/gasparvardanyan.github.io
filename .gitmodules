@@ -1,0 +1,6 @@
+[submodule "content/wallpapers/img/wallpapers"]
+	path = content/wallpapers/img/wallpapers
+	url = https://gitlab.com/GasparVardanyan/wallpapers.git
+[submodule "content/wallpapers/img/themes"]
+	path = content/wallpapers/img/themes
+	url = https://gitlab.com/GasparVardanyan/themes.git

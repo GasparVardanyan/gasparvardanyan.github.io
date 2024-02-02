@@ -1,0 +1,34 @@
+<link rel="stylesheet" href="/fancybox/fancybox.css" />
+
+{{ $image := (.Page.Resources.ByType "image") }}
+{{ with $image }}
+	{{ range . }}
+	{{ $url := replaceRE "/wallpapers/img/(wallpapers|themes)" "https://gitlab.com/GasparVardanyan/$1/-/raw/master" .RelPermalink }}
+	{{ if ne .MediaType.SubType "svg" }}
+		{{ $thumb_base64 := readFile (printf "%s%s" "/public" (.Fill "150x115 q100").RelPermalink) | base64Encode }}
+			<a data-fancybox="gallery" data-src="{{ $url }}">
+				<img style="display: inline-block" src="data:image;base64,{{ $thumb_base64 }}" />
+			</a>
+
+	{{ else }}
+	  <a data-fancybox="gallery" data-src="{{ $url }}">
+		  <img style="display: inline-block; max-width: 150px; max-height: 115px;" src="{{ $url }}" />
+	  </a>
+	{{ end }}
+	{{ end }}
+{{ end }}
+
+<script src="/fancybox/fancybox.umd.js"></script>
+<script>
+Fancybox.bind('[data-fancybox="gallery"]', {
+	Thumbs: {
+		type: "classic",
+	},
+	Toolbar: {
+		display: {
+			left: ["infobar"],
+			right: ["zoomIn", "zoomOut", "toggle1to1", "thumbs", "download", "close"]
+		},
+	}
+});
+</script>

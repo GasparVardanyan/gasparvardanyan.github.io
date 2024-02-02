@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Blogs on Gaspar Vardanyan</title>
+    <link>https://gasparvardanyan.github.io/blog/</link>
+    <description>Recent content in Blogs on Gaspar Vardanyan</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 20 Aug 2023 07:31:13 +0400</lastBuildDate><atom:link href="https://gasparvardanyan.github.io/blog/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>nman.sh</title>
+      <link>https://gasparvardanyan.github.io/blog/nman.sh/</link>
+      <pubDate>Sun, 20 Aug 2023 07:31:13 +0400</pubDate>
+      
+      <guid>https://gasparvardanyan.github.io/blog/nman.sh/</guid>
+      <description>&lt;p&gt;Man inside neovim.&lt;/p&gt;
+&lt;p&gt;Does syntax highlighting, uses nvim&amp;rsquo;s colorscheme and works with links (Shift+K).&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;#!/bin/sh
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;nvim -c &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;Man &lt;/span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;$(&lt;/span&gt;&lt;span style=&#34;color:#b58900&#34;&gt;echo&lt;/span&gt; &lt;span style=&#34;color:#268bd2&#34;&gt;$@&lt;/span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;&lt;/span&gt; -c &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;only&amp;#34;&lt;/span&gt; -c &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;set ft=man&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Can be used with &lt;strong&gt;manbrowse.sh&lt;/strong&gt;:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;#!/bin/sh
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;man -k . | awk &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#39;{$3=&amp;#34;-&amp;#34;; print $0}&amp;#39;&lt;/span&gt; |  dmenu -i -l &lt;span style=&#34;color:#2aa198&#34;&gt;20&lt;/span&gt; -p &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#39;Search for:&amp;#39;&lt;/span&gt; |  awk &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#39;{print $2, $1}&amp;#39;&lt;/span&gt; | tr -d &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#39;()&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;And this sxhkd config:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code class=&#34;language-sxhkdrc&#34; data-lang=&#34;sxhkdrc&#34;&gt;super + ctrl + m
+    manbrowse.sh | xargs $TERMINAL -n pop-up -g 120x30 nman.sh
+&lt;/code&gt;&lt;/pre&gt;</description>
+    </item>
+    
+    <item>
+      <title>What I Use</title>
+      <link>https://gasparvardanyan.github.io/blog/what-i-use/</link>
+      <pubDate>Wed, 28 Dec 2022 03:49:31 +0400</pubDate>
+      
+      <guid>https://gasparvardanyan.github.io/blog/what-i-use/</guid>
+      <description>&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://archlinux.org/&#34;&gt;Arch Linux OS&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://gitlab.com/GasparVardanyan/dwm&#34;&gt;my fork of the dwm window manager&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://gitlab.com/GasparVardanyan/st&#34;&gt;my fork of the st terminal emulator&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://gitlab.com/GasparVardanyan/themes/-/blob/master/solarized-dark.xdefaults&#34;&gt;my fork of the Solarized theme (dark version)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/IBM/plex&#34;&gt;the IBM Plex Mono font&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://neovim.io/&#34;&gt;the NeoVim hyperextensible Vim-based text editor&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://codemadness.org/sfeed_curses-ui.html&#34;&gt;sfeed curses - RSS and Atom reader&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.qutebrowser.org/&#34;&gt;qutebrowser web browser&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.zsh.org/&#34;&gt;zsh shell&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://codeberg.org/nsxiv/nsxiv&#34;&gt;nsxiv image viewer&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://mpv.io/&#34;&gt;mpv video player&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://cmus.github.io/&#34;&gt;cmus music player&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.passwordstore.org/&#34;&gt;pass password manager&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://gitlab.com/GasparVardanyan/dotfiles/-/blob/master/sysinit/packages.install&#34;&gt;some other foss and simple tools&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://gitlab.com/GasparVardanyan/workstation/&#34;&gt;and some others&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://gitlab.com/GasparVardanyan/utilsbin/-/tree/master/bin&#34;&gt;and some small scripts&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://gitlab.com/GasparVardanyan/wallpapers&#34;&gt;my wallpapers collection&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://gitlab.com/GasparVardanyan/dotfiles/-/tree/master/skel&#34;&gt;and my dotfiles&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Escaping Windows</title>
+      <link>https://gasparvardanyan.github.io/blog/escaping-windows/</link>
+      <pubDate>Sun, 16 Oct 2022 03:41:37 +0400</pubDate>
+      
+      <guid>https://gasparvardanyan.github.io/blog/escaping-windows/</guid>
+      <description>&lt;p&gt;I&amp;rsquo;m a C++ software engineer. I have to build projects running on MS Windows.
+The beginning was &lt;a href=&#34;https://xn--69aa8bzb.xn--y9a3aq/web/@gaspar/109030661073651505&#34;&gt;very stressfull&lt;/a&gt;&amp;hellip;
+I&amp;rsquo;ve had to navigate my windows in Windows&amp;rsquo; stupid desktop, started using mouse :d,
+I&amp;rsquo;ve started to use &lt;strong&gt;Visual Studio&lt;/strong&gt; and &lt;strong&gt;Qt Creator&lt;/strong&gt; with incomplete and annoying
+&amp;lsquo;vim mode&amp;rsquo; plugins. I&amp;rsquo;ve lost my productivity!&lt;/p&gt;
+&lt;p&gt;I&amp;rsquo;ve even changed the OS on my personal laptop to Windows 10 to get comfortable
+with it, to do my job faster, but&amp;hellip; to me remember that was the first time I&amp;rsquo;ve
+heard the sound of my laptop&amp;rsquo;s cooler (after swithing to linux).&lt;/p&gt;
+&lt;p&gt;I&amp;rsquo;ve installed &lt;strong&gt;NeoVIM&lt;/strong&gt;, &lt;strong&gt;qutebrowser&lt;/strong&gt;, etc on my windows desktop, but&amp;hellip;
+I&amp;rsquo;ve always had high &lt;strong&gt;CPU&lt;/strong&gt; usage, so called &lt;strong&gt;Antimalware Service Executable&lt;/strong&gt;
+in &lt;strong&gt;Task Manager&lt;/strong&gt; (and other sh&lt;em&gt;ts), &lt;strong&gt;Edge&lt;/strong&gt; (շան երեսին ինչքան կանջատես, էլի
+ինքն իրան կմիանա վախտմ հետո) 4GB RAM usage (closed all windows), almost
+everything was slow (even icons were slowly loading in Task Manager :d), and a
+lot of stuff on my desktop (files, folders&amp;hellip; unorganized workflow), plusss&amp;hellip;
+MS tracking sh&lt;/em&gt;ts, ads, License problem (ofc KMS Auto solved it) and STRESS.&lt;/p&gt;
+&lt;h2 id=&#34;and-this-is-how-ive-escaped-windows-masochism&#34;&gt;And This is How I&amp;rsquo;ve Escaped Windows Masochism!&lt;/h2&gt;
+&lt;p&gt;I&amp;rsquo;ve reinstalled &lt;strong&gt;ArchLinux&lt;/strong&gt; on my laptop, mounted my computer&amp;rsquo;s (Windows 10)
+filesystem (user&amp;rsquo;s &amp;lsquo;home&amp;rsquo; folder) over lan:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo mount -t cifs -o &lt;span style=&#34;color:#268bd2&#34;&gt;user&lt;/span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt;USER,pass&lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt;PASSWORD,noperm //DESKTOP/USER &lt;span style=&#34;color:#268bd2&#34;&gt;$HOME&lt;/span&gt;/windows
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;and connected to my computer&amp;rsquo;s desktop via &lt;strong&gt;FreeRDP&lt;/strong&gt;:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;xfreerdp /u:&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#39;DESKTOP\USER&amp;#39;&lt;/span&gt; /p:&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#39;PASSWORD&amp;#39;&lt;/span&gt; /v:&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#39;COMPUTERS_LOCAL_IP&amp;#39;&lt;/span&gt; /dynamic-resolution -grab-keyboard
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;../2022-10-16-042344_1366x768_scrot.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Now I edit my code in VIM, switch to Windows Desktop (Super+Tab) and press F5
+(there&amp;rsquo;s only the Visual Studio open to compile and run my code). Now my workflow
+is the same as it was.&lt;/p&gt;
+&lt;p&gt;&amp;hellip; Why RDP and not something like AnyDesk? Because AnyDesk is very slow,
+uncomfortable and closed source proprietary garbage (maybe RDP (server) too, but
+the client I use on my laptop is FOSS)!&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Easy Channel List Player</title>
+      <link>https://gasparvardanyan.github.io/blog/easy-channel-list-player/</link>
+      <pubDate>Fri, 19 Aug 2022 01:52:43 +0400</pubDate>
+      
+      <guid>https://gasparvardanyan.github.io/blog/easy-channel-list-player/</guid>
+      <description>&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;#!/bin/sh
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#586e75&#34;&gt;# SHELL SCRIPT TO RANDOMELY PLAY A MUSIC FROM CHANNELS LIST&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#586e75&#34;&gt;# HINT: PRESS &amp;#39;q&amp;#39; TO PLAY THE NEXT MUSIC&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;l&lt;/span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;$(&lt;/span&gt;ls ~/.config/ytfzf/subscriptions-* | sed &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#39;s/^.*subscriptions-//&amp;#39;&lt;/span&gt; | dmenu -p &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#39;list: &amp;#39;&lt;/span&gt; -l 20&lt;span style=&#34;color:#719e07&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;[&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;$l&lt;/span&gt;&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;&lt;/span&gt; !&lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#39;&amp;#39;&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;then&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&lt;span style=&#34;color:#268bd2&#34;&gt;t&lt;/span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;$(&lt;/span&gt;mktemp&lt;span style=&#34;color:#719e07&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	cp ~/.config/ytfzf/subscriptions-&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;$l&lt;/span&gt;&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;$t&lt;/span&gt;&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&lt;span style=&#34;color:#268bd2&#34;&gt;YTFZF_SUBSCRIPTIONS_FILE&lt;/span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;$t&lt;/span&gt;&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;&lt;/span&gt; ytfzf -cSI -r -l -m
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;fi&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;-&amp;gt; [ ~ ] :: ls .config/ytfzf/
+ subscriptions-armmus   subscriptions-classic   subscriptions-dub    subscriptions-rock
+ subscriptions-blues    subscriptions-dark      subscriptions-funk   subscriptions-sensual
+ subscriptions-chill    subscriptions-deep      subscriptions-mix    subscriptions-synthwave
+-&amp;gt; [ ~ ] :: \cat .config/ytfzf/subscriptions-blues
+https://yewtu.be/channel/UCYY_YLVWFI_IZ51Eu6x9bgA
+https://yewtu.be/channel/UClfiK5XMFRDwEX0aQVdJVog
+https://yewtu.be/channel/UCtM8in_qEBSzv47sVVpxbUQ
+-&amp;gt; [ ~ ] ::
+&lt;/code&gt;&lt;/pre&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

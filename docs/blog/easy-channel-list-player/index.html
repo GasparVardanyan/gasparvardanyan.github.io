@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width">
+		
+
+		<title>Easy Channel List Player</title>
+
+		
+		<link rel="stylesheet" href="https://gasparvardanyan.github.io/css/colors-dark.min.91821db55d8acc5b9f936944224ab03a094cea2c707bacc60689050c84476d08.css">
+
+		<link rel="stylesheet" href="/woff2/IBMPlexMono-Bold.css" />
+<link rel="stylesheet" href="/woff2/IBMPlexMono-BoldItalic.css" />
+<link rel="stylesheet" href="/woff2/IBMPlexMono-ExtraLight.css" />
+<link rel="stylesheet" href="/woff2/IBMPlexMono-ExtraLightItalic.css" />
+<link rel="stylesheet" href="/woff2/IBMPlexMono-Italic.css" />
+<link rel="stylesheet" href="/woff2/IBMPlexMono-Light.css" />
+<link rel="stylesheet" href="/woff2/IBMPlexMono-LightItalic.css" />
+<link rel="stylesheet" href="/woff2/IBMPlexMono-Medium.css" />
+<link rel="stylesheet" href="/woff2/IBMPlexMono-MediumItalic.css" />
+<link rel="stylesheet" href="/woff2/IBMPlexMono-Regular.css" />
+<link rel="stylesheet" href="/woff2/IBMPlexMono-SemiBold.css" />
+<link rel="stylesheet" href="/woff2/IBMPlexMono-SemiBoldItalic.css" />
+<link rel="stylesheet" href="/woff2/IBMPlexMono-Text.css" />
+<link rel="stylesheet" href="/woff2/IBMPlexMono-TextItalic.css" />
+<link rel="stylesheet" href="/woff2/IBMPlexMono-Thin.css" />
+<link rel="stylesheet" href="/woff2/IBMPlexMono-ThinItalic.css" />
+
+<style>
+body {
+	font-family: 'IBM Plex Mono', 'Menlo', 'DejaVu Sans Mono',
+	'Bitstream Vera Sans Mono', Courier, monospace;
+}
+
+.copyright {
+	text-align: right;
+}
+</style>
+
+	</head>
+	<body>
+		<header id="header">
+			<h1><a href="https://gasparvardanyan.github.io/">Gaspar Vardanyan</a></h1>
+			<p>btw i use arch :d</p>
+		</header>
+
+		<div id="page">
+			<div id="sidebar">
+				<nav>
+	
+		<ul class="nav">
+			
+				<li><a href="/blog/"><span>Blog</span></a></li>
+			
+				<li><a href="/coding/"><span>Coding</span></a></li>
+			
+				<li><a href="/index.xml"><span>Feed</span></a></li>
+			
+				<li><a href="/wallpapers/"><span>Wallpapers</span></a></li>
+			
+		</ul>
+	
+		<ul class="nav">
+			
+				<li><a href="mailto:gaspar_pm@proton.me"><span>Email</span></a></li>
+			
+				<li><a href="https://github.com/GasparVardanyan"><span>GitHub</span></a></li>
+			
+				<li><a href="https://gitlab.com/GasparVardanyan"><span>GitLab</span></a></li>
+			
+				<li><a href="https://mov.im/?contact/gaspar%40jabber.am"><span>Jabber</span></a></li>
+			
+				<li><a rel="me" href="https://%d5%a9%d5%b8%d6%82%d5%a9.%d5%b0%d5%a1%d5%b5/web/@gaspar"><span>Mastodon</span></a></li>
+			
+				<li><a href="https://matrix.to/#/@gaspar_m:matrix.org"><span>Matrix</span></a></li>
+			
+				<li><a href="https://www.reddit.com/user/GasparVardanyan/"><span>Reddit</span></a></li>
+			
+		</ul>
+	
+</nav>
+
+			</div>
+
+			<div id="content">
+				
+	<article class="post">
+		<h1><a href="https://gasparvardanyan.github.io/blog/easy-channel-list-player/">Easy Channel List Player</a> </h1>
+
+		<div class="post-content"><div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#719e07">#!/bin/sh
+</span></span></span><span style="display:flex;"><span><span style="color:#719e07"></span>
+</span></span><span style="display:flex;"><span><span style="color:#586e75"># SHELL SCRIPT TO RANDOMELY PLAY A MUSIC FROM CHANNELS LIST</span>
+</span></span><span style="display:flex;"><span><span style="color:#586e75"># HINT: PRESS &#39;q&#39; TO PLAY THE NEXT MUSIC</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#268bd2">l</span><span style="color:#719e07">=</span><span style="color:#719e07">$(</span>ls ~/.config/ytfzf/subscriptions-* | sed <span style="color:#2aa198">&#39;s/^.*subscriptions-//&#39;</span> | dmenu -p <span style="color:#2aa198">&#39;list: &#39;</span> -l 20<span style="color:#719e07">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#719e07">if</span> <span style="color:#719e07">[</span> <span style="color:#2aa198">&#34;</span><span style="color:#268bd2">$l</span><span style="color:#2aa198">&#34;</span> !<span style="color:#719e07">=</span> <span style="color:#2aa198">&#39;&#39;</span> <span style="color:#719e07">]</span>
+</span></span><span style="display:flex;"><span><span style="color:#719e07">then</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#268bd2">t</span><span style="color:#719e07">=</span><span style="color:#719e07">$(</span>mktemp<span style="color:#719e07">)</span>
+</span></span><span style="display:flex;"><span>	cp ~/.config/ytfzf/subscriptions-<span style="color:#2aa198">&#34;</span><span style="color:#268bd2">$l</span><span style="color:#2aa198">&#34;</span> <span style="color:#2aa198">&#34;</span><span style="color:#268bd2">$t</span><span style="color:#2aa198">&#34;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#268bd2">YTFZF_SUBSCRIPTIONS_FILE</span><span style="color:#719e07">=</span><span style="color:#2aa198">&#34;</span><span style="color:#268bd2">$t</span><span style="color:#2aa198">&#34;</span> ytfzf -cSI -r -l -m
+</span></span><span style="display:flex;"><span><span style="color:#719e07">fi</span>
+</span></span></code></pre></div><pre tabindex="0"><code>-&gt; [ ~ ] :: ls .config/ytfzf/
+ subscriptions-armmus   subscriptions-classic   subscriptions-dub    subscriptions-rock
+ subscriptions-blues    subscriptions-dark      subscriptions-funk   subscriptions-sensual
+ subscriptions-chill    subscriptions-deep      subscriptions-mix    subscriptions-synthwave
+-&gt; [ ~ ] :: \cat .config/ytfzf/subscriptions-blues
+https://yewtu.be/channel/UCYY_YLVWFI_IZ51Eu6x9bgA
+https://yewtu.be/channel/UClfiK5XMFRDwEX0aQVdJVog
+https://yewtu.be/channel/UCtM8in_qEBSzv47sVVpxbUQ
+-&gt; [ ~ ] ::
+</code></pre></div>
+
+		<p class="meta">Posted on <span class="postdate">19. August 2022</span></p>
+	</article>
+
+			</div>
+
+			<footer id="footer">
+				
+				
+				
+				
+				
+				
+
+				<div align="right"><p><a href="/gaspar.monero">monero wallet</a> | <a href="/gaspar.asc">pgp public key</a> | <a href="/gaspar.pub">ssh public key</a> | <a href="https://github.com/GasparVardanyan/gasparvardanyan.github.io/">source</a></p></div>
+
+
+			</footer>
+		</div>
+	</body>
+</html>

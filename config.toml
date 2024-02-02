@@ -1,0 +1,60 @@
+baseURL = 'https://gasparvardanyan.github.io/'
+languageCode = 'en-us'
+title = 'Gaspar Vardanyan'
+
+theme = 'solar-theme-hugo'
+pygmentsStyle = "solarized-dark"
+
+[params]
+  scheme = "dark" # light, dark, gray or preference
+  # description = "gaspar's personel website"
+  description = "btw i use arch :d"
+
+[menu]
+  [[menu.1main]]
+    name = "Feed"
+    url = "/index.xml"
+  [[menu.1main]]
+	name = "Coding"
+	url = "/coding/"
+  [[menu.1main]]
+	name = "Blog"
+	url = "/blog/"
+  [[menu.1main]]
+	name = "Wallpapers"
+	url = "/wallpapers/"
+
+  [[menu.2social]]
+    name = "GitLab"
+    url = "https://gitlab.com/GasparVardanyan"
+  [[menu.2social]]
+    name = "GitHub"
+    url = "https://github.com/GasparVardanyan"
+  [[menu.2social]]
+    name = "Mastodon"
+    url = "https://թութ.հայ/web/@gaspar"
+  [[menu.2social]]
+    name = "Reddit"
+    url = "https://www.reddit.com/user/GasparVardanyan/"
+  [[menu.2social]]
+    name = "Jabber"
+    url = "https://mov.im/?contact/gaspar%40jabber.am"
+  [[menu.2social]]
+    name = "Matrix"
+    url = "https://matrix.to/#/@gaspar_m:matrix.org"
+  [[menu.2social]]
+    name = "Email"
+    url = "mailto:gaspar_pm@proton.me"
+
+  # [[menu.3other]]
+  #   name = "Avatar"
+  #   url = "/gaspar.jpg"
+  # [[menu.3other]]
+  #   name = "PGP"
+  #   url = "/gaspar.asc"
+  # [[menu.3other]]
+  #   name = "SSH"
+  #   url = "/gaspar.pub"
+  # [[menu.3other]]
+  #   name = "Monero"
+  #   url = "/gaspar.monero"
