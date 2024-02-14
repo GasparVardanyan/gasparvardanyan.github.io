@@ -1,6 +1,7 @@
 ---
 title: "Escaping Windows"
 date: 2022-10-16T03:41:37+04:00
+draft: true
 ---
 
 I'm a C++ software engineer. I have to build projects running on MS Windows.
