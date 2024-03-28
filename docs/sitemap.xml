@@ -2,29 +2,29 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://gasparvardanyan.github.io/blog/</loc>
+    <loc>http://localhost:1313/blog/</loc>
     <lastmod>2023-08-20T07:31:13+04:00</lastmod>
   </url><url>
-    <loc>https://gasparvardanyan.github.io/</loc>
+    <loc>http://localhost:1313/</loc>
     <lastmod>2023-08-20T07:31:13+04:00</lastmod>
   </url><url>
-    <loc>https://gasparvardanyan.github.io/blog/nman.sh/</loc>
+    <loc>http://localhost:1313/blog/nman.sh/</loc>
     <lastmod>2023-08-20T07:31:13+04:00</lastmod>
   </url><url>
-    <loc>https://gasparvardanyan.github.io/wallpapers/</loc>
+    <loc>http://localhost:1313/wallpapers/</loc>
     <lastmod>2023-04-03T05:04:02+04:00</lastmod>
   </url><url>
-    <loc>https://gasparvardanyan.github.io/blog/what-i-use/</loc>
+    <loc>http://localhost:1313/blog/what-i-use/</loc>
     <lastmod>2022-12-28T03:49:31+04:00</lastmod>
   </url><url>
-    <loc>https://gasparvardanyan.github.io/blog/easy-channel-list-player/</loc>
+    <loc>http://localhost:1313/blog/easy-channel-list-player/</loc>
     <lastmod>2022-08-19T01:52:43+04:00</lastmod>
   </url><url>
-    <loc>https://gasparvardanyan.github.io/coding/</loc>
+    <loc>http://localhost:1313/coding/</loc>
     <lastmod>2022-07-26T03:40:04+04:00</lastmod>
   </url><url>
-    <loc>https://gasparvardanyan.github.io/categories/</loc>
+    <loc>http://localhost:1313/categories/</loc>
   </url><url>
-    <loc>https://gasparvardanyan.github.io/tags/</loc>
+    <loc>http://localhost:1313/tags/</loc>
   </url>
 </urlset>
