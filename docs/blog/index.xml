@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Blogs on Gaspar Vardanyan</title>
-    <link>http://localhost:1313/blog/</link>
+    <link>https://gasparvardanyan.github.io/blog/</link>
     <description>Recent content in Blogs on Gaspar Vardanyan</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 20 Aug 2023 07:31:13 +0400</lastBuildDate><atom:link href="http://localhost:1313/blog/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 20 Aug 2023 07:31:13 +0400</lastBuildDate><atom:link href="https://gasparvardanyan.github.io/blog/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>nman.sh</title>
-      <link>http://localhost:1313/blog/nman.sh/</link>
+      <link>https://gasparvardanyan.github.io/blog/nman.sh/</link>
       <pubDate>Sun, 20 Aug 2023 07:31:13 +0400</pubDate>
       
-      <guid>http://localhost:1313/blog/nman.sh/</guid>
+      <guid>https://gasparvardanyan.github.io/blog/nman.sh/</guid>
       <description>&lt;p&gt;Man inside neovim.&lt;/p&gt;
 &lt;p&gt;Does syntax highlighting, uses nvim&amp;rsquo;s colorscheme and works with links (Shift+K).&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;#!/bin/sh
@@ -30,10 +30,10 @@
     
     <item>
       <title>What I Use</title>
-      <link>http://localhost:1313/blog/what-i-use/</link>
+      <link>https://gasparvardanyan.github.io/blog/what-i-use/</link>
       <pubDate>Wed, 28 Dec 2022 03:49:31 +0400</pubDate>
       
-      <guid>http://localhost:1313/blog/what-i-use/</guid>
+      <guid>https://gasparvardanyan.github.io/blog/what-i-use/</guid>
       <description>&lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://archlinux.org/&#34;&gt;Arch Linux OS&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;https://gitlab.com/GasparVardanyan/dwm&#34;&gt;my fork of the dwm window manager&lt;/a&gt;&lt;/li&gt;
@@ -59,10 +59,10 @@
     
     <item>
       <title>Easy Channel List Player</title>
-      <link>http://localhost:1313/blog/easy-channel-list-player/</link>
+      <link>https://gasparvardanyan.github.io/blog/easy-channel-list-player/</link>
       <pubDate>Fri, 19 Aug 2022 01:52:43 +0400</pubDate>
       
-      <guid>http://localhost:1313/blog/easy-channel-list-player/</guid>
+      <guid>https://gasparvardanyan.github.io/blog/easy-channel-list-player/</guid>
       <description>&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;#!/bin/sh
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#586e75&#34;&gt;# SHELL SCRIPT TO RANDOMELY PLAY A MUSIC FROM CHANNELS LIST&lt;/span&gt;
