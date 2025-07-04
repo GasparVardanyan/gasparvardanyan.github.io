@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width">
+		
+
+		<title>YouTube Mixes in MPV</title>
+
+		
+		<link rel="stylesheet" href="/css/colors-dark.min.91821db55d8acc5b9f936944224ab03a094cea2c707bacc60689050c84476d08.css">
+
+		<link rel="stylesheet" href="/woff2/IBMPlexMono-Bold.css" />
+<link rel="stylesheet" href="/woff2/IBMPlexMono-BoldItalic.css" />
+<link rel="stylesheet" href="/woff2/IBMPlexMono-ExtraLight.css" />
+<link rel="stylesheet" href="/woff2/IBMPlexMono-ExtraLightItalic.css" />
+<link rel="stylesheet" href="/woff2/IBMPlexMono-Italic.css" />
+<link rel="stylesheet" href="/woff2/IBMPlexMono-Light.css" />
+<link rel="stylesheet" href="/woff2/IBMPlexMono-LightItalic.css" />
+<link rel="stylesheet" href="/woff2/IBMPlexMono-Medium.css" />
+<link rel="stylesheet" href="/woff2/IBMPlexMono-MediumItalic.css" />
+<link rel="stylesheet" href="/woff2/IBMPlexMono-Regular.css" />
+<link rel="stylesheet" href="/woff2/IBMPlexMono-SemiBold.css" />
+<link rel="stylesheet" href="/woff2/IBMPlexMono-SemiBoldItalic.css" />
+<link rel="stylesheet" href="/woff2/IBMPlexMono-Text.css" />
+<link rel="stylesheet" href="/woff2/IBMPlexMono-TextItalic.css" />
+<link rel="stylesheet" href="/woff2/IBMPlexMono-Thin.css" />
+<link rel="stylesheet" href="/woff2/IBMPlexMono-ThinItalic.css" />
+
+<style>
+body {
+	font-family: 'IBM Plex Mono', 'Menlo', 'DejaVu Sans Mono',
+	'Bitstream Vera Sans Mono', Courier, monospace;
+}
+
+.copyright {
+	text-align: right;
+}
+</style>
+
+	</head>
+	<body>
+		<header id="header">
+			<h1><a href="https://gasparvardanyan.github.io/">Gaspar Vardanyan</a></h1>
+			<p>btw i use arch :d</p>
+		</header>
+
+		<div id="page">
+			<div id="sidebar">
+				<nav>
+	
+		<ul class="nav">
+			
+				<li><a href="/blog/"><span>Blog</span></a></li>
+			
+				<li><a href="/coding/"><span>Coding</span></a></li>
+			
+				<li><a href="/index.xml"><span>Feed</span></a></li>
+			
+				<li><a href="/wallpapers/"><span>Wallpapers</span></a></li>
+			
+		</ul>
+	
+		<ul class="nav">
+			
+				<li><a href="mailto:gaspar_pm@proton.me"><span>Email</span></a></li>
+			
+				<li><a href="https://github.com/GasparVardanyan"><span>GitHub</span></a></li>
+			
+				<li><a href="https://gitlab.com/GasparVardanyan"><span>GitLab</span></a></li>
+			
+				<li><a href="https://mov.im/?contact/gaspar%40jabber.am"><span>Jabber</span></a></li>
+			
+				<li><a rel="me" href="https://%d5%a9%d5%b8%d6%82%d5%a9.%d5%b0%d5%a1%d5%b5/web/@gaspar"><span>Mastodon</span></a></li>
+			
+				<li><a href="https://matrix.to/#/@gaspar_m:matrix.org"><span>Matrix</span></a></li>
+			
+				<li><a href="https://www.reddit.com/user/GasparVardanyan/"><span>Reddit</span></a></li>
+			
+		</ul>
+	
+</nav>
+
+			</div>
+
+			<div id="content">
+				
+	<article class="post">
+		<h1><a href="https://gasparvardanyan.github.io/blog/youtube-mixes-in-mpv/">YouTube Mixes in MPV</a> </h1>
+
+		<div class="post-content"><p>I have two monitors and like to play youtube music fullscreen on one of them when
+I code.
+I use qutebrowser. It uses QtWebEngine to render websites. I&rsquo;ve noticed that it
+doesn&rsquo;t use the discrete gpu to decode youtube videos. I&rsquo;ve done a lot of research,
+tested different configs, environment variables, prime-run, but unable to get
+video decoding on the discrete gpu. On the other hand mpv wasn&rsquo;t detecting the
+videos of the mix youtube generated for me: it was seeing only the first video through
+url.</p>
+<p>I use mpv for local playlists and it uses nvdec to decode videos with the Nvidia
+discrete gpu. I use <a href="https://github.com/GasparVardanyan/dotfiles/blob/master/skel/utilsbin/.local/bin/plman">this little script</a> to manage my local playlists and this one to play them:</p>
+<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#719e07">#!/bin/sh
+</span></span></span><span style="display:flex;"><span><span style="color:#719e07"></span>
+</span></span><span style="display:flex;"><span><span style="color:#268bd2">embed</span><span style="color:#719e07">=</span><span style="color:#2aa198">&#34;&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#719e07">[</span> <span style="color:#2aa198">&#34;</span><span style="color:#268bd2">$XEMBED</span><span style="color:#2aa198">&#34;</span> !<span style="color:#719e07">=</span> <span style="color:#2aa198">&#39;&#39;</span> <span style="color:#719e07">]</span> <span style="color:#719e07">&amp;&amp;</span> <span style="color:#268bd2">embed</span><span style="color:#719e07">=</span><span style="color:#2aa198">&#34;-w </span><span style="color:#268bd2">$XEMBED</span><span style="color:#2aa198">&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#268bd2">l</span><span style="color:#719e07">=</span><span style="color:#719e07">$(</span>ls ~/.local/share/playlists/*.m3u | sed <span style="color:#2aa198">&#39;s/^.*\.local\/share\/playlists\///;s/\.m3u$//&#39;</span> | dmenu -p <span style="color:#2aa198">&#39;play: &#39;</span> -l <span style="color:#2aa198">20</span> <span style="color:#268bd2">$embed</span><span style="color:#719e07">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#719e07">if</span> <span style="color:#719e07">[</span> <span style="color:#2aa198">&#34;</span><span style="color:#268bd2">$l</span><span style="color:#2aa198">&#34;</span> !<span style="color:#719e07">=</span> <span style="color:#2aa198">&#39;&#39;</span> <span style="color:#719e07">]</span>
+</span></span><span style="display:flex;"><span><span style="color:#719e07">then</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#586e75"># c=&#34;$(echo -e &#34;mpv --fullscreen --loop-playlist=inf\nvlc\nedit&#34; | dmenu -p command: -l 5)&#34;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#586e75"># [ &#34;$c&#34; != &#34;&#34; ] &amp;&amp; $c &#34;$HOME/.local/share/playlists/$l.m3u&#34;</span>
+</span></span><span style="display:flex;"><span>	plman pls <span style="color:#2aa198">&#34;</span><span style="color:#268bd2">$HOME</span><span style="color:#2aa198">/.local/share/playlists/</span><span style="color:#268bd2">$l</span><span style="color:#2aa198">.m3u&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#719e07">fi</span>
+</span></span></code></pre></div><p>So the problem is QtWebEngine. But I&rsquo;ll never use other browser, because I&rsquo;m very
+comfortable and happy with qutebrowser: python config, quickmarks in a plain text
+file, separate profiles via simply separate config folders, minimal ui, small ram
+usage, no gtk and out of the box <strong>greasemonkey userscript</strong> support.</p>
+<p>I&rsquo;ve tried to use vivaldi, but again was unable to use nvdec. All other browsers
+in Arch repos seem to use gtk&hellip; I hate it, I&rsquo;ve <a href="https://github.com/GasparVardanyan/dotfiles/blob/4d87388dfd8e2dabdcc38e8305b0ca682e6eee55/syscfg/generic/etc/pacman.conf#L25">blocked it</a>.</p>
+<p>Qutebrowser have out of the box <strong>greasemonkey userscript</strong> support&hellip;</p>
+<p>Inspecting youtube's page of a mix, I&rsquo;ve managed to extract titles and urls of
+the videos inside the mix&hellip; with this crap code :d</p>
+<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#586e75">// ==UserScript==
+</span></span></span><span style="display:flex;"><span><span style="color:#586e75">// @name         YTMPV
+</span></span></span><span style="display:flex;"><span><span style="color:#586e75">// @namespace    http://your-namespace/
+</span></span></span><span style="display:flex;"><span><span style="color:#586e75">// @version      1.0
+</span></span></span><span style="display:flex;"><span><span style="color:#586e75">// @description  YTMPV
+</span></span></span><span style="display:flex;"><span><span style="color:#586e75">// @match        *://*.youtube.com/*list=*
+</span></span></span><span style="display:flex;"><span><span style="color:#586e75">// @grant        GM.xmlHttpRequest
+</span></span></span><span style="display:flex;"><span><span style="color:#586e75">// @connect      localhost
+</span></span></span><span style="display:flex;"><span><span style="color:#586e75">// ==/UserScript==
+</span></span></span><span style="display:flex;"><span><span style="color:#586e75"></span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#b58900">window</span>.addEventListener(<span style="color:#2aa198">&#39;load&#39;</span>, <span style="color:#268bd2">function</span>() {
+</span></span><span style="display:flex;"><span>	pl<span style="color:#719e07">=</span><span style="color:#b58900">document</span>.getElementsByTagName (<span style="color:#2aa198">&#39;ytd-playlist-panel-video-renderer&#39;</span>);
+</span></span><span style="display:flex;"><span>	l <span style="color:#719e07">=</span> [];
+</span></span><span style="display:flex;"><span>	<span style="color:#719e07">for</span> (i <span style="color:#719e07">of</span> pl) {
+</span></span><span style="display:flex;"><span>		url <span style="color:#719e07">=</span> i.getElementsByTagName (<span style="color:#2aa198">&#39;a&#39;</span>) [<span style="color:#2aa198">0</span>].href.split (<span style="color:#2aa198">&#39;&amp;&#39;</span>) [<span style="color:#2aa198">0</span>]
+</span></span><span style="display:flex;"><span>		text <span style="color:#719e07">=</span> i.getElementsByTagName (<span style="color:#2aa198">&#39;a&#39;</span>) [<span style="color:#2aa198">0</span>].innerText.split (<span style="color:#2aa198">&#34;\n&#34;</span>)
+</span></span><span style="display:flex;"><span>		title <span style="color:#719e07">=</span> <span style="color:#2aa198">&#34;&#34;</span>;
+</span></span><span style="display:flex;"><span>		<span style="color:#719e07">if</span> (text.length <span style="color:#719e07">&gt;=</span> <span style="color:#2aa198">2</span>) {
+</span></span><span style="display:flex;"><span>			title <span style="color:#719e07">=</span> text [text.length <span style="color:#719e07">-</span> <span style="color:#2aa198">2</span>]
+</span></span><span style="display:flex;"><span>		}
+</span></span><span style="display:flex;"><span>		l.push (<span style="color:#2aa198">&#34;#EXTINF:,&#34;</span> <span style="color:#719e07">+</span> title)
+</span></span><span style="display:flex;"><span>		l.push (url);
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>	<span style="color:#719e07">if</span> (<span style="color:#cb4b16">true</span> <span style="color:#719e07">||</span> <span style="color:#cb4b16">true</span> <span style="color:#719e07">==</span> confirm (<span style="color:#2aa198">&#34;copy the mpv command?&#34;</span>)) {
+</span></span><span style="display:flex;"><span>		list <span style="color:#719e07">=</span> l.join (<span style="color:#2aa198">&#34;\n&#34;</span>);
+</span></span><span style="display:flex;"><span>		list <span style="color:#719e07">=</span> <span style="color:#b58900">document</span>.title <span style="color:#719e07">+</span> <span style="color:#2aa198">&#34;\n&#34;</span> <span style="color:#719e07">+</span> list;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		GM.xmlHttpRequest({
+</span></span><span style="display:flex;"><span>			method<span style="color:#719e07">:</span> <span style="color:#2aa198">&#34;POST&#34;</span>,
+</span></span><span style="display:flex;"><span>			url<span style="color:#719e07">:</span> <span style="color:#2aa198">&#34;http://localhost:8765/&#34;</span>,
+</span></span><span style="display:flex;"><span>			headers<span style="color:#719e07">:</span> {
+</span></span><span style="display:flex;"><span>				<span style="color:#2aa198">&#34;Content-Type&#34;</span><span style="color:#719e07">:</span> <span style="color:#2aa198">&#34;text/plain&#34;</span>
+</span></span><span style="display:flex;"><span>			},
+</span></span><span style="display:flex;"><span>			data<span style="color:#719e07">:</span> list,
+</span></span><span style="display:flex;"><span>			onload<span style="color:#719e07">:</span> <span style="color:#268bd2">function</span>(response) {
+</span></span><span style="display:flex;"><span>				console.log(<span style="color:#2aa198">&#34;Server response:&#34;</span>, response.responseText);
+</span></span><span style="display:flex;"><span>			},
+</span></span><span style="display:flex;"><span>			onerror<span style="color:#719e07">:</span> <span style="color:#268bd2">function</span>(err) {
+</span></span><span style="display:flex;"><span>				console.error(<span style="color:#2aa198">&#34;Request failed&#34;</span>, err);
+</span></span><span style="display:flex;"><span>			}
+</span></span><span style="display:flex;"><span>		});
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>}, <span style="color:#cb4b16">false</span>);
+</span></span></code></pre></div><p>This script extracts titles and urls of videos of the mix, arranges like:</p>
+<pre tabindex="0"><code>Page Title
+#EXTINF:,Video 1 title
+video 1 url
+#EXTINF:,Video 2 title
+video 2 url
+....
+</code></pre><p>Then sends it to localhost:8765.</p>
+<p>With the help of ChatGPT I&rsquo;ve got this crap code, which takes the list, does
+neccessary modifications and stores as a M3U playlist. Then notifies me about
+the new playlist via <strong>dunstify</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#586e75">#!/usr/bin/env python</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#719e07">from</span> http.server <span style="color:#719e07">import</span> BaseHTTPRequestHandler, HTTPServer
+</span></span><span style="display:flex;"><span><span style="color:#719e07">import</span> os
+</span></span><span style="display:flex;"><span><span style="color:#719e07">from</span> datetime <span style="color:#719e07">import</span> datetime
+</span></span><span style="display:flex;"><span><span style="color:#719e07">import</span> subprocess
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>SAVE_DIR <span style="color:#719e07">=</span> <span style="color:#2aa198">&#34;/tmp/ytmpv&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#719e07">class</span> <span style="color:#268bd2">SimpleHandler</span>(BaseHTTPRequestHandler):
+</span></span><span style="display:flex;"><span>	<span style="color:#719e07">def</span> <span style="color:#268bd2">do_POST</span>(<span style="color:#268bd2">self</span>):
+</span></span><span style="display:flex;"><span>		content_length <span style="color:#719e07">=</span> <span style="color:#b58900">int</span>(<span style="color:#268bd2">self</span><span style="color:#719e07">.</span>headers<span style="color:#719e07">.</span>get(<span style="color:#2aa198">&#39;Content-Length&#39;</span>, <span style="color:#2aa198">0</span>))
+</span></span><span style="display:flex;"><span>		post_data <span style="color:#719e07">=</span> <span style="color:#268bd2">self</span><span style="color:#719e07">.</span>rfile<span style="color:#719e07">.</span>read(content_length)<span style="color:#719e07">.</span>decode(<span style="color:#2aa198">&#39;utf-8&#39;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#b58900">print</span>(<span style="color:#2aa198">&#34;Received from client:&#34;</span>, post_data)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		lines <span style="color:#719e07">=</span> post_data<span style="color:#719e07">.</span>splitlines()
+</span></span><span style="display:flex;"><span>		<span style="color:#719e07">if</span> <span style="color:#719e07">not</span> lines:
+</span></span><span style="display:flex;"><span>			<span style="color:#268bd2">self</span><span style="color:#719e07">.</span>send_error(<span style="color:#2aa198">400</span>, <span style="color:#2aa198">&#34;Empty request body&#34;</span>)
+</span></span><span style="display:flex;"><span>			<span style="color:#719e07">return</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#719e07">if</span> <span style="color:#2aa198">1</span> <span style="color:#719e07">==</span> <span style="color:#b58900">len</span> (lines) :
+</span></span><span style="display:flex;"><span>			<span style="color:#719e07">return</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		filename <span style="color:#719e07">=</span> lines[<span style="color:#2aa198">0</span>]<span style="color:#719e07">.</span>strip()
+</span></span><span style="display:flex;"><span>		content <span style="color:#719e07">=</span> <span style="color:#2aa198">&#34;</span><span style="color:#cb4b16">\n</span><span style="color:#2aa198">&#34;</span><span style="color:#719e07">.</span>join(lines[<span style="color:#2aa198">1</span>:])
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#586e75"># Ensure target directory exists</span>
+</span></span><span style="display:flex;"><span>		os<span style="color:#719e07">.</span>makedirs(SAVE_DIR, exist_ok<span style="color:#719e07">=</span><span style="color:#cb4b16">True</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#586e75"># Create full path with date prefix</span>
+</span></span><span style="display:flex;"><span>		date_prefix <span style="color:#719e07">=</span> datetime<span style="color:#719e07">.</span>now()<span style="color:#719e07">.</span>strftime(<span style="color:#2aa198">&#34;%m</span><span style="color:#2aa198">%d</span><span style="color:#2aa198">:%H%M%S&#34;</span>)
+</span></span><span style="display:flex;"><span>		full_path <span style="color:#719e07">=</span> os<span style="color:#719e07">.</span>path<span style="color:#719e07">.</span>join(SAVE_DIR, <span style="color:#2aa198">f</span><span style="color:#2aa198">&#34;</span><span style="color:#2aa198">{</span>date_prefix<span style="color:#2aa198">}</span><span style="color:#2aa198"> - </span><span style="color:#2aa198">{</span>filename<span style="color:#2aa198">}</span><span style="color:#2aa198">.m3u&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#586e75"># Write content to file</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#719e07">with</span> <span style="color:#b58900">open</span>(full_path, <span style="color:#2aa198">&#34;w&#34;</span>) <span style="color:#719e07">as</span> f:
+</span></span><span style="display:flex;"><span>			f<span style="color:#719e07">.</span>write(<span style="color:#2aa198">&#34;#EXTM3U</span><span style="color:#cb4b16">\n</span><span style="color:#2aa198">#PLAYLIST:&#34;</span> <span style="color:#719e07">+</span> filename <span style="color:#719e07">+</span> <span style="color:#2aa198">&#34;</span><span style="color:#cb4b16">\n</span><span style="color:#2aa198">&#34;</span>)
+</span></span><span style="display:flex;"><span>			f<span style="color:#719e07">.</span>write(content)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#b58900">print</span>(<span style="color:#2aa198">f</span><span style="color:#2aa198">&#34;Saved to </span><span style="color:#2aa198">{</span>full_path<span style="color:#2aa198">}</span><span style="color:#2aa198">&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#586e75"># List files in the directory</span>
+</span></span><span style="display:flex;"><span>		os<span style="color:#719e07">.</span>system (<span style="color:#2aa198">&#34;dunstify ytmpv &#34;</span> <span style="color:#719e07">+</span> <span style="color:#2aa198">&#34;</span><span style="color:#cb4b16">\&#34;</span><span style="color:#2aa198">&#34;</span> <span style="color:#719e07">+</span> filename <span style="color:#719e07">+</span> <span style="color:#2aa198">&#34;</span><span style="color:#cb4b16">\&#34;</span><span style="color:#2aa198">&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#586e75"># Respond</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#268bd2">self</span><span style="color:#719e07">.</span>send_response(<span style="color:#2aa198">200</span>)
+</span></span><span style="display:flex;"><span>		<span style="color:#268bd2">self</span><span style="color:#719e07">.</span>send_header(<span style="color:#2aa198">&#34;Content-type&#34;</span>, <span style="color:#2aa198">&#34;text/plain&#34;</span>)
+</span></span><span style="display:flex;"><span>		<span style="color:#268bd2">self</span><span style="color:#719e07">.</span>end_headers()
+</span></span><span style="display:flex;"><span>		<span style="color:#268bd2">self</span><span style="color:#719e07">.</span>wfile<span style="color:#719e07">.</span>write(<span style="color:#2aa198">b</span><span style="color:#2aa198">&#34;Saved&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#586e75"># Start server</span>
+</span></span><span style="display:flex;"><span><span style="color:#719e07">if</span> <span style="color:#268bd2">__name__</span> <span style="color:#719e07">==</span> <span style="color:#2aa198">&#34;__main__&#34;</span>:
+</span></span><span style="display:flex;"><span>	server <span style="color:#719e07">=</span> HTTPServer((<span style="color:#2aa198">&#34;localhost&#34;</span>, <span style="color:#2aa198">8765</span>), SimpleHandler)
+</span></span><span style="display:flex;"><span>	<span style="color:#b58900">print</span>(<span style="color:#2aa198">&#34;YTMPV Server running at http://localhost:8765/&#34;</span>)
+</span></span><span style="display:flex;"><span>	server<span style="color:#719e07">.</span>serve_forever()
+</span></span></code></pre></div><p>So, what remains to do is to</p>
+<ol>
+<li>creat another m3u launcher for these lists:</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#719e07">#!/bin/sh
+</span></span></span><span style="display:flex;"><span><span style="color:#719e07"></span>
+</span></span><span style="display:flex;"><span><span style="color:#719e07">[</span> ! -d /tmp/ytmpv <span style="color:#719e07">]</span> <span style="color:#719e07">&amp;&amp;</span> <span style="color:#b58900">exit</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#268bd2">embed</span><span style="color:#719e07">=</span><span style="color:#2aa198">&#34;&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#719e07">[</span> <span style="color:#2aa198">&#34;</span><span style="color:#268bd2">$XEMBED</span><span style="color:#2aa198">&#34;</span> !<span style="color:#719e07">=</span> <span style="color:#2aa198">&#39;&#39;</span> <span style="color:#719e07">]</span> <span style="color:#719e07">&amp;&amp;</span> <span style="color:#268bd2">embed</span><span style="color:#719e07">=</span><span style="color:#2aa198">&#34;-w </span><span style="color:#268bd2">$XEMBED</span><span style="color:#2aa198">&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#268bd2">l</span><span style="color:#719e07">=</span><span style="color:#719e07">$(</span>find /tmp/ytmpv -type f -name <span style="color:#2aa198">&#39;*.m3u&#39;</span> | <span style="color:#cb4b16">\s</span>ed <span style="color:#2aa198">&#39;s#^/tmp/ytmpv/##;s#\.m3u$##&#39;</span> | dmenu -p <span style="color:#2aa198">&#39;play: &#39;</span> -l <span style="color:#2aa198">20</span> <span style="color:#268bd2">$embed</span><span style="color:#719e07">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#719e07">if</span> <span style="color:#719e07">[</span> <span style="color:#2aa198">&#34;</span><span style="color:#268bd2">$l</span><span style="color:#2aa198">&#34;</span> !<span style="color:#719e07">=</span> <span style="color:#2aa198">&#39;&#39;</span> <span style="color:#719e07">]</span>
+</span></span><span style="display:flex;"><span><span style="color:#719e07">then</span>
+</span></span><span style="display:flex;"><span>	plman pl <span style="color:#2aa198">&#34;/tmp/ytmpv/</span><span style="color:#268bd2">$l</span><span style="color:#2aa198">.m3u&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#719e07">fi</span>
+</span></span></code></pre></div><ol start="2">
+<li>add the python script to xinitrc</li>
+<li>add a mapping to dwm to launch the bash script&hellip; this appeared to be the
+hardest part :d I already use {super,super+shift,super+ctrl,super+ctrl+shift}{y,p,m}
+(<a href="https://github.com/GasparVardanyan/dwm/blob/master-testing/mappings.md">they are useful</a> :d) &hellip;
+So I&rsquo;ve decided to use super+alt+y for this.</li>
+</ol>
+<p>Now the usage is easy: whenever I open a misc in browser, it extracts the video
+titles and urls, send to the python server started from xinitrc. The script generates
+a m3u playlist and notifies me via dunstify. After it I can open the mix in mpv via
+the bash script (super+alt+y). Seems <strong>find</strong> sorts files by modification date, so
+I without looking select the first item in dmenu to play the last mix.</p>
+<p><img src="../ytmpv.png" alt=""></p>
+<p>Yes, it&rsquo;ll be better to play the playlist inside the brows&hellip; really? Mpv uses
+yt-dlp to download youtube videos, have you noticed that it gives much better
+audio quality than youtube&rsquo;s web interface even with highest quality video?
+Secondly, I have mappings to control cmus playback: next, prev, pause/play, stop.
+This way I&rsquo;m aware of other playlists being opened via mpv, so I plan to extend
+the audio control of my dwm mappings with a dmenu script to choose whether to
+control cmus or an opened youtube mix inside mpv.</p>
+</div>
+
+		<p class="meta">Posted on <span class="postdate">04. July 2025</span></p>
+	</article>
+
+			</div>
+
+			<footer id="footer">
+				
+				
+				
+				
+				
+				
+
+				<div align="right"><p><a href="/gaspar.monero">monero wallet</a> | <a href="/gaspar.asc">pgp public key</a> | <a href="/gaspar.pub">ssh public key</a> | <a href="https://github.com/GasparVardanyan/gasparvardanyan.github.io/">source</a></p></div>
+
+
+			</footer>
+		</div>
+	</body>
+</html>

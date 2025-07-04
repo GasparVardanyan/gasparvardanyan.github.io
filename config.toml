@@ -5,6 +5,10 @@ title = 'Gaspar Vardanyan'
 theme = 'solar-theme-hugo'
 pygmentsStyle = "solarized-dark"
 
+[markup]
+  [markup.highlight]
+    style = 'solarized-dark'
+
 [params]
   scheme = "dark" # light, dark, gray or preference
   # description = "gaspar's personel website"

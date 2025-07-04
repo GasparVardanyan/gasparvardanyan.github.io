@@ -6,7 +6,193 @@
     <description>Recent content in Blogs on Gaspar Vardanyan</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 20 Aug 2023 07:31:13 +0400</lastBuildDate><atom:link href="https://gasparvardanyan.github.io/blog/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 04 Jul 2025 03:46:40 +0400</lastBuildDate><atom:link href="https://gasparvardanyan.github.io/blog/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>YouTube Mixes in MPV</title>
+      <link>https://gasparvardanyan.github.io/blog/youtube-mixes-in-mpv/</link>
+      <pubDate>Fri, 04 Jul 2025 03:46:40 +0400</pubDate>
+      
+      <guid>https://gasparvardanyan.github.io/blog/youtube-mixes-in-mpv/</guid>
+      <description>&lt;p&gt;I have two monitors and like to play youtube music fullscreen on one of them when
+I code.
+I use qutebrowser. It uses QtWebEngine to render websites. I&amp;rsquo;ve noticed that it
+doesn&amp;rsquo;t use the discrete gpu to decode youtube videos. I&amp;rsquo;ve done a lot of research,
+tested different configs, environment variables, prime-run, but unable to get
+video decoding on the discrete gpu. On the other hand mpv wasn&amp;rsquo;t detecting the
+videos of the mix youtube generated for me: it was seeing only the first video through
+url.&lt;/p&gt;
+&lt;p&gt;I use mpv for local playlists and it uses nvdec to decode videos with the Nvidia
+discrete gpu. I use &lt;a href=&#34;https://github.com/GasparVardanyan/dotfiles/blob/master/skel/utilsbin/.local/bin/plman&#34;&gt;this little script&lt;/a&gt; to manage my local playlists and this one to play them:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;#!/bin/sh
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;embed&lt;/span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;[&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;$XEMBED&lt;/span&gt;&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;&lt;/span&gt; !&lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#39;&amp;#39;&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;]&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span style=&#34;color:#268bd2&#34;&gt;embed&lt;/span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;-w &lt;/span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;$XEMBED&lt;/span&gt;&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;l&lt;/span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;$(&lt;/span&gt;ls ~/.local/share/playlists/*.m3u | sed &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#39;s/^.*\.local\/share\/playlists\///;s/\.m3u$//&amp;#39;&lt;/span&gt; | dmenu -p &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#39;play: &amp;#39;&lt;/span&gt; -l &lt;span style=&#34;color:#2aa198&#34;&gt;20&lt;/span&gt; &lt;span style=&#34;color:#268bd2&#34;&gt;$embed&lt;/span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;[&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;$l&lt;/span&gt;&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;&lt;/span&gt; !&lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#39;&amp;#39;&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;then&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&lt;span style=&#34;color:#586e75&#34;&gt;# c=&amp;#34;$(echo -e &amp;#34;mpv --fullscreen --loop-playlist=inf\nvlc\nedit&amp;#34; | dmenu -p command: -l 5)&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&lt;span style=&#34;color:#586e75&#34;&gt;# [ &amp;#34;$c&amp;#34; != &amp;#34;&amp;#34; ] &amp;amp;&amp;amp; $c &amp;#34;$HOME/.local/share/playlists/$l.m3u&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	plman pls &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;$HOME&lt;/span&gt;&lt;span style=&#34;color:#2aa198&#34;&gt;/.local/share/playlists/&lt;/span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;$l&lt;/span&gt;&lt;span style=&#34;color:#2aa198&#34;&gt;.m3u&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;fi&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;So the problem is QtWebEngine. But I&amp;rsquo;ll never use other browser, because I&amp;rsquo;m very
+comfortable and happy with qutebrowser: python config, quickmarks in a plain text
+file, separate profiles via simply separate config folders, minimal ui, small ram
+usage, no gtk and out of the box &lt;strong&gt;greasemonkey userscript&lt;/strong&gt; support.&lt;/p&gt;
+&lt;p&gt;I&amp;rsquo;ve tried to use vivaldi, but again was unable to use nvdec. All other browsers
+in Arch repos seem to use gtk&amp;hellip; I hate it, I&amp;rsquo;ve &lt;a href=&#34;https://github.com/GasparVardanyan/dotfiles/blob/4d87388dfd8e2dabdcc38e8305b0ca682e6eee55/syscfg/generic/etc/pacman.conf#L25&#34;&gt;blocked it&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Qutebrowser have out of the box &lt;strong&gt;greasemonkey userscript&lt;/strong&gt; support&amp;hellip;&lt;/p&gt;
+&lt;p&gt;Inspecting youtube&#39;s page of a mix, I&amp;rsquo;ve managed to extract titles and urls of
+the videos inside the mix&amp;hellip; with this crap code :d&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-js&#34; data-lang=&#34;js&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#586e75&#34;&gt;// ==UserScript==
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#586e75&#34;&gt;// @name         YTMPV
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#586e75&#34;&gt;// @namespace    http://your-namespace/
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#586e75&#34;&gt;// @version      1.0
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#586e75&#34;&gt;// @description  YTMPV
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#586e75&#34;&gt;// @match        *://*.youtube.com/*list=*
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#586e75&#34;&gt;// @grant        GM.xmlHttpRequest
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#586e75&#34;&gt;// @connect      localhost
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#586e75&#34;&gt;// ==/UserScript==
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#586e75&#34;&gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#b58900&#34;&gt;window&lt;/span&gt;.addEventListener(&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#39;load&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#268bd2&#34;&gt;function&lt;/span&gt;() {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	pl&lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#b58900&#34;&gt;document&lt;/span&gt;.getElementsByTagName (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#39;ytd-playlist-panel-video-renderer&amp;#39;&lt;/span&gt;);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	l &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; [];
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&lt;span style=&#34;color:#719e07&#34;&gt;for&lt;/span&gt; (i &lt;span style=&#34;color:#719e07&#34;&gt;of&lt;/span&gt; pl) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		url &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; i.getElementsByTagName (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#39;a&amp;#39;&lt;/span&gt;) [&lt;span style=&#34;color:#2aa198&#34;&gt;0&lt;/span&gt;].href.split (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#39;&amp;amp;&amp;#39;&lt;/span&gt;) [&lt;span style=&#34;color:#2aa198&#34;&gt;0&lt;/span&gt;]
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		text &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; i.getElementsByTagName (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#39;a&amp;#39;&lt;/span&gt;) [&lt;span style=&#34;color:#2aa198&#34;&gt;0&lt;/span&gt;].innerText.split (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;\n&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		title &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;&amp;#34;&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		&lt;span style=&#34;color:#719e07&#34;&gt;if&lt;/span&gt; (text.length &lt;span style=&#34;color:#719e07&#34;&gt;&amp;gt;=&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;2&lt;/span&gt;) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			title &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; text [text.length &lt;span style=&#34;color:#719e07&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;2&lt;/span&gt;]
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		}
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		l.push (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;#EXTINF:,&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;+&lt;/span&gt; title)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		l.push (url);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	}
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&lt;span style=&#34;color:#719e07&#34;&gt;if&lt;/span&gt; (&lt;span style=&#34;color:#cb4b16&#34;&gt;true&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;||&lt;/span&gt; &lt;span style=&#34;color:#cb4b16&#34;&gt;true&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;==&lt;/span&gt; confirm (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;copy the mpv command?&amp;#34;&lt;/span&gt;)) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		list &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; l.join (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;\n&amp;#34;&lt;/span&gt;);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		list &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#b58900&#34;&gt;document&lt;/span&gt;.title &lt;span style=&#34;color:#719e07&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;\n&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;+&lt;/span&gt; list;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		GM.xmlHttpRequest({
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			method&lt;span style=&#34;color:#719e07&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;POST&amp;#34;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			url&lt;span style=&#34;color:#719e07&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;http://localhost:8765/&amp;#34;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			headers&lt;span style=&#34;color:#719e07&#34;&gt;:&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;				&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;Content-Type&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;text/plain&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			},
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			data&lt;span style=&#34;color:#719e07&#34;&gt;:&lt;/span&gt; list,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			onload&lt;span style=&#34;color:#719e07&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#268bd2&#34;&gt;function&lt;/span&gt;(response) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;				console.log(&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;Server response:&amp;#34;&lt;/span&gt;, response.responseText);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			},
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			onerror&lt;span style=&#34;color:#719e07&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#268bd2&#34;&gt;function&lt;/span&gt;(err) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;				console.error(&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;Request failed&amp;#34;&lt;/span&gt;, err);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			}
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		});
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	}
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}, &lt;span style=&#34;color:#cb4b16&#34;&gt;false&lt;/span&gt;);
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;This script extracts titles and urls of videos of the mix, arranges like:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;Page Title
+#EXTINF:,Video 1 title
+video 1 url
+#EXTINF:,Video 2 title
+video 2 url
+....
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Then sends it to localhost:8765.&lt;/p&gt;
+&lt;p&gt;With the help of ChatGPT I&amp;rsquo;ve got this crap code, which takes the list, does
+neccessary modifications and stores as a M3U playlist. Then notifies me about
+the new playlist via &lt;strong&gt;dunstify&lt;/strong&gt;:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#586e75&#34;&gt;#!/usr/bin/env python&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;from&lt;/span&gt; http.server &lt;span style=&#34;color:#719e07&#34;&gt;import&lt;/span&gt; BaseHTTPRequestHandler, HTTPServer
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;import&lt;/span&gt; os
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;from&lt;/span&gt; datetime &lt;span style=&#34;color:#719e07&#34;&gt;import&lt;/span&gt; datetime
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;import&lt;/span&gt; subprocess
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;SAVE_DIR &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;/tmp/ytmpv&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#268bd2&#34;&gt;SimpleHandler&lt;/span&gt;(BaseHTTPRequestHandler):
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&lt;span style=&#34;color:#719e07&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#268bd2&#34;&gt;do_POST&lt;/span&gt;(&lt;span style=&#34;color:#268bd2&#34;&gt;self&lt;/span&gt;):
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		content_length &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#b58900&#34;&gt;int&lt;/span&gt;(&lt;span style=&#34;color:#268bd2&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;.&lt;/span&gt;headers&lt;span style=&#34;color:#719e07&#34;&gt;.&lt;/span&gt;get(&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#39;Content-Length&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#2aa198&#34;&gt;0&lt;/span&gt;))
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		post_data &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#268bd2&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;.&lt;/span&gt;rfile&lt;span style=&#34;color:#719e07&#34;&gt;.&lt;/span&gt;read(content_length)&lt;span style=&#34;color:#719e07&#34;&gt;.&lt;/span&gt;decode(&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#39;utf-8&amp;#39;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		&lt;span style=&#34;color:#b58900&#34;&gt;print&lt;/span&gt;(&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;Received from client:&amp;#34;&lt;/span&gt;, post_data)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		lines &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; post_data&lt;span style=&#34;color:#719e07&#34;&gt;.&lt;/span&gt;splitlines()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		&lt;span style=&#34;color:#719e07&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;not&lt;/span&gt; lines:
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			&lt;span style=&#34;color:#268bd2&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;.&lt;/span&gt;send_error(&lt;span style=&#34;color:#2aa198&#34;&gt;400&lt;/span&gt;, &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;Empty request body&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			&lt;span style=&#34;color:#719e07&#34;&gt;return&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		&lt;span style=&#34;color:#719e07&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;1&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#b58900&#34;&gt;len&lt;/span&gt; (lines) :
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			&lt;span style=&#34;color:#719e07&#34;&gt;return&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		filename &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; lines[&lt;span style=&#34;color:#2aa198&#34;&gt;0&lt;/span&gt;]&lt;span style=&#34;color:#719e07&#34;&gt;.&lt;/span&gt;strip()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		content &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#cb4b16&#34;&gt;\n&lt;/span&gt;&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;.&lt;/span&gt;join(lines[&lt;span style=&#34;color:#2aa198&#34;&gt;1&lt;/span&gt;:])
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		&lt;span style=&#34;color:#586e75&#34;&gt;# Ensure target directory exists&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		os&lt;span style=&#34;color:#719e07&#34;&gt;.&lt;/span&gt;makedirs(SAVE_DIR, exist_ok&lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#cb4b16&#34;&gt;True&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		&lt;span style=&#34;color:#586e75&#34;&gt;# Create full path with date prefix&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		date_prefix &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; datetime&lt;span style=&#34;color:#719e07&#34;&gt;.&lt;/span&gt;now()&lt;span style=&#34;color:#719e07&#34;&gt;.&lt;/span&gt;strftime(&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;%m&lt;/span&gt;&lt;span style=&#34;color:#2aa198&#34;&gt;%d&lt;/span&gt;&lt;span style=&#34;color:#2aa198&#34;&gt;:%H%M%S&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		full_path &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; os&lt;span style=&#34;color:#719e07&#34;&gt;.&lt;/span&gt;path&lt;span style=&#34;color:#719e07&#34;&gt;.&lt;/span&gt;join(SAVE_DIR, &lt;span style=&#34;color:#2aa198&#34;&gt;f&lt;/span&gt;&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#2aa198&#34;&gt;{&lt;/span&gt;date_prefix&lt;span style=&#34;color:#2aa198&#34;&gt;}&lt;/span&gt;&lt;span style=&#34;color:#2aa198&#34;&gt; - &lt;/span&gt;&lt;span style=&#34;color:#2aa198&#34;&gt;{&lt;/span&gt;filename&lt;span style=&#34;color:#2aa198&#34;&gt;}&lt;/span&gt;&lt;span style=&#34;color:#2aa198&#34;&gt;.m3u&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		&lt;span style=&#34;color:#586e75&#34;&gt;# Write content to file&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		&lt;span style=&#34;color:#719e07&#34;&gt;with&lt;/span&gt; &lt;span style=&#34;color:#b58900&#34;&gt;open&lt;/span&gt;(full_path, &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;w&amp;#34;&lt;/span&gt;) &lt;span style=&#34;color:#719e07&#34;&gt;as&lt;/span&gt; f:
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			f&lt;span style=&#34;color:#719e07&#34;&gt;.&lt;/span&gt;write(&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;#EXTM3U&lt;/span&gt;&lt;span style=&#34;color:#cb4b16&#34;&gt;\n&lt;/span&gt;&lt;span style=&#34;color:#2aa198&#34;&gt;#PLAYLIST:&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;+&lt;/span&gt; filename &lt;span style=&#34;color:#719e07&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#cb4b16&#34;&gt;\n&lt;/span&gt;&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			f&lt;span style=&#34;color:#719e07&#34;&gt;.&lt;/span&gt;write(content)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		&lt;span style=&#34;color:#b58900&#34;&gt;print&lt;/span&gt;(&lt;span style=&#34;color:#2aa198&#34;&gt;f&lt;/span&gt;&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;Saved to &lt;/span&gt;&lt;span style=&#34;color:#2aa198&#34;&gt;{&lt;/span&gt;full_path&lt;span style=&#34;color:#2aa198&#34;&gt;}&lt;/span&gt;&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		&lt;span style=&#34;color:#586e75&#34;&gt;# List files in the directory&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		os&lt;span style=&#34;color:#719e07&#34;&gt;.&lt;/span&gt;system (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;dunstify ytmpv &amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#cb4b16&#34;&gt;\&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;+&lt;/span&gt; filename &lt;span style=&#34;color:#719e07&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#cb4b16&#34;&gt;\&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		&lt;span style=&#34;color:#586e75&#34;&gt;# Respond&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		&lt;span style=&#34;color:#268bd2&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;.&lt;/span&gt;send_response(&lt;span style=&#34;color:#2aa198&#34;&gt;200&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		&lt;span style=&#34;color:#268bd2&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;.&lt;/span&gt;send_header(&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;Content-type&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;text/plain&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		&lt;span style=&#34;color:#268bd2&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;.&lt;/span&gt;end_headers()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		&lt;span style=&#34;color:#268bd2&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;.&lt;/span&gt;wfile&lt;span style=&#34;color:#719e07&#34;&gt;.&lt;/span&gt;write(&lt;span style=&#34;color:#2aa198&#34;&gt;b&lt;/span&gt;&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;Saved&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#586e75&#34;&gt;# Start server&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#268bd2&#34;&gt;__name__&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;__main__&amp;#34;&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	server &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; HTTPServer((&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;localhost&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#2aa198&#34;&gt;8765&lt;/span&gt;), SimpleHandler)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&lt;span style=&#34;color:#b58900&#34;&gt;print&lt;/span&gt;(&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;YTMPV Server running at http://localhost:8765/&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	server&lt;span style=&#34;color:#719e07&#34;&gt;.&lt;/span&gt;serve_forever()
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;So, what remains to do is to&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;creat another m3u launcher for these lists:&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;#!/bin/sh
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;[&lt;/span&gt; ! -d /tmp/ytmpv &lt;span style=&#34;color:#719e07&#34;&gt;]&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span style=&#34;color:#b58900&#34;&gt;exit&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;embed&lt;/span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;[&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;$XEMBED&lt;/span&gt;&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;&lt;/span&gt; !&lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#39;&amp;#39;&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;]&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span style=&#34;color:#268bd2&#34;&gt;embed&lt;/span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;-w &lt;/span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;$XEMBED&lt;/span&gt;&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;l&lt;/span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;$(&lt;/span&gt;find /tmp/ytmpv -type f -name &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#39;*.m3u&amp;#39;&lt;/span&gt; | &lt;span style=&#34;color:#cb4b16&#34;&gt;\s&lt;/span&gt;ed &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#39;s#^/tmp/ytmpv/##;s#\.m3u$##&amp;#39;&lt;/span&gt; | dmenu -p &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#39;play: &amp;#39;&lt;/span&gt; -l &lt;span style=&#34;color:#2aa198&#34;&gt;20&lt;/span&gt; &lt;span style=&#34;color:#268bd2&#34;&gt;$embed&lt;/span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;[&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;$l&lt;/span&gt;&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;&lt;/span&gt; !&lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#39;&amp;#39;&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;then&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	plman pl &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;/tmp/ytmpv/&lt;/span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;$l&lt;/span&gt;&lt;span style=&#34;color:#2aa198&#34;&gt;.m3u&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;fi&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;add the python script to xinitrc&lt;/li&gt;
+&lt;li&gt;add a mapping to dwm to launch the bash script&amp;hellip; this appeared to be the
+hardest part :d I already use {super,super+shift,super+ctrl,super+ctrl+shift}{y,p,m}
+(&lt;a href=&#34;https://github.com/GasparVardanyan/dwm/blob/master-testing/mappings.md&#34;&gt;they are useful&lt;/a&gt; :d) &amp;hellip;
+So I&amp;rsquo;ve decided to use super+alt+y for this.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Now the usage is easy: whenever I open a misc in browser, it extracts the video
+titles and urls, send to the python server started from xinitrc. The script generates
+a m3u playlist and notifies me via dunstify. After it I can open the mix in mpv via
+the bash script (super+alt+y). Seems &lt;strong&gt;find&lt;/strong&gt; sorts files by modification date, so
+I without looking select the first item in dmenu to play the last mix.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;../ytmpv.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Yes, it&amp;rsquo;ll be better to play the playlist inside the brows&amp;hellip; really? Mpv uses
+yt-dlp to download youtube videos, have you noticed that it gives much better
+audio quality than youtube&amp;rsquo;s web interface even with highest quality video?
+Secondly, I have mappings to control cmus playback: next, prev, pause/play, stop.
+This way I&amp;rsquo;m aware of other playlists being opened via mpv, so I plan to extend
+the audio control of my dwm mappings with a dmenu script to choose whether to
+control cmus or an opened youtube mix inside mpv.&lt;/p&gt;
+</description>
+    </item>
+    
     <item>
       <title>nman.sh</title>
       <link>https://gasparvardanyan.github.io/blog/nman.sh/</link>
