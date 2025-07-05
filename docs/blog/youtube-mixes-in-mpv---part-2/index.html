@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width">
+		
+
+		<title>YouTube Mixes in MPV   Part 2</title>
+
+		
+		<link rel="stylesheet" href="/css/colors-dark.min.91821db55d8acc5b9f936944224ab03a094cea2c707bacc60689050c84476d08.css">
+
+		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/Iosevka.css" />
+
+<style>
+body {
+	 
+	 
+	font-family: 'Iosevka Web', monospace;
+}
+
+.copyright {
+	text-align: right;
+}
+</style>
+
+	</head>
+	<body>
+		<header id="header">
+			<h1><a href="https://gasparvardanyan.github.io/">Gaspar Vardanyan</a></h1>
+			<p>btw i use arch :d</p>
+		</header>
+
+		<div id="page">
+			<div id="sidebar">
+				<nav>
+	
+		<ul class="nav">
+			
+				<li><a href="/blog/"><span>Blog</span></a></li>
+			
+				<li><a href="/coding/"><span>Coding</span></a></li>
+			
+				<li><a href="/index.xml"><span>Feed</span></a></li>
+			
+				<li><a href="/wallpapers/"><span>Wallpapers</span></a></li>
+			
+		</ul>
+	
+		<ul class="nav">
+			
+				<li><a href="mailto:gaspar_pm@proton.me"><span>Email</span></a></li>
+			
+				<li><a href="https://github.com/GasparVardanyan"><span>GitHub</span></a></li>
+			
+				<li><a href="https://gitlab.com/GasparVardanyan"><span>GitLab</span></a></li>
+			
+				<li><a href="https://mov.im/?contact/gaspar%40jabber.am"><span>Jabber</span></a></li>
+			
+				<li><a rel="me" href="https://%d5%a9%d5%b8%d6%82%d5%a9.%d5%b0%d5%a1%d5%b5/web/@gaspar"><span>Mastodon</span></a></li>
+			
+				<li><a href="https://matrix.to/#/@gaspar_m:matrix.org"><span>Matrix</span></a></li>
+			
+				<li><a href="https://www.reddit.com/user/GasparVardanyan/"><span>Reddit</span></a></li>
+			
+		</ul>
+	
+</nav>
+
+			</div>
+
+			<div id="content">
+				
+	<article class="post">
+		<h1><a href="https://gasparvardanyan.github.io/blog/youtube-mixes-in-mpv---part-2/">YouTube Mixes in MPV   Part 2</a> </h1>
+
+		<div class="post-content"><p>So continuing youtube mix support in mpv I&rsquo;ve decided to replace my cmus commands
+inside dwm with more generic commands to be able to control cmus, any mpv
+instance playing a mix or a local playlist.</p>
+<p>To control mpv instances I needed to have ipc sockets for each instance, so I
+extended the local playlist / mix launcher scripts to use sockets:</p>
+<p>play:</p>
+<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#719e07">#!/bin/sh
+</span></span></span><span style="display:flex;"><span><span style="color:#719e07"></span>
+</span></span><span style="display:flex;"><span><span style="color:#268bd2">dmenu_embed</span><span style="color:#719e07">=</span><span style="color:#2aa198">&#34;&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#268bd2">mpv_embed</span><span style="color:#719e07">=</span><span style="color:#2aa198">&#34;&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#719e07">if</span> <span style="color:#719e07">[</span> <span style="color:#2aa198">&#34;</span><span style="color:#268bd2">$XEMBED</span><span style="color:#2aa198">&#34;</span> !<span style="color:#719e07">=</span> <span style="color:#2aa198">&#39;&#39;</span> <span style="color:#719e07">]</span>
+</span></span><span style="display:flex;"><span><span style="color:#719e07">then</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#268bd2">dmenu_embed</span><span style="color:#719e07">=</span><span style="color:#2aa198">&#34;-w </span><span style="color:#268bd2">$XEMBED</span><span style="color:#2aa198">&#34;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#268bd2">mpv_embed</span><span style="color:#719e07">=</span><span style="color:#2aa198">&#34;-wid=</span><span style="color:#268bd2">$XEMBED</span><span style="color:#2aa198">&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#719e07">fi</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#268bd2">l</span><span style="color:#719e07">=</span><span style="color:#719e07">$(</span>ls ~/.local/share/playlists/*.m3u | sed <span style="color:#2aa198">&#39;s/^.*\.local\/share\/playlists\///;s/\.m3u$//&#39;</span> | dmenu -p <span style="color:#2aa198">&#39;play: &#39;</span> -l <span style="color:#2aa198">20</span> <span style="color:#268bd2">$dmenu_embed</span><span style="color:#719e07">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#719e07">if</span> <span style="color:#719e07">[</span> <span style="color:#2aa198">&#34;</span><span style="color:#268bd2">$l</span><span style="color:#2aa198">&#34;</span> !<span style="color:#719e07">=</span> <span style="color:#2aa198">&#39;&#39;</span> <span style="color:#719e07">]</span>
+</span></span><span style="display:flex;"><span><span style="color:#719e07">then</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#268bd2">playlist</span><span style="color:#719e07">=</span><span style="color:#2aa198">&#34;</span><span style="color:#268bd2">$HOME</span><span style="color:#2aa198">/.local/share/playlists/</span><span style="color:#268bd2">$l</span><span style="color:#2aa198">.m3u&#34;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#268bd2">socket</span><span style="color:#719e07">=</span><span style="color:#2aa198">&#34;</span><span style="color:#268bd2">$playlist</span><span style="color:#2aa198">.socket&#34;</span>
+</span></span><span style="display:flex;"><span>	mpv --fullscreen --loop-playlist<span style="color:#719e07">=</span>inf --ytdl-format<span style="color:#719e07">=</span><span style="color:#2aa198">&#34;bestvideo+bestaudio/best&#34;</span> <span style="color:#268bd2">$mpv_embed</span> <span style="color:#2aa198">&#34;</span><span style="color:#268bd2">$playlist</span><span style="color:#2aa198">&#34;</span> --input-ipc-server<span style="color:#719e07">=</span><span style="color:#2aa198">&#34;</span><span style="color:#268bd2">$socket</span><span style="color:#2aa198">&#34;</span> --shuffle
+</span></span><span style="display:flex;"><span>	rm <span style="color:#2aa198">&#34;</span><span style="color:#268bd2">$socket</span><span style="color:#2aa198">&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#719e07">fi</span>
+</span></span></code></pre></div><p>ytmpv:</p>
+<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#719e07">#!/bin/sh
+</span></span></span><span style="display:flex;"><span><span style="color:#719e07"></span>
+</span></span><span style="display:flex;"><span><span style="color:#719e07">[</span> ! -d /tmp/ytmpv <span style="color:#719e07">]</span> <span style="color:#719e07">&amp;&amp;</span> <span style="color:#b58900">exit</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#268bd2">dmenu_embed</span><span style="color:#719e07">=</span><span style="color:#2aa198">&#34;&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#268bd2">mpv_embed</span><span style="color:#719e07">=</span><span style="color:#2aa198">&#34;&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#719e07">if</span> <span style="color:#719e07">[</span> <span style="color:#2aa198">&#34;</span><span style="color:#268bd2">$XEMBED</span><span style="color:#2aa198">&#34;</span> !<span style="color:#719e07">=</span> <span style="color:#2aa198">&#39;&#39;</span> <span style="color:#719e07">]</span>
+</span></span><span style="display:flex;"><span><span style="color:#719e07">then</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#268bd2">dmenu_embed</span><span style="color:#719e07">=</span><span style="color:#2aa198">&#34;-w </span><span style="color:#268bd2">$XEMBED</span><span style="color:#2aa198">&#34;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#268bd2">mpv_embed</span><span style="color:#719e07">=</span><span style="color:#2aa198">&#34;-wid=</span><span style="color:#268bd2">$XEMBED</span><span style="color:#2aa198">&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#719e07">fi</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#268bd2">l</span><span style="color:#719e07">=</span><span style="color:#719e07">$(</span>find /tmp/ytmpv -type f -name <span style="color:#2aa198">&#39;*.m3u&#39;</span> | <span style="color:#cb4b16">\s</span>ed <span style="color:#2aa198">&#39;s#^/tmp/ytmpv/##;s#\.m3u$##&#39;</span> | dmenu -p <span style="color:#2aa198">&#39;play: &#39;</span> -l <span style="color:#2aa198">20</span> <span style="color:#268bd2">$dmenu_embed</span><span style="color:#719e07">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#719e07">if</span> <span style="color:#719e07">[</span> <span style="color:#2aa198">&#34;</span><span style="color:#268bd2">$l</span><span style="color:#2aa198">&#34;</span> !<span style="color:#719e07">=</span> <span style="color:#2aa198">&#39;&#39;</span> <span style="color:#719e07">]</span>
+</span></span><span style="display:flex;"><span><span style="color:#719e07">then</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#268bd2">playlist</span><span style="color:#719e07">=</span><span style="color:#2aa198">&#34;/tmp/ytmpv/</span><span style="color:#268bd2">$l</span><span style="color:#2aa198">.m3u&#34;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#268bd2">socket</span><span style="color:#719e07">=</span><span style="color:#2aa198">&#34;</span><span style="color:#268bd2">$playlist</span><span style="color:#2aa198">.socket&#34;</span>
+</span></span><span style="display:flex;"><span>	mpv --fullscreen --loop-playlist<span style="color:#719e07">=</span>inf --ytdl-format<span style="color:#719e07">=</span><span style="color:#2aa198">&#34;bestvideo+bestaudio/best&#34;</span> <span style="color:#268bd2">$mpv_embed</span> <span style="color:#2aa198">&#34;</span><span style="color:#268bd2">$playlist</span><span style="color:#2aa198">&#34;</span> --input-ipc-server<span style="color:#719e07">=</span><span style="color:#2aa198">&#34;</span><span style="color:#268bd2">$socket</span><span style="color:#2aa198">&#34;</span>
+</span></span><span style="display:flex;"><span>	rm <span style="color:#2aa198">&#34;</span><span style="color:#268bd2">$socket</span><span style="color:#2aa198">&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#719e07">fi</span>
+</span></span></code></pre></div><p>Then wrote this buggy shell script (plctrl):</p>
+<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#719e07">#!/usr/bin/env bash
+</span></span></span><span style="display:flex;"><span><span style="color:#719e07"></span>
+</span></span><span style="display:flex;"><span><span style="color:#268bd2">YTMPV_DIR</span><span style="color:#719e07">=</span><span style="color:#2aa198">&#34;</span><span style="color:#2aa198">${</span><span style="color:#268bd2">YTMPV_DIR</span><span style="color:#719e07">:-</span>/tmp/ytmpv<span style="color:#2aa198">}</span><span style="color:#2aa198">&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#268bd2">PLCTRL_SOURCE</span><span style="color:#719e07">=</span><span style="color:#2aa198">&#34;</span><span style="color:#2aa198">${</span><span style="color:#268bd2">PLCTRL_SOURCE</span><span style="color:#719e07">:-</span>/tmp/plctrl<span style="color:#2aa198">}</span><span style="color:#2aa198">&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#268bd2">PLMAN_DIR</span><span style="color:#719e07">=</span><span style="color:#2aa198">&#34;</span><span style="color:#268bd2">$HOME</span><span style="color:#2aa198">/.local/share/playlists&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>cmd_list_sources<span style="color:#719e07">()</span>
+</span></span><span style="display:flex;"><span><span style="color:#719e07">{</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#268bd2">list</span><span style="color:#719e07">=</span><span style="color:#2aa198">&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#268bd2">cmus</span><span style="color:#719e07">=</span><span style="color:#719e07">$(</span>cmus-remote --query 2&gt;/dev/null | grep ^status -m <span style="color:#2aa198">1</span> | cut -d <span style="color:#2aa198">&#39; &#39;</span> -f 2<span style="color:#719e07">)</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#719e07">[[</span> <span style="color:#2aa198">&#34;</span><span style="color:#268bd2">$cmus</span><span style="color:#2aa198">&#34;</span> !<span style="color:#719e07">=</span> <span style="color:#2aa198">&#39;&#39;</span> <span style="color:#719e07">]]</span> <span style="color:#719e07">&amp;&amp;</span> <span style="color:#268bd2">list</span><span style="color:#719e07">=</span><span style="color:#2aa198">&#34;cmus\n&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#268bd2">ytmpv</span><span style="color:#719e07">=</span><span style="color:#719e07">$(</span>find <span style="color:#2aa198">&#34;</span><span style="color:#268bd2">$YTMPV_DIR</span><span style="color:#2aa198">&#34;</span> -type s -name <span style="color:#2aa198">&#39;*.socket&#39;</span> | sed -E <span style="color:#2aa198">&#34;s#^</span><span style="color:#268bd2">$YTMPV_DIR</span><span style="color:#2aa198">/?#YTMPV: #&#34;</span><span style="color:#719e07">)</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#268bd2">list</span><span style="color:#719e07">=</span><span style="color:#2aa198">&#34;</span><span style="color:#268bd2">$list$ytmpv</span><span style="color:#2aa198">\n&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#268bd2">pl</span><span style="color:#719e07">=</span><span style="color:#719e07">$(</span>find <span style="color:#2aa198">&#34;</span><span style="color:#268bd2">$PLMAN_DIR</span><span style="color:#2aa198">&#34;</span> -type s -name <span style="color:#2aa198">&#39;*.socket&#39;</span> | sed -E <span style="color:#2aa198">&#34;s#^</span><span style="color:#268bd2">$PLMAN_DIR</span><span style="color:#2aa198">/?#PLMAN: #&#34;</span><span style="color:#719e07">)</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#268bd2">list</span><span style="color:#719e07">=</span><span style="color:#2aa198">&#34;</span><span style="color:#268bd2">$list$pl</span><span style="color:#2aa198">\n&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#b58900">echo</span> -e <span style="color:#2aa198">&#34;</span><span style="color:#268bd2">$list</span><span style="color:#2aa198">&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#719e07">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>cmd_select_source<span style="color:#719e07">()</span>
+</span></span><span style="display:flex;"><span><span style="color:#719e07">{</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#586e75"># TODO: automatically select if only one available source</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#268bd2">list</span><span style="color:#719e07">=</span><span style="color:#719e07">$(</span>cmd_list_sources<span style="color:#719e07">)</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#b58900">echo</span> <span style="color:#2aa198">&#34;list: </span><span style="color:#268bd2">$list</span><span style="color:#2aa198">&#34;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#719e07">if</span> <span style="color:#719e07">[[</span> <span style="color:#2aa198">&#34;</span><span style="color:#268bd2">$list</span><span style="color:#2aa198">&#34;</span> !<span style="color:#719e07">=</span> <span style="color:#2aa198">&#39;&#39;</span> <span style="color:#719e07">]]</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#719e07">then</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#268bd2">s</span><span style="color:#719e07">=</span><span style="color:#719e07">$(</span><span style="color:#b58900">echo</span> <span style="color:#2aa198">&#34;</span><span style="color:#268bd2">$list</span><span style="color:#2aa198">&#34;</span> | dmenu -p <span style="color:#2aa198">&#39;plctrl source: &#39;</span> -l 20<span style="color:#719e07">)</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#719e07">[[</span> <span style="color:#2aa198">&#34;</span><span style="color:#268bd2">$s</span><span style="color:#2aa198">&#34;</span> !<span style="color:#719e07">=</span> <span style="color:#2aa198">&#39;&#39;</span> <span style="color:#719e07">]]</span> <span style="color:#719e07">&amp;&amp;</span> <span style="color:#b58900">echo</span> <span style="color:#2aa198">&#34;</span><span style="color:#268bd2">$s</span><span style="color:#2aa198">&#34;</span> &gt; <span style="color:#2aa198">&#34;</span><span style="color:#268bd2">$PLCTRL_SOURCE</span><span style="color:#2aa198">&#34;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#719e07">else</span>
+</span></span><span style="display:flex;"><span>		rm <span style="color:#2aa198">&#34;</span><span style="color:#268bd2">$PLCTRL_SOURCE</span><span style="color:#2aa198">&#34;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#719e07">fi</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#b58900">test</span> -f <span style="color:#2aa198">&#34;</span><span style="color:#268bd2">$PLCTRL_SOURCE</span><span style="color:#2aa198">&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#719e07">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>cmd_validate_source<span style="color:#719e07">()</span>
+</span></span><span style="display:flex;"><span><span style="color:#719e07">{</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#268bd2">list</span><span style="color:#719e07">=</span><span style="color:#719e07">$(</span>cmd_list_sources<span style="color:#719e07">)</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#268bd2">f</span><span style="color:#719e07">=</span><span style="color:#719e07">$(</span>cat <span style="color:#2aa198">&#34;</span><span style="color:#268bd2">$PLCTRL_SOURCE</span><span style="color:#2aa198">&#34;</span><span style="color:#719e07">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#719e07">[</span> -f <span style="color:#2aa198">&#34;</span><span style="color:#268bd2">$PLCTRL_SOURCE</span><span style="color:#2aa198">&#34;</span> <span style="color:#719e07">]</span> <span style="color:#719e07">&amp;&amp;</span> grep -Fxq <span style="color:#2aa198">&#34;</span><span style="color:#268bd2">$list</span><span style="color:#2aa198">&#34;</span> <span style="color:#719e07">&lt;&lt;&lt;</span> <span style="color:#2aa198">&#34;</span><span style="color:#268bd2">$f</span><span style="color:#2aa198">&#34;</span> <span style="color:#719e07">||</span> <span style="color:#719e07">return</span> <span style="color:#2aa198">1</span>
+</span></span><span style="display:flex;"><span><span style="color:#719e07">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>cmd_validate<span style="color:#719e07">()</span>
+</span></span><span style="display:flex;"><span><span style="color:#719e07">{</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#719e07">if</span> ! cmd_validate_source
+</span></span><span style="display:flex;"><span>	<span style="color:#719e07">then</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#719e07">if</span> ! cmd_select_source
+</span></span><span style="display:flex;"><span>		<span style="color:#719e07">then</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#719e07">return</span> <span style="color:#2aa198">1</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#719e07">fi</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#719e07">fi</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#719e07">return</span> <span style="color:#2aa198">0</span>
+</span></span><span style="display:flex;"><span><span style="color:#719e07">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>_cmd_mpv<span style="color:#719e07">()</span>
+</span></span><span style="display:flex;"><span><span style="color:#719e07">{</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#268bd2">_s</span><span style="color:#719e07">=</span><span style="color:#719e07">$(</span><span style="color:#b58900">echo</span> <span style="color:#2aa198">&#34;</span><span style="color:#268bd2">$1</span><span style="color:#2aa198">&#34;</span> | sed <span style="color:#2aa198">&#39;s/:/\\:/g&#39;</span><span style="color:#719e07">)</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#268bd2">_c</span><span style="color:#719e07">=</span><span style="color:#268bd2">$2</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#b58900">echo</span> <span style="color:#2aa198">&#34;</span><span style="color:#268bd2">$_c</span><span style="color:#2aa198">&#34;</span> | socat - <span style="color:#2aa198">&#34;</span><span style="color:#268bd2">$_s</span><span style="color:#2aa198">&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#719e07">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>cmd_next<span style="color:#719e07">()</span>
+</span></span><span style="display:flex;"><span><span style="color:#719e07">{</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#719e07">if</span> cmd_validate
+</span></span><span style="display:flex;"><span>	<span style="color:#719e07">then</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#268bd2">s</span><span style="color:#719e07">=</span><span style="color:#719e07">$(</span>cat <span style="color:#2aa198">&#34;</span><span style="color:#268bd2">$PLCTRL_SOURCE</span><span style="color:#2aa198">&#34;</span><span style="color:#719e07">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#719e07">if</span> <span style="color:#719e07">[[</span> <span style="color:#2aa198">&#34;</span><span style="color:#268bd2">$s</span><span style="color:#2aa198">&#34;</span> <span style="color:#719e07">=</span> <span style="color:#2aa198">&#39;cmus&#39;</span> <span style="color:#719e07">]]</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#719e07">then</span>
+</span></span><span style="display:flex;"><span>			cmus-remote -n
+</span></span><span style="display:flex;"><span>		<span style="color:#719e07">elif</span> <span style="color:#719e07">[[</span> <span style="color:#2aa198">&#34;</span><span style="color:#268bd2">$s</span><span style="color:#2aa198">&#34;</span> <span style="color:#719e07">==</span> YTMPV:<span style="color:#cb4b16">\ </span>* <span style="color:#719e07">]]</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#719e07">then</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#268bd2">s</span><span style="color:#719e07">=</span><span style="color:#2aa198">&#34;</span><span style="color:#2aa198">${</span><span style="color:#268bd2">s</span>#* <span style="color:#2aa198">}</span><span style="color:#2aa198">&#34;</span>
+</span></span><span style="display:flex;"><span>			_cmd_mpv <span style="color:#2aa198">&#34;</span><span style="color:#268bd2">$YTMPV_DIR</span><span style="color:#2aa198">/</span><span style="color:#268bd2">$s</span><span style="color:#2aa198">&#34;</span> <span style="color:#2aa198">&#39;playlist-next&#39;</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#719e07">elif</span> <span style="color:#719e07">[[</span> <span style="color:#2aa198">&#34;</span><span style="color:#268bd2">$s</span><span style="color:#2aa198">&#34;</span> <span style="color:#719e07">==</span> PLMAN:<span style="color:#cb4b16">\ </span>* <span style="color:#719e07">]]</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#719e07">then</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#268bd2">s</span><span style="color:#719e07">=</span><span style="color:#2aa198">&#34;</span><span style="color:#2aa198">${</span><span style="color:#268bd2">s</span>#* <span style="color:#2aa198">}</span><span style="color:#2aa198">&#34;</span>
+</span></span><span style="display:flex;"><span>			_cmd_mpv <span style="color:#2aa198">&#34;</span><span style="color:#268bd2">$PLMAN_DIR</span><span style="color:#2aa198">/</span><span style="color:#268bd2">$s</span><span style="color:#2aa198">&#34;</span> <span style="color:#2aa198">&#39;playlist-next&#39;</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#719e07">else</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#b58900">echo</span> <span style="color:#2aa198">&#34;SS:</span><span style="color:#268bd2">$s</span><span style="color:#2aa198">&#34;</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#719e07">fi</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#719e07">fi</span>
+</span></span><span style="display:flex;"><span><span style="color:#719e07">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>cmd_prev<span style="color:#719e07">()</span>
+</span></span><span style="display:flex;"><span><span style="color:#719e07">{</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#719e07">if</span> cmd_validate
+</span></span><span style="display:flex;"><span>	<span style="color:#719e07">then</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#268bd2">s</span><span style="color:#719e07">=</span><span style="color:#719e07">$(</span>cat <span style="color:#2aa198">&#34;</span><span style="color:#268bd2">$PLCTRL_SOURCE</span><span style="color:#2aa198">&#34;</span><span style="color:#719e07">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#719e07">if</span> <span style="color:#719e07">[[</span> <span style="color:#2aa198">&#34;</span><span style="color:#268bd2">$s</span><span style="color:#2aa198">&#34;</span> <span style="color:#719e07">=</span> <span style="color:#2aa198">&#39;cmus&#39;</span> <span style="color:#719e07">]]</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#719e07">then</span>
+</span></span><span style="display:flex;"><span>			cmus-remote -r
+</span></span><span style="display:flex;"><span>		<span style="color:#719e07">elif</span> <span style="color:#719e07">[[</span> <span style="color:#2aa198">&#34;</span><span style="color:#268bd2">$s</span><span style="color:#2aa198">&#34;</span> <span style="color:#719e07">==</span> YTMPV:<span style="color:#cb4b16">\ </span>* <span style="color:#719e07">]]</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#719e07">then</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#268bd2">s</span><span style="color:#719e07">=</span><span style="color:#2aa198">&#34;</span><span style="color:#2aa198">${</span><span style="color:#268bd2">s</span>#* <span style="color:#2aa198">}</span><span style="color:#2aa198">&#34;</span>
+</span></span><span style="display:flex;"><span>			_cmd_mpv <span style="color:#2aa198">&#34;</span><span style="color:#268bd2">$YTMPV_DIR</span><span style="color:#2aa198">/</span><span style="color:#268bd2">$s</span><span style="color:#2aa198">&#34;</span> <span style="color:#2aa198">&#39;playlist-prev&#39;</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#719e07">elif</span> <span style="color:#719e07">[[</span> <span style="color:#2aa198">&#34;</span><span style="color:#268bd2">$s</span><span style="color:#2aa198">&#34;</span> <span style="color:#719e07">==</span> PLMAN:<span style="color:#cb4b16">\ </span>* <span style="color:#719e07">]]</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#719e07">then</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#268bd2">s</span><span style="color:#719e07">=</span><span style="color:#2aa198">&#34;</span><span style="color:#2aa198">${</span><span style="color:#268bd2">s</span>#* <span style="color:#2aa198">}</span><span style="color:#2aa198">&#34;</span>
+</span></span><span style="display:flex;"><span>			_cmd_mpv <span style="color:#2aa198">&#34;</span><span style="color:#268bd2">$PLMAN_DIR</span><span style="color:#2aa198">/</span><span style="color:#268bd2">$s</span><span style="color:#2aa198">&#34;</span> <span style="color:#2aa198">&#39;playlist-prev&#39;</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#719e07">else</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#b58900">echo</span> <span style="color:#2aa198">&#34;SS:</span><span style="color:#268bd2">$s</span><span style="color:#2aa198">&#34;</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#719e07">fi</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#719e07">fi</span>
+</span></span><span style="display:flex;"><span><span style="color:#719e07">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>cmd_toggle_play<span style="color:#719e07">()</span>
+</span></span><span style="display:flex;"><span><span style="color:#719e07">{</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#719e07">if</span> cmd_validate
+</span></span><span style="display:flex;"><span>	<span style="color:#719e07">then</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#268bd2">s</span><span style="color:#719e07">=</span><span style="color:#719e07">$(</span>cat <span style="color:#2aa198">&#34;</span><span style="color:#268bd2">$PLCTRL_SOURCE</span><span style="color:#2aa198">&#34;</span><span style="color:#719e07">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#719e07">if</span> <span style="color:#719e07">[[</span> <span style="color:#2aa198">&#34;</span><span style="color:#268bd2">$s</span><span style="color:#2aa198">&#34;</span> <span style="color:#719e07">=</span> <span style="color:#2aa198">&#39;cmus&#39;</span> <span style="color:#719e07">]]</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#719e07">then</span>
+</span></span><span style="display:flex;"><span>			cmus-remote -u
+</span></span><span style="display:flex;"><span>		<span style="color:#719e07">elif</span> <span style="color:#719e07">[[</span> <span style="color:#2aa198">&#34;</span><span style="color:#268bd2">$s</span><span style="color:#2aa198">&#34;</span> <span style="color:#719e07">==</span> YTMPV:<span style="color:#cb4b16">\ </span>* <span style="color:#719e07">]]</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#719e07">then</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#268bd2">s</span><span style="color:#719e07">=</span><span style="color:#2aa198">&#34;</span><span style="color:#2aa198">${</span><span style="color:#268bd2">s</span>#* <span style="color:#2aa198">}</span><span style="color:#2aa198">&#34;</span>
+</span></span><span style="display:flex;"><span>			_cmd_mpv <span style="color:#2aa198">&#34;</span><span style="color:#268bd2">$YTMPV_DIR</span><span style="color:#2aa198">/</span><span style="color:#268bd2">$s</span><span style="color:#2aa198">&#34;</span> <span style="color:#2aa198">&#39;cycle pause&#39;</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#719e07">elif</span> <span style="color:#719e07">[[</span> <span style="color:#2aa198">&#34;</span><span style="color:#268bd2">$s</span><span style="color:#2aa198">&#34;</span> <span style="color:#719e07">==</span> PLMAN:<span style="color:#cb4b16">\ </span>* <span style="color:#719e07">]]</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#719e07">then</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#268bd2">s</span><span style="color:#719e07">=</span><span style="color:#2aa198">&#34;</span><span style="color:#2aa198">${</span><span style="color:#268bd2">s</span>#* <span style="color:#2aa198">}</span><span style="color:#2aa198">&#34;</span>
+</span></span><span style="display:flex;"><span>			_cmd_mpv <span style="color:#2aa198">&#34;</span><span style="color:#268bd2">$PLMAN_DIR</span><span style="color:#2aa198">/</span><span style="color:#268bd2">$s</span><span style="color:#2aa198">&#34;</span> <span style="color:#2aa198">&#39;cycle pause&#39;</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#719e07">else</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#b58900">echo</span> <span style="color:#2aa198">&#34;SS:</span><span style="color:#268bd2">$s</span><span style="color:#2aa198">&#34;</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#719e07">fi</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#719e07">fi</span>
+</span></span><span style="display:flex;"><span><span style="color:#719e07">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>cmd_stop<span style="color:#719e07">()</span>
+</span></span><span style="display:flex;"><span><span style="color:#719e07">{</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#719e07">if</span> cmd_validate
+</span></span><span style="display:flex;"><span>	<span style="color:#719e07">then</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#268bd2">s</span><span style="color:#719e07">=</span><span style="color:#719e07">$(</span>cat <span style="color:#2aa198">&#34;</span><span style="color:#268bd2">$PLCTRL_SOURCE</span><span style="color:#2aa198">&#34;</span><span style="color:#719e07">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#719e07">if</span> <span style="color:#719e07">[[</span> <span style="color:#2aa198">&#34;</span><span style="color:#268bd2">$s</span><span style="color:#2aa198">&#34;</span> <span style="color:#719e07">=</span> <span style="color:#2aa198">&#39;cmus&#39;</span> <span style="color:#719e07">]]</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#719e07">then</span>
+</span></span><span style="display:flex;"><span>			cmus-remote -s
+</span></span><span style="display:flex;"><span>		<span style="color:#719e07">elif</span> <span style="color:#719e07">[[</span> <span style="color:#2aa198">&#34;</span><span style="color:#268bd2">$s</span><span style="color:#2aa198">&#34;</span> <span style="color:#719e07">==</span> YTMPV:<span style="color:#cb4b16">\ </span>* <span style="color:#719e07">]]</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#719e07">then</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#268bd2">s</span><span style="color:#719e07">=</span><span style="color:#2aa198">&#34;</span><span style="color:#2aa198">${</span><span style="color:#268bd2">s</span>#* <span style="color:#2aa198">}</span><span style="color:#2aa198">&#34;</span>
+</span></span><span style="display:flex;"><span>			_cmd_mpv <span style="color:#2aa198">&#34;</span><span style="color:#268bd2">$YTMPV_DIR</span><span style="color:#2aa198">/</span><span style="color:#268bd2">$s</span><span style="color:#2aa198">&#34;</span> <span style="color:#2aa198">&#39;{ &#34;command&#34;: [&#34;set_property&#34;, &#34;pause&#34;, true] }&#39;</span>
+</span></span><span style="display:flex;"><span>			_cmd_mpv <span style="color:#2aa198">&#34;</span><span style="color:#268bd2">$YTMPV_DIR</span><span style="color:#2aa198">/</span><span style="color:#268bd2">$s</span><span style="color:#2aa198">&#34;</span> <span style="color:#2aa198">&#39;seek 0 absolute&#39;</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#719e07">elif</span> <span style="color:#719e07">[[</span> <span style="color:#2aa198">&#34;</span><span style="color:#268bd2">$s</span><span style="color:#2aa198">&#34;</span> <span style="color:#719e07">==</span> PLMAN:<span style="color:#cb4b16">\ </span>* <span style="color:#719e07">]]</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#719e07">then</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#268bd2">s</span><span style="color:#719e07">=</span><span style="color:#2aa198">&#34;</span><span style="color:#2aa198">${</span><span style="color:#268bd2">s</span>#* <span style="color:#2aa198">}</span><span style="color:#2aa198">&#34;</span>
+</span></span><span style="display:flex;"><span>			_cmd_mpv <span style="color:#2aa198">&#34;</span><span style="color:#268bd2">$PLMAN_DIR</span><span style="color:#2aa198">/</span><span style="color:#268bd2">$s</span><span style="color:#2aa198">&#34;</span> <span style="color:#2aa198">&#39;cycle pause&#39;</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#719e07">else</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#b58900">echo</span> <span style="color:#2aa198">&#34;SS:</span><span style="color:#268bd2">$s</span><span style="color:#2aa198">&#34;</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#719e07">fi</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#719e07">fi</span>
+</span></span><span style="display:flex;"><span><span style="color:#719e07">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>cmd_optimize<span style="color:#719e07">()</span>
+</span></span><span style="display:flex;"><span><span style="color:#719e07">{</span>
+</span></span><span style="display:flex;"><span>	mv <span style="color:#2aa198">&#34;</span><span style="color:#268bd2">$1</span><span style="color:#2aa198">&#34;</span><span style="color:#719e07">{</span>,.tmp<span style="color:#719e07">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#268bd2">IFS</span><span style="color:#719e07">=</span><span style="color:#2aa198">&#39;&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	cat -- <span style="color:#2aa198">&#34;</span><span style="color:#268bd2">$1</span><span style="color:#2aa198">&#34;</span>.tmp | <span style="color:#719e07">while</span> <span style="color:#b58900">read</span> -r k
+</span></span><span style="display:flex;"><span>	<span style="color:#719e07">do</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#719e07">if</span> <span style="color:#719e07">[[</span> <span style="color:#2aa198">&#34;</span><span style="color:#268bd2">$k</span><span style="color:#2aa198">&#34;</span> <span style="color:#719e07">=</span>~ ^#.*$ <span style="color:#719e07">]]</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#719e07">then</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#b58900">echo</span> -E <span style="color:#2aa198">&#34;</span><span style="color:#268bd2">$k</span><span style="color:#2aa198">&#34;</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#719e07">elif</span> grep -q <span style="color:#2aa198">&#34;^https://\(www\.\)\?youtube.com/watch?v=&#34;</span> <span style="color:#719e07">&lt;&lt;&lt;</span> <span style="color:#2aa198">&#34;</span><span style="color:#268bd2">$k</span><span style="color:#2aa198">&#34;</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#719e07">then</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#268bd2">_k</span><span style="color:#719e07">=</span><span style="color:#719e07">$(</span><span style="color:#b58900">echo</span> <span style="color:#2aa198">&#34;</span><span style="color:#268bd2">$k</span><span style="color:#2aa198">&#34;</span> | sed <span style="color:#2aa198">&#39;s#https://\(www\.\)\?youtube.com/watch?v=##&#39;</span><span style="color:#719e07">)</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#268bd2">f</span><span style="color:#719e07">=</span><span style="color:#719e07">$(</span>rg --files --no-ignore --maxdepth<span style="color:#719e07">=</span><span style="color:#2aa198">1</span> -L /media/music/music_best/ | rg -- <span style="color:#2aa198">&#34;</span><span style="color:#268bd2">$_k</span><span style="color:#2aa198">&#34;</span><span style="color:#719e07">)</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#719e07">if</span> <span style="color:#719e07">[[</span> <span style="color:#719e07">$(</span><span style="color:#b58900">echo</span> <span style="color:#2aa198">&#34;</span><span style="color:#268bd2">$f</span><span style="color:#2aa198">&#34;</span> | wc -l<span style="color:#719e07">)</span> <span style="color:#719e07">==</span> <span style="color:#2aa198">1</span> <span style="color:#719e07">]]</span> <span style="color:#719e07">&amp;&amp;</span> ! <span style="color:#719e07">[</span> -z <span style="color:#2aa198">&#34;</span><span style="color:#268bd2">$f</span><span style="color:#2aa198">&#34;</span> <span style="color:#719e07">]</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#719e07">then</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#b58900">echo</span> <span style="color:#2aa198">&#34;</span><span style="color:#268bd2">$f</span><span style="color:#2aa198">&#34;</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#719e07">else</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#b58900">echo</span> <span style="color:#2aa198">&#34;</span><span style="color:#268bd2">$k</span><span style="color:#2aa198">&#34;</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#719e07">fi</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#719e07">fi</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#719e07">done</span> &gt;&gt; <span style="color:#2aa198">&#34;</span><span style="color:#268bd2">$1</span><span style="color:#2aa198">&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#719e07">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>cmd_<span style="color:#268bd2">$1</span> <span style="color:#2aa198">&#34;</span><span style="color:#268bd2">$2</span><span style="color:#2aa198">&#34;</span>
+</span></span></code></pre></div><p>The interface to use is:</p>
+<ol>
+<li><strong>plctrl select_source</strong> - find active mpv instances via sockets, determine
+whether cmus is running and open a dmenu prompt to select the player to control.</li>
+<li><strong>plctrl next/prev/play/pause</strong> - control the selected player if any, otherwise
+do <strong>select_source</strong> first** - find active mpv instances via sockets, determine
+whether cmus is running and open a dmenu prompt to select the player to control.</li>
+<li><strong>plctrl next/prev/play/pause</strong> - control the selected player if any, otherwise
+do <strong>select_source</strong> first.</li>
+<li><strong>plctrl optimize</strong> - I store my local playlists with videos in
+/media/music/music_best and name video files with youtube id. This command finds
+already downloaded videos and replaces them with local files inside the playlist.
+This command is invoked from ytmpv_server.py</li>
+</ol>
+<p>And finally remappings in dwm:</p>
+<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-diff" data-lang="diff"><span style="display:flex;"><span><span style="color:#cb4b16">diff --git a/config.h b/config.h
+</span></span></span><span style="display:flex;"><span><span style="color:#cb4b16">index f65e096..8de9df3 100644
+</span></span></span><span style="display:flex;"><span><span style="color:#cb4b16"></span><span style="color:#dc322f">--- a/config.h
+</span></span></span><span style="display:flex;"><span><span style="color:#dc322f"></span><span style="color:#719e07">+++ b/config.h
+</span></span></span><span style="display:flex;"><span><span style="color:#719e07"></span><span style="color:#268bd2">@@ -141,7 +141,7 @@ static Key keys[] = {
+</span></span></span><span style="display:flex;"><span><span style="color:#268bd2"></span> 	{ MODKEY|ControlMask,                     XK_space,      focusmaster,           { .i    = 0              } },
+</span></span><span style="display:flex;"><span> 	{ MODKEY|ShiftMask,                       XK_space,      togglefloating,        { .i    = 0              } },
+</span></span><span style="display:flex;"><span> 	{ MODKEY|ControlMask|ShiftMask,           XK_space,      togglealwaysontop,     { .i    = 0              } },
+</span></span><span style="display:flex;"><span><span style="color:#dc322f">-	// { MODKEY|ControlMask,                     XK_p,          togglesticky,          { .i    = 0              } }, // TODO: remap
+</span></span></span><span style="display:flex;"><span><span style="color:#dc322f"></span><span style="color:#719e07">+	{ MODKEY|AltMask,                         XK_s,          togglesticky,          { .i    = 0              } },
+</span></span></span><span style="display:flex;"><span><span style="color:#719e07"></span> 	{ MODKEY,                                 XK_comma,      focusmon,              { .i    = +1             } },
+</span></span><span style="display:flex;"><span> 	{ MODKEY,                                 XK_period,     focusmon,              { .i    = -1             } },
+</span></span><span style="display:flex;"><span> 	{ MODKEY|ShiftMask,                       XK_comma,      tagmon,                { .i    = +1             } },
+</span></span><span style="display:flex;"><span><span style="color:#268bd2">@@ -188,6 +188,8 @@ static Key keys[] = {
+</span></span></span><span style="display:flex;"><span><span style="color:#268bd2"></span> 	SPAWN_KEY   ( MODKEY|ControlMask,             XK_i,              FlameshotGui         )
+</span></span><span style="display:flex;"><span> 	SPAWN_KEY   ( MODKEY|ControlMask,             XK_o,              CmusStop             )
+</span></span><span style="display:flex;"><span> 	SPAWN_KEY   ( MODKEY|ControlMask|ShiftMask,   XK_i,              MpvPlay              )
+</span></span><span style="display:flex;"><span><span style="color:#719e07">+	SPAWN_KEY   ( MODKEY|AltMask,                 XK_u,              MusSelect            )
+</span></span></span><span style="display:flex;"><span><span style="color:#719e07">+	SPAWN_KEY   ( MODKEY|AltMask,                 XK_i,              YtMpv                )
+</span></span></span><span style="display:flex;"><span><span style="color:#719e07"></span> 	SPAWN_KEY   ( 0,                              XK_Print,          FlameshotFull        )
+</span></span><span style="display:flex;"><span> 	SPAWN_KEY   ( ShiftMask,                      XK_Print,          FlameshotGui         )
+</span></span><span style="display:flex;"><span> 	SPAWN_KEY   ( MODKEY,                         XK_backslash,      PassFill             )
+</span></span><span style="display:flex;"><span><span style="color:#cb4b16">diff --git a/spawn_cmds.c b/spawn_cmds.c
+</span></span></span><span style="display:flex;"><span><span style="color:#cb4b16">index 7c96d47..f3cd3e3 100644
+</span></span></span><span style="display:flex;"><span><span style="color:#cb4b16"></span><span style="color:#dc322f">--- a/spawn_cmds.c
+</span></span></span><span style="display:flex;"><span><span style="color:#dc322f"></span><span style="color:#719e07">+++ b/spawn_cmds.c
+</span></span></span><span style="display:flex;"><span><span style="color:#719e07"></span><span style="color:#268bd2">@@ -11,8 +11,9 @@ struct {
+</span></span></span><span style="display:flex;"><span><span style="color:#268bd2"></span> 	}
+</span></span><span style="display:flex;"><span> 		Terminal,           Dmenu,
+</span></span><span style="display:flex;"><span> 		VolUp,              VolDown,               VolToggle,
+</span></span><span style="display:flex;"><span><span style="color:#dc322f">-		CmusNext,           CmusPrev,              CmusToggle,         CmusStop,
+</span></span></span><span style="display:flex;"><span><span style="color:#dc322f"></span><span style="color:#719e07">+		CmusNext,           CmusPrev,              CmusToggle,         CmusStop,           MusSelect,
+</span></span></span><span style="display:flex;"><span><span style="color:#719e07"></span> 		FlameshotGui,       FlameshotFull,
+</span></span><span style="display:flex;"><span><span style="color:#719e07">+		YtMpv,
+</span></span></span><span style="display:flex;"><span><span style="color:#719e07"></span> 		MpvPlay,
+</span></span><span style="display:flex;"><span> 		BacklightUp,        BacklightDown,         BacklightMax,       BacklightMid,
+</span></span><span style="display:flex;"><span> 		KbdBrightOn,        KbdBrightOff,
+</span></span><span style="display:flex;"><span><span style="color:#268bd2">@@ -62,22 +63,27 @@ struct {
+</span></span></span><span style="display:flex;"><span><span style="color:#268bd2"></span>
+</span></span><span style="display:flex;"><span> 	.CmusPrev = {
+</span></span><span style="display:flex;"><span> 		.args = (const char * []) {
+</span></span><span style="display:flex;"><span><span style="color:#dc322f">-			&#34;sh&#34;, &#34;-c&#34;, &#34;cmus-remote -r &amp;&amp; dwmstatus&#34;, NULL
+</span></span></span><span style="display:flex;"><span><span style="color:#dc322f"></span><span style="color:#719e07">+			&#34;sh&#34;, &#34;-c&#34;, &#34;plctrl prev &amp;&amp; dwmstatus&#34;, NULL
+</span></span></span><span style="display:flex;"><span><span style="color:#719e07"></span> 		}
+</span></span><span style="display:flex;"><span> 	},
+</span></span><span style="display:flex;"><span> 	.CmusNext = {
+</span></span><span style="display:flex;"><span> 		.args = (const char * []) {
+</span></span><span style="display:flex;"><span><span style="color:#dc322f">-			&#34;sh&#34;, &#34;-c&#34;, &#34;cmus-remote -n &amp;&amp; dwmstatus&#34;, NULL
+</span></span></span><span style="display:flex;"><span><span style="color:#dc322f"></span><span style="color:#719e07">+			&#34;sh&#34;, &#34;-c&#34;, &#34;plctrl next &amp;&amp; dwmstatus&#34;, NULL
+</span></span></span><span style="display:flex;"><span><span style="color:#719e07"></span> 		}
+</span></span><span style="display:flex;"><span> 	},
+</span></span><span style="display:flex;"><span> 	.CmusToggle = {
+</span></span><span style="display:flex;"><span> 		.args = (const char * []) {
+</span></span><span style="display:flex;"><span><span style="color:#dc322f">-			&#34;sh&#34;, &#34;-c&#34;, &#34;cmus-remote -u &amp;&amp; dwmstatus&#34;, NULL
+</span></span></span><span style="display:flex;"><span><span style="color:#dc322f"></span><span style="color:#719e07">+			&#34;sh&#34;, &#34;-c&#34;, &#34;plctrl toggle_play &amp;&amp; dwmstatus&#34;, NULL
+</span></span></span><span style="display:flex;"><span><span style="color:#719e07"></span> 		}
+</span></span><span style="display:flex;"><span> 	},
+</span></span><span style="display:flex;"><span> 	.CmusStop = {
+</span></span><span style="display:flex;"><span> 		.args = (const char * []) {
+</span></span><span style="display:flex;"><span><span style="color:#dc322f">-			&#34;sh&#34;, &#34;-c&#34;, &#34;cmus-remote -s &amp;&amp; dwmstatus&#34;, NULL
+</span></span></span><span style="display:flex;"><span><span style="color:#dc322f"></span><span style="color:#719e07">+			&#34;sh&#34;, &#34;-c&#34;, &#34;plctrl stop &amp;&amp; dwmstatus&#34;, NULL
+</span></span></span><span style="display:flex;"><span><span style="color:#719e07">+		}
+</span></span></span><span style="display:flex;"><span><span style="color:#719e07">+	},
+</span></span></span><span style="display:flex;"><span><span style="color:#719e07">+	.MusSelect = {
+</span></span></span><span style="display:flex;"><span><span style="color:#719e07">+		.args = (const char * []) {
+</span></span></span><span style="display:flex;"><span><span style="color:#719e07">+			&#34;sh&#34;, &#34;-c&#34;, &#34;plctrl select_source &amp;&amp; dwmstatus&#34;, NULL
+</span></span></span><span style="display:flex;"><span><span style="color:#719e07"></span> 		}
+</span></span><span style="display:flex;"><span> 	},
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#268bd2">@@ -92,6 +98,12 @@ struct {
+</span></span></span><span style="display:flex;"><span><span style="color:#268bd2"></span> 		}
+</span></span><span style="display:flex;"><span> 	},
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#719e07">+	.YtMpv = {
+</span></span></span><span style="display:flex;"><span><span style="color:#719e07">+		.args = (const char * []) {
+</span></span></span><span style="display:flex;"><span><span style="color:#719e07">+			&#34;sh&#34;, &#34;-c&#34;, &#34;ytmpv&#34;, NULL
+</span></span></span><span style="display:flex;"><span><span style="color:#719e07">+		}
+</span></span></span><span style="display:flex;"><span><span style="color:#719e07">+	},
+</span></span></span><span style="display:flex;"><span><span style="color:#719e07">+
+</span></span></span><span style="display:flex;"><span><span style="color:#719e07"></span> 	.MpvPlay = {
+</span></span><span style="display:flex;"><span> 		.args = (const char * []) {
+</span></span><span style="display:flex;"><span> 			&#34;play&#34;, NULL
+</span></span></code></pre></div><p>I use u,i,o keys for volume/music control (and other things), so replaced
+super+alt+y with super+alt+i (super+ctrl+shift+i opens local playlists) and
+mapped super+alt+u to <strong>plctrl select_source</strong>.</p>
+<p>The last thing remaining to do is extend plctrl to get playback info and update
+dwmstatus to work with it.</p>
+<p>&hellip; I think I have a couple u,i,o free mappings (with super+alt+&hellip;) to add
+&ldquo;toggle repeat&rdquo; and &ldquo;shuffle&rdquo; mappings &hellip;</p>
+</div>
+
+		<p class="meta">Posted on <span class="postdate">05. July 2025</span></p>
+	</article>
+
+			</div>
+
+			<footer id="footer">
+				
+				
+				
+				
+				
+				
+
+				<div align="right"><p><a href="/gaspar.monero">monero wallet</a> | <a href="/gaspar.asc">pgp public key</a> | <a href="/gaspar.pub">ssh public key</a> | <a href="https://github.com/GasparVardanyan/gasparvardanyan.github.io/">source</a></p></div>
+
+
+			</footer>
+		</div>
+	</body>
+</html>
