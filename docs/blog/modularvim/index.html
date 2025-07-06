@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width">
+		
+
+		<title>ModularVim</title>
+
+		
+		<link rel="stylesheet" href="/css/colors-dark.min.91821db55d8acc5b9f936944224ab03a094cea2c707bacc60689050c84476d08.css">
+
+		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/Iosevka.css" />
+
+<style>
+body {
+	 
+	 
+	font-family: 'Iosevka Web', monospace;
+}
+
+.copyright {
+	text-align: right;
+}
+</style>
+
+	</head>
+	<body>
+		<header id="header">
+			<h1><a href="https://gasparvardanyan.github.io/">Gaspar Vardanyan</a></h1>
+			<p>btw i use arch :d</p>
+		</header>
+
+		<div id="page">
+			<div id="sidebar">
+				<nav>
+	
+		<ul class="nav">
+			
+				<li><a href="/blog/"><span>Blog</span></a></li>
+			
+				<li><a href="/coding/"><span>Coding</span></a></li>
+			
+				<li><a href="/index.xml"><span>Feed</span></a></li>
+			
+				<li><a href="/wallpapers/"><span>Wallpapers</span></a></li>
+			
+		</ul>
+	
+		<ul class="nav">
+			
+				<li><a href="mailto:gaspar_pm@proton.me"><span>Email</span></a></li>
+			
+				<li><a href="https://github.com/GasparVardanyan"><span>GitHub</span></a></li>
+			
+				<li><a href="https://gitlab.com/GasparVardanyan"><span>GitLab</span></a></li>
+			
+				<li><a href="https://mov.im/?contact/gaspar%40jabber.am"><span>Jabber</span></a></li>
+			
+				<li><a rel="me" href="https://%d5%a9%d5%b8%d6%82%d5%a9.%d5%b0%d5%a1%d5%b5/web/@gaspar"><span>Mastodon</span></a></li>
+			
+				<li><a href="https://matrix.to/#/@gaspar_m:matrix.org"><span>Matrix</span></a></li>
+			
+				<li><a href="https://www.reddit.com/user/GasparVardanyan/"><span>Reddit</span></a></li>
+			
+		</ul>
+	
+</nav>
+
+			</div>
+
+			<div id="content">
+				
+	<article class="post">
+		<h1><a href="https://gasparvardanyan.github.io/blog/modularvim/">ModularVim</a> </h1>
+
+		<div class="post-content"><h1 id="modularvim">ModularVim</h1>
+<p>Modular NeoVim configuration written by a non lua/nvim master for non lua/nvim
+masters. So simple <strong>even a caveman</strong> can get started.
+Intended to be both beginner friendly and a complete IDE.</p>
+<p><a href="https://github.com/GasparVardanyan/ModularVim">https://github.com/GasparVardanyan/ModularVim</a></p>
+<h2 id="design-goals">Design goals</h2>
+<p>There are a lot of great NeoVim distributions and using a distribution is a
+great place to get started with NeoVim. But whenever you try to take a small
+piece from a distribution and bring to your own setup, for example a setup for
+a single plugin, you see how everything is tied together and sometimes it becomes
+very complicated to understand what you have to take, and what not to take.</p>
+<p>The main design goal of ModularVim is to keep everything as much separated from
+each other as possible. Plugins are grouped into &lsquo;Modules&rsquo;. Every Module
+consists of plugin specs and &lsquo;ModuleActions&rsquo;. Every plugin spec is
+written in it&rsquo;s specific file. ModuleActions are used to load mappings for
+example whenever the corresponding plugins are loaded.
+This way we can have dap mappings for example independent of telescope and load
+the dap-telescope mappings only when both dap and telescope are loaded.</p>
+<p>To use the whole setup you need:</p>
+<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-lua" data-lang="lua"><span style="display:flex;"><span>require (<span style="color:#2aa198">&#34;modular&#34;</span>)
+</span></span></code></pre></div><p>It loads the default option, autocmds, mappings and Modules:</p>
+<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-lua" data-lang="lua"><span style="display:flex;"><span>require (<span style="color:#2aa198">&#34;modular.options&#34;</span>)
+</span></span><span style="display:flex;"><span>require (<span style="color:#2aa198">&#34;modular.lazy&#34;</span>)
+</span></span><span style="display:flex;"><span>require (<span style="color:#2aa198">&#34;modular.autocmds.generic&#34;</span>)
+</span></span><span style="display:flex;"><span>require (<span style="color:#2aa198">&#34;modular.mappings.generic&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>require (<span style="color:#2aa198">&#34;modular.extras&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#268bd2">local</span> ModuleManager <span style="color:#719e07">=</span> require (<span style="color:#2aa198">&#34;modular.ModuleManager&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#268bd2">local</span> mm <span style="color:#719e07">=</span> ModuleManager:new ({
+</span></span><span style="display:flex;"><span>	modules <span style="color:#719e07">=</span> require (<span style="color:#2aa198">&#34;modular.modules&#34;</span>),
+</span></span><span style="display:flex;"><span>	load_tracker <span style="color:#719e07">=</span> <span style="color:#cb4b16">true</span>
+</span></span><span style="display:flex;"><span>})
+</span></span></code></pre></div><p>modular.modules returns a table of Modules:</p>
+<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-lua" data-lang="lua"><span style="display:flex;"><span><span style="color:#268bd2">return</span> {
+</span></span><span style="display:flex;"><span>	ui_module <span style="color:#719e07">=</span> require (<span style="color:#2aa198">&#34;modular.modules.UIModule&#34;</span>),
+</span></span><span style="display:flex;"><span>	basic_module <span style="color:#719e07">=</span> require (<span style="color:#2aa198">&#34;modular.modules.BasicModule&#34;</span>),
+</span></span><span style="display:flex;"><span>	git_module <span style="color:#719e07">=</span> require (<span style="color:#2aa198">&#34;modular.modules.GitModule&#34;</span>),
+</span></span><span style="display:flex;"><span>	<span style="color:#586e75">-- .........</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#586e75">-- .........</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#586e75">-- .........</span>
+</span></span><span style="display:flex;"><span>	lspextras_module <span style="color:#719e07">=</span> require (<span style="color:#2aa198">&#34;modular.extras.modules.LspExtrasModule&#34;</span>),
+</span></span><span style="display:flex;"><span>	lint_module <span style="color:#719e07">=</span> require (<span style="color:#2aa198">&#34;modular.modules.LintModule&#34;</span>),
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>And every Module includes it&rsquo;s specific specs and ModuleActions.
+For example the DapModule looks like:</p>
+<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-lua" data-lang="lua"><span style="display:flex;"><span><span style="color:#268bd2">local</span> Module <span style="color:#719e07">=</span> require (<span style="color:#2aa198">&#34;modular.Module&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#268bd2">local</span> ModuleAction <span style="color:#719e07">=</span> require (<span style="color:#2aa198">&#34;modular.ModuleAction&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#268bd2">local</span> DapModule <span style="color:#719e07">=</span> Module:new ({
+</span></span><span style="display:flex;"><span>	name <span style="color:#719e07">=</span> <span style="color:#2aa198">&#34;Dap&#34;</span>,
+</span></span><span style="display:flex;"><span>	plugins <span style="color:#719e07">=</span> {
+</span></span><span style="display:flex;"><span>		require (<span style="color:#2aa198">&#34;modular.specs.Misc.mason_nvim&#34;</span>),
+</span></span><span style="display:flex;"><span>		require (<span style="color:#2aa198">&#34;modular.specs.Dap.nvim-dap&#34;</span>),
+</span></span><span style="display:flex;"><span>		require (<span style="color:#2aa198">&#34;modular.specs.Dap.mason-nvim-dap&#34;</span>),
+</span></span><span style="display:flex;"><span>		require (<span style="color:#2aa198">&#34;modular.specs.Dap.nvim-dap-ui&#34;</span>),
+</span></span><span style="display:flex;"><span>		require (<span style="color:#2aa198">&#34;modular.specs.Dap.telescope-dap_nvim&#34;</span>),
+</span></span><span style="display:flex;"><span>	},
+</span></span><span style="display:flex;"><span>	actions <span style="color:#719e07">=</span> {
+</span></span><span style="display:flex;"><span>		ModuleAction:new ({
+</span></span><span style="display:flex;"><span>			plugins <span style="color:#719e07">=</span> <span style="color:#2aa198">&#34;nvim-dap&#34;</span>,
+</span></span><span style="display:flex;"><span>			action <span style="color:#719e07">=</span> <span style="color:#268bd2">function</span> ()
+</span></span><span style="display:flex;"><span>				require (<span style="color:#2aa198">&#34;modular.mappings.Dap.nvim-dap&#34;</span>)
+</span></span><span style="display:flex;"><span>			<span style="color:#268bd2">end</span>
+</span></span><span style="display:flex;"><span>		}),
+</span></span><span style="display:flex;"><span>		ModuleAction:new ({ <span style="color:#586e75">-- Telescope setup comes from the BasicModule</span>
+</span></span><span style="display:flex;"><span>			plugins <span style="color:#719e07">=</span> { <span style="color:#2aa198">&#34;telescope-dap.nvim&#34;</span>, <span style="color:#2aa198">&#34;telescope.nvim&#34;</span> },
+</span></span><span style="display:flex;"><span>			action <span style="color:#719e07">=</span> <span style="color:#268bd2">function</span> ()
+</span></span><span style="display:flex;"><span>				require (<span style="color:#2aa198">&#34;modular.mappings.Dap.telescope-dap_telescope_nvim&#34;</span>)
+</span></span><span style="display:flex;"><span>			<span style="color:#268bd2">end</span>
+</span></span><span style="display:flex;"><span>		})
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>})
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#268bd2">return</span> DapModule
+</span></span></code></pre></div><p>Another problem with vim distributions is that basically there&rsquo;s no way to
+disable the default mappings for a specific stuff, lsp/dap/git for example
+(of course you can unmap them one by one and get inconsistent setup after a
+distribution update with changes in default mappings). Maybe whichkey can help
+if it&rsquo;s used by the distribution. With ModularVim you can have your copy of a
+module, DapModuleCustom for example, include all specs the original module uses
+and replace the ModuleAction which loads the mappings/autocmds you don&rsquo;t
+like.</p>
+<p>So your config can look like:</p>
+<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-lua" data-lang="lua"><span style="display:flex;"><span>require (<span style="color:#2aa198">&#34;modular.lazy&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#268bd2">local</span> Module <span style="color:#719e07">=</span> require (<span style="color:#2aa198">&#34;modular.Module&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#268bd2">local</span> ModuleAction <span style="color:#719e07">=</span> require (<span style="color:#2aa198">&#34;modular.ModuleAction&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#268bd2">local</span> ModuleManager <span style="color:#719e07">=</span> require (<span style="color:#2aa198">&#34;modular.ModuleManager&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#268bd2">local</span> mm <span style="color:#719e07">=</span> ModuleManager:new ({
+</span></span><span style="display:flex;"><span>	modules <span style="color:#719e07">=</span> {
+</span></span><span style="display:flex;"><span>		ui_module <span style="color:#719e07">=</span> require (<span style="color:#2aa198">&#34;modular.modules.UIModule&#34;</span>),
+</span></span><span style="display:flex;"><span>		basic_module <span style="color:#719e07">=</span> require (<span style="color:#2aa198">&#34;modular.modules.BasicModule&#34;</span>),
+</span></span><span style="display:flex;"><span>		git_module <span style="color:#719e07">=</span> require (<span style="color:#2aa198">&#34;modular.modules.GitModule&#34;</span>),
+</span></span><span style="display:flex;"><span>		nvim_module <span style="color:#719e07">=</span> require (<span style="color:#2aa198">&#34;modular.modules.NvimModule&#34;</span>),
+</span></span><span style="display:flex;"><span>		compiler_module <span style="color:#719e07">=</span> require (<span style="color:#2aa198">&#34;modular.modules.CompilerModule&#34;</span>),
+</span></span><span style="display:flex;"><span>		<span style="color:#586e75">-- dap_module = require (&#34;modular.modules.DapModule&#34;),</span>
+</span></span><span style="display:flex;"><span>		Module:new ({
+</span></span><span style="display:flex;"><span>			name <span style="color:#719e07">=</span> <span style="color:#2aa198">&#34;DapCustom&#34;</span>,
+</span></span><span style="display:flex;"><span>			plugins <span style="color:#719e07">=</span>
+</span></span><span style="display:flex;"><span>				require (<span style="color:#2aa198">&#34;modular.modules.DapModule&#34;</span>).plugins
+</span></span><span style="display:flex;"><span>			,
+</span></span><span style="display:flex;"><span>			actions <span style="color:#719e07">=</span> {
+</span></span><span style="display:flex;"><span>				ModuleAction:new ({
+</span></span><span style="display:flex;"><span>					plugins <span style="color:#719e07">=</span> <span style="color:#2aa198">&#34;nvim-dap&#34;</span>,
+</span></span><span style="display:flex;"><span>					action <span style="color:#719e07">=</span> <span style="color:#268bd2">function</span> ()
+</span></span><span style="display:flex;"><span>						require (<span style="color:#2aa198">&#34;modular.mappings.Dap.nvim-dap&#34;</span>)
+</span></span><span style="display:flex;"><span>					<span style="color:#268bd2">end</span>
+</span></span><span style="display:flex;"><span>				}),
+</span></span><span style="display:flex;"><span>				<span style="color:#586e75">-- I use fzf-lua instead</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#586e75">-- ModuleAction:new ({</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#586e75">--     plugins = { &#34;telescope-dap.nvim&#34;, &#34;telescope.nvim&#34; },</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#586e75">--     action = function ()</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#586e75">--         require (&#34;modular.mappings.Dap.telescope-dap_telescope_nvim&#34;)</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#586e75">--     end</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#586e75">-- })</span>
+</span></span><span style="display:flex;"><span>			}
+</span></span><span style="display:flex;"><span>		}),
+</span></span><span style="display:flex;"><span>		db_module <span style="color:#719e07">=</span> require (<span style="color:#2aa198">&#34;modular.modules.DbModule&#34;</span>),
+</span></span><span style="display:flex;"><span>		md_module <span style="color:#719e07">=</span> require (<span style="color:#2aa198">&#34;modular.modules.MdModule&#34;</span>),
+</span></span><span style="display:flex;"><span>		lsp_module <span style="color:#719e07">=</span> require (<span style="color:#2aa198">&#34;modular.modules.LspModule&#34;</span>),
+</span></span><span style="display:flex;"><span>		lean_module <span style="color:#719e07">=</span> require (<span style="color:#2aa198">&#34;modular.extras.modules.LeanModule&#34;</span>),
+</span></span><span style="display:flex;"><span>		clang_module <span style="color:#719e07">=</span> require (<span style="color:#2aa198">&#34;modular.extras.modules.ClangModule&#34;</span>),
+</span></span><span style="display:flex;"><span>		<span style="color:#586e75">-- I don&#39;t like ai:</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#586e75">-- ai_module = require (&#34;modular.modules.AiModule&#34;),</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#586e75">--</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#586e75">-- I don&#39;t use neorg, orgmode is sufficient.</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#586e75">-- org_module = require (&#34;modular.modules.OrgModule&#34;),</span>
+</span></span><span style="display:flex;"><span>		Module:new ({
+</span></span><span style="display:flex;"><span>			name <span style="color:#719e07">=</span> <span style="color:#2aa198">&#34;OrgCustom&#34;</span>,
+</span></span><span style="display:flex;"><span>			plugins <span style="color:#719e07">=</span> {
+</span></span><span style="display:flex;"><span>				<span style="color:#586e75">-- require (&#34;modular.specs.Org.neorg&#34;),</span>
+</span></span><span style="display:flex;"><span>				require (<span style="color:#2aa198">&#34;modular.specs.Org.orgmode&#34;</span>),
+</span></span><span style="display:flex;"><span>				require (<span style="color:#2aa198">&#34;modular.specs.misc.image_nvim&#34;</span>),
+</span></span><span style="display:flex;"><span>				require (<span style="color:#2aa198">&#34;modular.specs.misc.headlines_nvim&#34;</span>),
+</span></span><span style="display:flex;"><span>			},
+</span></span><span style="display:flex;"><span>			<span style="color:#586e75">-- And I don&#39;t bother about having unnecessary neorg mappings,</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#586e75">-- they don&#39;t get loaded until I don&#39;t load neorg.</span>
+</span></span><span style="display:flex;"><span>			actions <span style="color:#719e07">=</span>
+</span></span><span style="display:flex;"><span>				require (<span style="color:#2aa198">&#34;modular.modules.OrgModule&#34;</span>).actions
+</span></span><span style="display:flex;"><span>			,
+</span></span><span style="display:flex;"><span>		}),
+</span></span><span style="display:flex;"><span>		test_module <span style="color:#719e07">=</span> require (<span style="color:#2aa198">&#34;modular.modules.TestModule&#34;</span>),
+</span></span><span style="display:flex;"><span>		rest_module <span style="color:#719e07">=</span> require (<span style="color:#2aa198">&#34;modular.modules.RestModule&#34;</span>),
+</span></span><span style="display:flex;"><span>		lspextras_module <span style="color:#719e07">=</span> require (<span style="color:#2aa198">&#34;modular.extras.modules.LspExtrasModule&#34;</span>),
+</span></span><span style="display:flex;"><span>		lint_module <span style="color:#719e07">=</span> require (<span style="color:#2aa198">&#34;modular.modules.LintModule&#34;</span>),
+</span></span><span style="display:flex;"><span>	},
+</span></span><span style="display:flex;"><span>	load_tracker <span style="color:#719e07">=</span> <span style="color:#cb4b16">true</span>     <span style="color:#586e75">-- Notifies when all plugins of a module are loaded.</span>
+</span></span><span style="display:flex;"><span>							<span style="color:#586e75">-- Can be delayed because of lazy loading of some plugins.</span>
+</span></span><span style="display:flex;"><span>})
+</span></span></code></pre></div><h2 id="suckless-style-management">Suckless-style management</h2>
+<p>Like Suckless&rsquo; patches custom configs can easily be merged without changing the
+main config. An example of a custom config structure is <strong>modular.user.gaspar</strong>.</p>
+<h2 id="pros-and-cons-of-this-apporach">Pros and cons of this apporach</h2>
+<p>Almost nothing is lazy-loaded here. Instead of mappings/commands loading plugins,
+plugins load the appropriate mappings. This is for the sake of maintability.
+Specs are separated from mappings and can be selectively enabled or disabled.
+In cost we have 333ms startup time on i7-7500U cpu. LazyVim loads in 77ms.
+LazyVim is the greatest NeoVim distribution in my opinion, but it seems hard to
+customize (at least for beginners). With this approach we can easily switch
+between native/nvim-cmp/blink.nvim completions for example. Currently the native
+completions are the default, nvim-cmp and blink.nvim are in todos (see
+<strong>todo.norg</strong>). Lazy loading can be managed with ModuleActions with <strong>pre</strong> events.</p>
+<h2 id="design-principles">Design principles</h2>
+<ul>
+<li>
+<p>Nothing here is intended to look cool. Everything here is about simplicity,
+easy maintenance and efficiency. For example we had a PostPluginLoadAction.
+What a stupid name. But it describes the best what it does (now it replaced with
+ModuleAction which supports pre, post and plugin-independent actions)!</p>
+</li>
+<li>
+<p>Avoid overwriting NeoVim&rsquo;s default mappings IN ANY DAMN CASE!!
+For example in LazyVim &rsquo;s&rsquo; in normal mode is mapped to flash.nvim&hellip; Why?
+Here we use arrow.nvim in BasicModule. Look what they do by default:</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-lua" data-lang="lua"><span style="display:flex;"><span>opts <span style="color:#719e07">=</span> {
+</span></span><span style="display:flex;"><span>	show_icons <span style="color:#719e07">=</span> <span style="color:#cb4b16">true</span>,
+</span></span><span style="display:flex;"><span>	leader_key <span style="color:#719e07">=</span> <span style="color:#2aa198">&#39;;&#39;</span>, <span style="color:#586e75">-- Recommended to be a single key</span>
+</span></span><span style="display:flex;"><span>	buffer_leader_key <span style="color:#719e07">=</span> <span style="color:#2aa198">&#39;m&#39;</span>, <span style="color:#586e75">-- Per Buffer Mappings</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>.. maybe supposed to force the user to customize :d
+Yes, there are a lot of great plugins, but the true power lies in vim/nvim.
+See <strong>:h motion.txt</strong> for example. What plugin can be as much beneficial as these
+motions?
+Here we have some small exceptions which have to be reviewed.</p>
+<h2 id="what-else-cavemans-can-do">What else cavemans can do</h2>
+<p><a href="https://www.youtube.com/watch?v=unqsQJaECv0">CHECK THIS</a></p>
+<h2 id="acknowledgments">Acknowledgments</h2>
+<ul>
+<li><a href="https://github.com/nvim-lua/kickstart.nvim">kickstart.nvim</a></li>
+<li><a href="https://github.com/dam9000/kickstart-modular.nvim">kickstart-modular.nvim</a></li>
+</ul>
+<h2 id="why-such-an-empty-commit-history">Why such an empty commit history?</h2>
+<p><a href="https://github.com/GasparVardanyan/nvconf/commits/v2/">dont write commit messages like me</a>
+For more details on current state see <strong>todo.norg</strong>.</p>
+<h2 id="seems-on-one-uses-this-except-me">Seems on one uses this except me</h2>
+<p>So I continue working on my old config with my stupid commit style.</p>
+</div>
+
+		<p class="meta">Posted on <span class="postdate">06. July 2025</span></p>
+	</article>
+
+			</div>
+
+			<footer id="footer">
+				
+				
+				
+				
+				
+				
+
+				<div align="right"><p><a href="/gaspar.monero">monero wallet</a> | <a href="/gaspar.asc">pgp public key</a> | <a href="/gaspar.pub">ssh public key</a> | <a href="https://github.com/GasparVardanyan/gasparvardanyan.github.io/">source</a></p></div>
+
+
+			</footer>
+		</div>
+	</body>
+</html>

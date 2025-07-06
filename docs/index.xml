@@ -6,7 +6,217 @@
     <description>Recent content on Gaspar Vardanyan</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 05 Jul 2025 07:10:37 +0400</lastBuildDate><atom:link href="https://gasparvardanyan.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 06 Jul 2025 18:00:11 +0400</lastBuildDate><atom:link href="https://gasparvardanyan.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>ModularVim</title>
+      <link>https://gasparvardanyan.github.io/blog/modularvim/</link>
+      <pubDate>Sun, 06 Jul 2025 18:00:11 +0400</pubDate>
+      
+      <guid>https://gasparvardanyan.github.io/blog/modularvim/</guid>
+      <description>&lt;h1 id=&#34;modularvim&#34;&gt;ModularVim&lt;/h1&gt;
+&lt;p&gt;Modular NeoVim configuration written by a non lua/nvim master for non lua/nvim
+masters. So simple &lt;strong&gt;even a caveman&lt;/strong&gt; can get started.
+Intended to be both beginner friendly and a complete IDE.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/GasparVardanyan/ModularVim&#34;&gt;https://github.com/GasparVardanyan/ModularVim&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;design-goals&#34;&gt;Design goals&lt;/h2&gt;
+&lt;p&gt;There are a lot of great NeoVim distributions and using a distribution is a
+great place to get started with NeoVim. But whenever you try to take a small
+piece from a distribution and bring to your own setup, for example a setup for
+a single plugin, you see how everything is tied together and sometimes it becomes
+very complicated to understand what you have to take, and what not to take.&lt;/p&gt;
+&lt;p&gt;The main design goal of ModularVim is to keep everything as much separated from
+each other as possible. Plugins are grouped into &amp;lsquo;Modules&amp;rsquo;. Every Module
+consists of plugin specs and &amp;lsquo;ModuleActions&amp;rsquo;. Every plugin spec is
+written in it&amp;rsquo;s specific file. ModuleActions are used to load mappings for
+example whenever the corresponding plugins are loaded.
+This way we can have dap mappings for example independent of telescope and load
+the dap-telescope mappings only when both dap and telescope are loaded.&lt;/p&gt;
+&lt;p&gt;To use the whole setup you need:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-lua&#34; data-lang=&#34;lua&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;require (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;modular&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;It loads the default option, autocmds, mappings and Modules:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-lua&#34; data-lang=&#34;lua&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;require (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;modular.options&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;require (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;modular.lazy&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;require (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;modular.autocmds.generic&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;require (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;modular.mappings.generic&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;require (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;modular.extras&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;local&lt;/span&gt; ModuleManager &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; require (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;modular.ModuleManager&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;local&lt;/span&gt; mm &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; ModuleManager:new ({
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	modules &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; require (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;modular.modules&amp;#34;&lt;/span&gt;),
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	load_tracker &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#cb4b16&#34;&gt;true&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;})
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;modular.modules returns a table of Modules:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-lua&#34; data-lang=&#34;lua&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;return&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	ui_module &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; require (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;modular.modules.UIModule&amp;#34;&lt;/span&gt;),
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	basic_module &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; require (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;modular.modules.BasicModule&amp;#34;&lt;/span&gt;),
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	git_module &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; require (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;modular.modules.GitModule&amp;#34;&lt;/span&gt;),
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&lt;span style=&#34;color:#586e75&#34;&gt;-- .........&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&lt;span style=&#34;color:#586e75&#34;&gt;-- .........&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&lt;span style=&#34;color:#586e75&#34;&gt;-- .........&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	lspextras_module &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; require (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;modular.extras.modules.LspExtrasModule&amp;#34;&lt;/span&gt;),
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	lint_module &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; require (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;modular.modules.LintModule&amp;#34;&lt;/span&gt;),
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;And every Module includes it&amp;rsquo;s specific specs and ModuleActions.
+For example the DapModule looks like:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-lua&#34; data-lang=&#34;lua&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;local&lt;/span&gt; Module &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; require (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;modular.Module&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;local&lt;/span&gt; ModuleAction &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; require (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;modular.ModuleAction&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;local&lt;/span&gt; DapModule &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; Module:new ({
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	name &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;Dap&amp;#34;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	plugins &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		require (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;modular.specs.Misc.mason_nvim&amp;#34;&lt;/span&gt;),
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		require (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;modular.specs.Dap.nvim-dap&amp;#34;&lt;/span&gt;),
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		require (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;modular.specs.Dap.mason-nvim-dap&amp;#34;&lt;/span&gt;),
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		require (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;modular.specs.Dap.nvim-dap-ui&amp;#34;&lt;/span&gt;),
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		require (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;modular.specs.Dap.telescope-dap_nvim&amp;#34;&lt;/span&gt;),
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	},
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	actions &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		ModuleAction:new ({
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			plugins &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;nvim-dap&amp;#34;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			action &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#268bd2&#34;&gt;function&lt;/span&gt; ()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;				require (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;modular.mappings.Dap.nvim-dap&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			&lt;span style=&#34;color:#268bd2&#34;&gt;end&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		}),
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		ModuleAction:new ({ &lt;span style=&#34;color:#586e75&#34;&gt;-- Telescope setup comes from the BasicModule&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			plugins &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; { &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;telescope-dap.nvim&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;telescope.nvim&amp;#34;&lt;/span&gt; },
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			action &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#268bd2&#34;&gt;function&lt;/span&gt; ()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;				require (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;modular.mappings.Dap.telescope-dap_telescope_nvim&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			&lt;span style=&#34;color:#268bd2&#34;&gt;end&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		})
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	}
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;})
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;return&lt;/span&gt; DapModule
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Another problem with vim distributions is that basically there&amp;rsquo;s no way to
+disable the default mappings for a specific stuff, lsp/dap/git for example
+(of course you can unmap them one by one and get inconsistent setup after a
+distribution update with changes in default mappings). Maybe whichkey can help
+if it&amp;rsquo;s used by the distribution. With ModularVim you can have your copy of a
+module, DapModuleCustom for example, include all specs the original module uses
+and replace the ModuleAction which loads the mappings/autocmds you don&amp;rsquo;t
+like.&lt;/p&gt;
+&lt;p&gt;So your config can look like:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-lua&#34; data-lang=&#34;lua&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;require (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;modular.lazy&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;local&lt;/span&gt; Module &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; require (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;modular.Module&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;local&lt;/span&gt; ModuleAction &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; require (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;modular.ModuleAction&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;local&lt;/span&gt; ModuleManager &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; require (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;modular.ModuleManager&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;local&lt;/span&gt; mm &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; ModuleManager:new ({
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	modules &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		ui_module &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; require (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;modular.modules.UIModule&amp;#34;&lt;/span&gt;),
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		basic_module &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; require (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;modular.modules.BasicModule&amp;#34;&lt;/span&gt;),
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		git_module &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; require (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;modular.modules.GitModule&amp;#34;&lt;/span&gt;),
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		nvim_module &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; require (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;modular.modules.NvimModule&amp;#34;&lt;/span&gt;),
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		compiler_module &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; require (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;modular.modules.CompilerModule&amp;#34;&lt;/span&gt;),
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		&lt;span style=&#34;color:#586e75&#34;&gt;-- dap_module = require (&amp;#34;modular.modules.DapModule&amp;#34;),&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		Module:new ({
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			name &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;DapCustom&amp;#34;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			plugins &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;				require (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;modular.modules.DapModule&amp;#34;&lt;/span&gt;).plugins
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			actions &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;				ModuleAction:new ({
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;					plugins &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;nvim-dap&amp;#34;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;					action &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#268bd2&#34;&gt;function&lt;/span&gt; ()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;						require (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;modular.mappings.Dap.nvim-dap&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;					&lt;span style=&#34;color:#268bd2&#34;&gt;end&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;				}),
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;				&lt;span style=&#34;color:#586e75&#34;&gt;-- I use fzf-lua instead&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;				&lt;span style=&#34;color:#586e75&#34;&gt;-- ModuleAction:new ({&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;				&lt;span style=&#34;color:#586e75&#34;&gt;--     plugins = { &amp;#34;telescope-dap.nvim&amp;#34;, &amp;#34;telescope.nvim&amp;#34; },&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;				&lt;span style=&#34;color:#586e75&#34;&gt;--     action = function ()&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;				&lt;span style=&#34;color:#586e75&#34;&gt;--         require (&amp;#34;modular.mappings.Dap.telescope-dap_telescope_nvim&amp;#34;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;				&lt;span style=&#34;color:#586e75&#34;&gt;--     end&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;				&lt;span style=&#34;color:#586e75&#34;&gt;-- })&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			}
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		}),
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		db_module &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; require (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;modular.modules.DbModule&amp;#34;&lt;/span&gt;),
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		md_module &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; require (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;modular.modules.MdModule&amp;#34;&lt;/span&gt;),
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		lsp_module &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; require (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;modular.modules.LspModule&amp;#34;&lt;/span&gt;),
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		lean_module &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; require (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;modular.extras.modules.LeanModule&amp;#34;&lt;/span&gt;),
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		clang_module &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; require (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;modular.extras.modules.ClangModule&amp;#34;&lt;/span&gt;),
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		&lt;span style=&#34;color:#586e75&#34;&gt;-- I don&amp;#39;t like ai:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		&lt;span style=&#34;color:#586e75&#34;&gt;-- ai_module = require (&amp;#34;modular.modules.AiModule&amp;#34;),&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		&lt;span style=&#34;color:#586e75&#34;&gt;--&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		&lt;span style=&#34;color:#586e75&#34;&gt;-- I don&amp;#39;t use neorg, orgmode is sufficient.&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		&lt;span style=&#34;color:#586e75&#34;&gt;-- org_module = require (&amp;#34;modular.modules.OrgModule&amp;#34;),&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		Module:new ({
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			name &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;OrgCustom&amp;#34;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			plugins &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;				&lt;span style=&#34;color:#586e75&#34;&gt;-- require (&amp;#34;modular.specs.Org.neorg&amp;#34;),&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;				require (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;modular.specs.Org.orgmode&amp;#34;&lt;/span&gt;),
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;				require (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;modular.specs.misc.image_nvim&amp;#34;&lt;/span&gt;),
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;				require (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;modular.specs.misc.headlines_nvim&amp;#34;&lt;/span&gt;),
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			},
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			&lt;span style=&#34;color:#586e75&#34;&gt;-- And I don&amp;#39;t bother about having unnecessary neorg mappings,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			&lt;span style=&#34;color:#586e75&#34;&gt;-- they don&amp;#39;t get loaded until I don&amp;#39;t load neorg.&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			actions &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;				require (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;modular.modules.OrgModule&amp;#34;&lt;/span&gt;).actions
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		}),
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		test_module &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; require (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;modular.modules.TestModule&amp;#34;&lt;/span&gt;),
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		rest_module &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; require (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;modular.modules.RestModule&amp;#34;&lt;/span&gt;),
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		lspextras_module &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; require (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;modular.extras.modules.LspExtrasModule&amp;#34;&lt;/span&gt;),
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		lint_module &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; require (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;modular.modules.LintModule&amp;#34;&lt;/span&gt;),
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	},
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	load_tracker &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#cb4b16&#34;&gt;true&lt;/span&gt;     &lt;span style=&#34;color:#586e75&#34;&gt;-- Notifies when all plugins of a module are loaded.&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;							&lt;span style=&#34;color:#586e75&#34;&gt;-- Can be delayed because of lazy loading of some plugins.&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;})
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;suckless-style-management&#34;&gt;Suckless-style management&lt;/h2&gt;
+&lt;p&gt;Like Suckless&amp;rsquo; patches custom configs can easily be merged without changing the
+main config. An example of a custom config structure is &lt;strong&gt;modular.user.gaspar&lt;/strong&gt;.&lt;/p&gt;
+&lt;h2 id=&#34;pros-and-cons-of-this-apporach&#34;&gt;Pros and cons of this apporach&lt;/h2&gt;
+&lt;p&gt;Almost nothing is lazy-loaded here. Instead of mappings/commands loading plugins,
+plugins load the appropriate mappings. This is for the sake of maintability.
+Specs are separated from mappings and can be selectively enabled or disabled.
+In cost we have 333ms startup time on i7-7500U cpu. LazyVim loads in 77ms.
+LazyVim is the greatest NeoVim distribution in my opinion, but it seems hard to
+customize (at least for beginners). With this approach we can easily switch
+between native/nvim-cmp/blink.nvim completions for example. Currently the native
+completions are the default, nvim-cmp and blink.nvim are in todos (see
+&lt;strong&gt;todo.norg&lt;/strong&gt;). Lazy loading can be managed with ModuleActions with &lt;strong&gt;pre&lt;/strong&gt; events.&lt;/p&gt;
+&lt;h2 id=&#34;design-principles&#34;&gt;Design principles&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Nothing here is intended to look cool. Everything here is about simplicity,
+easy maintenance and efficiency. For example we had a PostPluginLoadAction.
+What a stupid name. But it describes the best what it does (now it replaced with
+ModuleAction which supports pre, post and plugin-independent actions)!&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Avoid overwriting NeoVim&amp;rsquo;s default mappings IN ANY DAMN CASE!!
+For example in LazyVim &amp;rsquo;s&amp;rsquo; in normal mode is mapped to flash.nvim&amp;hellip; Why?
+Here we use arrow.nvim in BasicModule. Look what they do by default:&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-lua&#34; data-lang=&#34;lua&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;opts &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	show_icons &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#cb4b16&#34;&gt;true&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	leader_key &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#39;;&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#586e75&#34;&gt;-- Recommended to be a single key&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	buffer_leader_key &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#39;m&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#586e75&#34;&gt;-- Per Buffer Mappings&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;.. maybe supposed to force the user to customize :d
+Yes, there are a lot of great plugins, but the true power lies in vim/nvim.
+See &lt;strong&gt;:h motion.txt&lt;/strong&gt; for example. What plugin can be as much beneficial as these
+motions?
+Here we have some small exceptions which have to be reviewed.&lt;/p&gt;
+&lt;h2 id=&#34;what-else-cavemans-can-do&#34;&gt;What else cavemans can do&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.youtube.com/watch?v=unqsQJaECv0&#34;&gt;CHECK THIS&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;acknowledgments&#34;&gt;Acknowledgments&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/nvim-lua/kickstart.nvim&#34;&gt;kickstart.nvim&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/dam9000/kickstart-modular.nvim&#34;&gt;kickstart-modular.nvim&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;why-such-an-empty-commit-history&#34;&gt;Why such an empty commit history?&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/GasparVardanyan/nvconf/commits/v2/&#34;&gt;dont write commit messages like me&lt;/a&gt;
+For more details on current state see &lt;strong&gt;todo.norg&lt;/strong&gt;.&lt;/p&gt;
+&lt;h2 id=&#34;seems-on-one-uses-this-except-me&#34;&gt;Seems on one uses this except me&lt;/h2&gt;
+&lt;p&gt;So I continue working on my old config with my stupid commit style.&lt;/p&gt;
+</description>
+    </item>
+    
     <item>
       <title>YouTube Mixes in MPV   Part 2</title>
       <link>https://gasparvardanyan.github.io/blog/youtube-mixes-in-mpv---part-2/</link>
