@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width">
+		
+
+		<title>The Famous Nvidia Bug</title>
+
+		
+		<link rel="stylesheet" href="/css/colors-dark.min.91821db55d8acc5b9f936944224ab03a094cea2c707bacc60689050c84476d08.css">
+
+		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/Iosevka.css" />
+
+<style>
+body {
+	 
+	 
+	font-family: 'Iosevka Web', monospace;
+}
+
+.copyright {
+	text-align: right;
+}
+</style>
+
+	</head>
+	<body>
+		<header id="header">
+			<h1><a href="https://gasparvardanyan.github.io/">Gaspar Vardanyan</a></h1>
+			<p>btw i use arch :d</p>
+		</header>
+
+		<div id="page">
+			<div id="sidebar">
+				<nav>
+	
+		<ul class="nav">
+			
+				<li><a href="/blog/"><span>Blog</span></a></li>
+			
+				<li><a href="/coding/"><span>Coding</span></a></li>
+			
+				<li><a href="/index.xml"><span>Feed</span></a></li>
+			
+				<li><a href="/wallpapers/"><span>Wallpapers</span></a></li>
+			
+		</ul>
+	
+		<ul class="nav">
+			
+				<li><a href="mailto:gaspar_pm@proton.me"><span>Email</span></a></li>
+			
+				<li><a href="https://github.com/GasparVardanyan"><span>GitHub</span></a></li>
+			
+				<li><a href="https://gitlab.com/GasparVardanyan"><span>GitLab</span></a></li>
+			
+				<li><a href="https://mov.im/?contact/gaspar%40jabber.am"><span>Jabber</span></a></li>
+			
+				<li><a rel="me" href="https://%d5%a9%d5%b8%d6%82%d5%a9.%d5%b0%d5%a1%d5%b5/web/@gaspar"><span>Mastodon</span></a></li>
+			
+				<li><a href="https://matrix.to/#/@gaspar_m:matrix.org"><span>Matrix</span></a></li>
+			
+				<li><a href="https://www.reddit.com/user/GasparVardanyan/"><span>Reddit</span></a></li>
+			
+		</ul>
+	
+</nav>
+
+			</div>
+
+			<div id="content">
+				
+	<article class="post">
+		<h1><a href="https://gasparvardanyan.github.io/blog/the-famous-nvidia-bug/">The Famous Nvidia Bug</a> </h1>
+
+		<div class="post-content"><p>There is a <a href="https://forums.developer.nvidia.com/t/external-monitor-freezes-when-using-dedicated-gpu/265406">famous nvidia bug</a> where the external monitor freezes when doing some nvidia gpu related work: running an app which uses the gpu, closing the app or resizing it&rsquo;s window on X11. The forum post was created on 05.09.2023 and the bug isn&rsquo;t fixed yet&hellip;</p>
+<p>The workaround I used was to disable and then re-enable the external monitor with xrandr. But it had it&rsquo;s problems: I use dwm and when I have separate tags and layouts on the external monitor, after disabling the monitor all windows go to the primary monitor (where rendering is done with iGPU) and after re-enabling the monitor I have to move windows back, rearrange and set layouts.</p>
+<p>Another workaround was to always use dGPU for rendering, but it had it&rsquo;s problem too: qutebrowser (and probably all QtWebEngine based browsers) doesn&rsquo;t do hardware video decoding when the primary gpu is the nvidia one (chrome://gpu shows the related info).</p>
+<p>With a little bit of tinkering I&rsquo;ve found that instead of disabling and then re-enabling the monitor I can change the resolution to something else and then change back: it unfreezes the monitor keeping all windows in their place and no monitor-related settings (layouts on tags, etc) drop in dwm since monitor isn&rsquo;t being disconnected.</p>
+<p>When the external monitor freezes, journalctl shows related logs, so I automated the unfreeze workaround:</p>
+<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#719e07">#!/usr/bin/env bash
+</span></span></span><span style="display:flex;"><span><span style="color:#719e07"></span>
+</span></span><span style="display:flex;"><span><span style="color:#719e07">[</span> ! -f /usr/local/bin/journalfollow <span style="color:#719e07">]</span> <span style="color:#719e07">&amp;&amp;</span> <span style="color:#b58900">exit</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#268bd2">s</span><span style="color:#719e07">=</span><span style="color:#2aa198">0</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>sudo journalfollow | <span style="color:#719e07">while</span> <span style="color:#b58900">read</span> l
+</span></span><span style="display:flex;"><span><span style="color:#719e07">do</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#b58900">echo</span> <span style="color:#2aa198">&#34;</span><span style="color:#268bd2">$l</span><span style="color:#2aa198">&#34;</span> | grep -Fq <span style="color:#2aa198">&#39;NVRM: kdispApplyWarForBug3385499_v03_00: timeout waiting for METHOD_EXEC to IDLE&#39;</span> <span style="color:#719e07">&amp;&amp;</span> <span style="color:#268bd2">s</span><span style="color:#719e07">=</span><span style="color:#719e07">$((</span> s <span style="color:#719e07">+</span> <span style="color:#2aa198">1</span> <span style="color:#719e07">))</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#b58900">echo</span> <span style="color:#2aa198">&#34;</span><span style="color:#268bd2">$l</span><span style="color:#2aa198">&#34;</span> | grep -Fq <span style="color:#2aa198">&#39;NVRM: kdispApplyWarForBug3385499_v03_00: timeout waiting for channel state to UNCONNECTED&#39;</span> <span style="color:#719e07">&amp;&amp;</span> <span style="color:#268bd2">s</span><span style="color:#719e07">=</span><span style="color:#719e07">$((</span> s <span style="color:#719e07">+</span> <span style="color:#2aa198">1</span> <span style="color:#719e07">))</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#586e75"># echo &#34;$s: $l&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#719e07">if</span> <span style="color:#719e07">[</span> <span style="color:#2aa198">2</span> -eq <span style="color:#2aa198">&#34;</span><span style="color:#268bd2">$s</span><span style="color:#2aa198">&#34;</span> <span style="color:#719e07">]</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#719e07">then</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#268bd2">s</span><span style="color:#719e07">=</span><span style="color:#2aa198">0</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#719e07">if</span> xrandr --listactivemonitors | grep -Fq HDMI-1-0
+</span></span><span style="display:flex;"><span>		<span style="color:#719e07">then</span>
+</span></span><span style="display:flex;"><span>			xrandr --output HDMI-1-0 --mode 1680x1050
+</span></span><span style="display:flex;"><span>			xrandr --output HDMI-1-0 --mode 1920x1080
+</span></span><span style="display:flex;"><span>			<span style="color:#719e07">[</span> -x ~/.fehbg <span style="color:#719e07">]</span> <span style="color:#719e07">&amp;&amp;</span> ~/.fehbg
+</span></span><span style="display:flex;"><span>		<span style="color:#719e07">fi</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#719e07">fi</span>
+</span></span><span style="display:flex;"><span><span style="color:#719e07">done</span>
+</span></span></code></pre></div><p><strong>journalfollow</strong> is another script doing <strong>sudo journalctl -f</strong>. As I always fail to use <strong>chmod +s</strong> and never try to learn it :d, I configured /etc/sudoers to be able to run the script without entering my password. I run this script from ~/.xinitrc.</p>
+<p>Now whenever the external monitor freezes this script receives the logs and unfreezes it without losing window states.</p>
+</div>
+
+		<p class="meta">Posted on <span class="postdate">30. July 2025</span></p>
+	</article>
+
+			</div>
+
+			<footer id="footer">
+				
+				
+				
+				
+				
+				
+
+				<div align="right"><p><a href="/gaspar.monero">monero wallet</a> | <a href="/gaspar.asc">pgp public key</a> | <a href="/gaspar.pub">ssh public key</a> | <a href="https://github.com/GasparVardanyan/gasparvardanyan.github.io/">source</a></p></div>
+
+
+			</footer>
+		</div>
+	</body>
+</html>

@@ -6,7 +6,47 @@
     <description>Recent content on Gaspar Vardanyan</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 06 Jul 2025 18:00:11 +0400</lastBuildDate><atom:link href="https://gasparvardanyan.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 30 Jul 2025 11:30:31 +0400</lastBuildDate><atom:link href="https://gasparvardanyan.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>The Famous Nvidia Bug</title>
+      <link>https://gasparvardanyan.github.io/blog/the-famous-nvidia-bug/</link>
+      <pubDate>Wed, 30 Jul 2025 11:30:31 +0400</pubDate>
+      
+      <guid>https://gasparvardanyan.github.io/blog/the-famous-nvidia-bug/</guid>
+      <description>&lt;p&gt;There is a &lt;a href=&#34;https://forums.developer.nvidia.com/t/external-monitor-freezes-when-using-dedicated-gpu/265406&#34;&gt;famous nvidia bug&lt;/a&gt; where the external monitor freezes when doing some nvidia gpu related work: running an app which uses the gpu, closing the app or resizing it&amp;rsquo;s window on X11. The forum post was created on 05.09.2023 and the bug isn&amp;rsquo;t fixed yet&amp;hellip;&lt;/p&gt;
+&lt;p&gt;The workaround I used was to disable and then re-enable the external monitor with xrandr. But it had it&amp;rsquo;s problems: I use dwm and when I have separate tags and layouts on the external monitor, after disabling the monitor all windows go to the primary monitor (where rendering is done with iGPU) and after re-enabling the monitor I have to move windows back, rearrange and set layouts.&lt;/p&gt;
+&lt;p&gt;Another workaround was to always use dGPU for rendering, but it had it&amp;rsquo;s problem too: qutebrowser (and probably all QtWebEngine based browsers) doesn&amp;rsquo;t do hardware video decoding when the primary gpu is the nvidia one (chrome://gpu shows the related info).&lt;/p&gt;
+&lt;p&gt;With a little bit of tinkering I&amp;rsquo;ve found that instead of disabling and then re-enabling the monitor I can change the resolution to something else and then change back: it unfreezes the monitor keeping all windows in their place and no monitor-related settings (layouts on tags, etc) drop in dwm since monitor isn&amp;rsquo;t being disconnected.&lt;/p&gt;
+&lt;p&gt;When the external monitor freezes, journalctl shows related logs, so I automated the unfreeze workaround:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;#!/usr/bin/env bash
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;[&lt;/span&gt; ! -f /usr/local/bin/journalfollow &lt;span style=&#34;color:#719e07&#34;&gt;]&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span style=&#34;color:#b58900&#34;&gt;exit&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;s&lt;/span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#2aa198&#34;&gt;0&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo journalfollow | &lt;span style=&#34;color:#719e07&#34;&gt;while&lt;/span&gt; &lt;span style=&#34;color:#b58900&#34;&gt;read&lt;/span&gt; l
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;do&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&lt;span style=&#34;color:#b58900&#34;&gt;echo&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;$l&lt;/span&gt;&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;&lt;/span&gt; | grep -Fq &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#39;NVRM: kdispApplyWarForBug3385499_v03_00: timeout waiting for METHOD_EXEC to IDLE&amp;#39;&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span style=&#34;color:#268bd2&#34;&gt;s&lt;/span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;$((&lt;/span&gt; s &lt;span style=&#34;color:#719e07&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;1&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;))&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&lt;span style=&#34;color:#b58900&#34;&gt;echo&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;$l&lt;/span&gt;&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;&lt;/span&gt; | grep -Fq &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#39;NVRM: kdispApplyWarForBug3385499_v03_00: timeout waiting for channel state to UNCONNECTED&amp;#39;&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span style=&#34;color:#268bd2&#34;&gt;s&lt;/span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;$((&lt;/span&gt; s &lt;span style=&#34;color:#719e07&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;1&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;))&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&lt;span style=&#34;color:#586e75&#34;&gt;# echo &amp;#34;$s: $l&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&lt;span style=&#34;color:#719e07&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;[&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;2&lt;/span&gt; -eq &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;$s&lt;/span&gt;&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&lt;span style=&#34;color:#719e07&#34;&gt;then&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		&lt;span style=&#34;color:#268bd2&#34;&gt;s&lt;/span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#2aa198&#34;&gt;0&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		&lt;span style=&#34;color:#719e07&#34;&gt;if&lt;/span&gt; xrandr --listactivemonitors | grep -Fq HDMI-1-0
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		&lt;span style=&#34;color:#719e07&#34;&gt;then&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			xrandr --output HDMI-1-0 --mode 1680x1050
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			xrandr --output HDMI-1-0 --mode 1920x1080
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			&lt;span style=&#34;color:#719e07&#34;&gt;[&lt;/span&gt; -x ~/.fehbg &lt;span style=&#34;color:#719e07&#34;&gt;]&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; ~/.fehbg
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		&lt;span style=&#34;color:#719e07&#34;&gt;fi&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&lt;span style=&#34;color:#719e07&#34;&gt;fi&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;done&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;strong&gt;journalfollow&lt;/strong&gt; is another script doing &lt;strong&gt;sudo journalctl -f&lt;/strong&gt;. As I always fail to use &lt;strong&gt;chmod +s&lt;/strong&gt; and never try to learn it :d, I configured /etc/sudoers to be able to run the script without entering my password. I run this script from ~/.xinitrc.&lt;/p&gt;
+&lt;p&gt;Now whenever the external monitor freezes this script receives the logs and unfreezes it without losing window states.&lt;/p&gt;
+</description>
+    </item>
+    
     <item>
       <title>ModularVim</title>
       <link>https://gasparvardanyan.github.io/blog/modularvim/</link>
