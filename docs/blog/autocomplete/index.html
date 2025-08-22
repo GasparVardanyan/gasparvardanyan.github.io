@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width">
+		
+
+		<title>Autocomplete</title>
+
+		
+		<link rel="stylesheet" href="/css/colors-dark.min.91821db55d8acc5b9f936944224ab03a094cea2c707bacc60689050c84476d08.css">
+
+		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/Iosevka.css" />
+
+<style>
+body {
+	 
+	 
+	font-family: 'Iosevka Web', monospace;
+}
+
+.copyright {
+	text-align: right;
+}
+</style>
+
+	</head>
+	<body>
+		<header id="header">
+			<h1><a href="https://gasparvardanyan.github.io/">Gaspar Vardanyan</a></h1>
+			<p>btw i use arch :d</p>
+		</header>
+
+		<div id="page">
+			<div id="sidebar">
+				<nav>
+	
+		<ul class="nav">
+			
+				<li><a href="/blog/"><span>Blog</span></a></li>
+			
+				<li><a href="/coding/"><span>Coding</span></a></li>
+			
+				<li><a href="/index.xml"><span>Feed</span></a></li>
+			
+				<li><a href="/wallpapers/"><span>Wallpapers</span></a></li>
+			
+		</ul>
+	
+		<ul class="nav">
+			
+				<li><a href="mailto:gaspar_pm@proton.me"><span>Email</span></a></li>
+			
+				<li><a href="https://github.com/GasparVardanyan"><span>GitHub</span></a></li>
+			
+				<li><a href="https://gitlab.com/GasparVardanyan"><span>GitLab</span></a></li>
+			
+				<li><a href="https://mov.im/?contact/gaspar%40jabber.am"><span>Jabber</span></a></li>
+			
+				<li><a rel="me" href="https://%d5%a9%d5%b8%d6%82%d5%a9.%d5%b0%d5%a1%d5%b5/web/@gaspar"><span>Mastodon</span></a></li>
+			
+				<li><a href="https://matrix.to/#/@gaspar_m:matrix.org"><span>Matrix</span></a></li>
+			
+				<li><a href="https://www.reddit.com/user/GasparVardanyan/"><span>Reddit</span></a></li>
+			
+		</ul>
+	
+</nav>
+
+			</div>
+
+			<div id="content">
+				
+	<article class="post">
+		<h1><a href="https://gasparvardanyan.github.io/blog/autocomplete/">Autocomplete</a> </h1>
+
+		<div class="post-content"><p>Back in the day <a href="https://software.schmorp.de/pkg/rxvt-unicode.html">urxvt</a> was one of the best terminals. urxvt gives a perl interface for writing extensions. One of the best extensions available for urxvt was <a href="https://github.com/Vifon/autocomplete-ALL-the-things">autocomplete-ALL-the-things</a>.
+<img src="https://cloud.githubusercontent.com/assets/674812/3480320/3bd2e726-035f-11e4-9e64-db599724c931.gif" alt="demo">
+autocomplete-ALL-the-things is completing text based on the text visible on the screen. It supports multiple methods of text matching:</p>
+<ul>
+<li><code>aAtt:word-complete</code> &ndash; classical prefix-based completion for words</li>
+<li><code>aAtt:WORD-complete</code> &ndash; completion for WORDS (in the Vim meaning)</li>
+<li><code>aAtt:fuzzy-word-complete</code> &ndash; fuzzy completion for words</li>
+<li><code>aAtt:fuzzy-WORD-complete</code> &ndash; fuzzy completion for WORDS</li>
+<li><code>aAtt:fuzzy-complete</code> &ndash; fuzzy completion for arbitrary strings</li>
+<li><code>aAtt:suffix-complete</code> &ndash; fuzzy completion for suffixes, disrespecting
+prefixes of both completion and given strings</li>
+<li><code>aAtt:surround-complete</code> &ndash; fuzzy completion for surrounded by quotes or
+braces strings, excluding surrounding.</li>
+</ul>
+<p>When I was using <a href="https://st.suckless.org/">st</a>, I&rsquo;ve edited the perl extension of urxvt to work as an independent script. It was taking screen text from stdin, cursor position and the wanted matching method from cli parameters and giving the matches and their positions to stdout. Then I patched st to work with that script. The patch is available <a href="https://st.suckless.org/patches/autocomplete/">here</a>.</p>
+<p>Then I switched to <a href="https://github.com/alacritty/alacritty">alacritty</a>. It&rsquo;s written in the safest language, whose knowledge I don&rsquo;t have at all. I asked developers to implement this feature, but they were busy rewriting The World in God&rsquo;s language.</p>
+<p>I use NeoVim and I&rsquo;m a little familiar with Lua, so I decided to write a NeoVim plugin to support this script.</p>
+<p>It was a simple, small Lua script:</p>
+<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-lua" data-lang="lua"><span style="display:flex;"><span><span style="color:#268bd2">local</span> ACMPL <span style="color:#719e07">=</span> {
+</span></span><span style="display:flex;"><span>	WORD         <span style="color:#719e07">=</span>  <span style="color:#2aa198">&#34;word-complete&#34;</span>        ,
+</span></span><span style="display:flex;"><span>	WWORD        <span style="color:#719e07">=</span>  <span style="color:#2aa198">&#34;WORD-complete&#34;</span>        ,
+</span></span><span style="display:flex;"><span>	FUZZY_WORD   <span style="color:#719e07">=</span>  <span style="color:#2aa198">&#34;fuzzy-word-complete&#34;</span>  ,
+</span></span><span style="display:flex;"><span>	FUZZY_WWORD  <span style="color:#719e07">=</span>  <span style="color:#2aa198">&#34;fuzzy-WORD-complete&#34;</span>  ,
+</span></span><span style="display:flex;"><span>	FUZZY        <span style="color:#719e07">=</span>  <span style="color:#2aa198">&#34;fuzzy-complete&#34;</span>       ,
+</span></span><span style="display:flex;"><span>	SUFFIX       <span style="color:#719e07">=</span>  <span style="color:#2aa198">&#34;suffix-complete&#34;</span>      ,
+</span></span><span style="display:flex;"><span>	SURROUND     <span style="color:#719e07">=</span>  <span style="color:#2aa198">&#34;surround-complete&#34;</span>    ,
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#268bd2">local</span> <span style="color:#268bd2">function</span> <span style="color:#268bd2">complete</span> (action)
+</span></span><span style="display:flex;"><span>	<span style="color:#268bd2">local</span> win <span style="color:#719e07">=</span> vim.api.nvim_get_current_win ()
+</span></span><span style="display:flex;"><span>	<span style="color:#268bd2">local</span> buf <span style="color:#719e07">=</span> vim.api.nvim_win_get_buf (win)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#268bd2">local</span> first <span style="color:#719e07">=</span> vim.fn.line (<span style="color:#2aa198">&#34;w0&#34;</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#268bd2">local</span> last <span style="color:#719e07">=</span> vim.fn.line (<span style="color:#2aa198">&#34;w$&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#268bd2">local</span> lines <span style="color:#719e07">=</span> vim.api.nvim_buf_get_lines (buf, first <span style="color:#719e07">-</span> <span style="color:#2aa198">1</span>, last, <span style="color:#cb4b16">false</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#268bd2">local</span> pos <span style="color:#719e07">=</span> vim.api.nvim_win_get_cursor (win)
+</span></span><span style="display:flex;"><span>	<span style="color:#268bd2">local</span> cur_row_buf, cur_col <span style="color:#719e07">=</span> pos [<span style="color:#2aa198">1</span>], pos [<span style="color:#2aa198">2</span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#268bd2">local</span> cur_row_file <span style="color:#719e07">=</span> cur_row_buf <span style="color:#719e07">-</span> first
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#268bd2">local</span> completions <span style="color:#719e07">=</span> vim.fn.systemlist (
+</span></span><span style="display:flex;"><span>		<span style="color:#2aa198">&#34;acmpl &#34;</span> <span style="color:#719e07">..</span> action <span style="color:#719e07">..</span> <span style="color:#2aa198">&#34; &#34;</span> <span style="color:#719e07">..</span> cur_row_file <span style="color:#719e07">..</span> <span style="color:#2aa198">&#34; &#34;</span> <span style="color:#719e07">..</span> cur_col,
+</span></span><span style="display:flex;"><span>		lines
+</span></span><span style="display:flex;"><span>	)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#268bd2">local</span> targetlen <span style="color:#719e07">=</span> completions [<span style="color:#2aa198">1</span>]:len ()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#268bd2">local</span> matches <span style="color:#719e07">=</span> { completions [<span style="color:#2aa198">1</span>] }
+</span></span><span style="display:flex;"><span>	<span style="color:#268bd2">for</span> i <span style="color:#719e07">=</span> <span style="color:#2aa198">2</span>, <span style="color:#719e07">#</span>completions, <span style="color:#2aa198">4</span> <span style="color:#268bd2">do</span>
+</span></span><span style="display:flex;"><span>		table.insert (matches, completions [i])
+</span></span><span style="display:flex;"><span>	<span style="color:#268bd2">end</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	vim.fn.complete (vim.fn.col (<span style="color:#2aa198">&#34;.&#34;</span>) <span style="color:#719e07">-</span> targetlen, matches)
+</span></span><span style="display:flex;"><span><span style="color:#268bd2">end</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>vim.keymap.set (<span style="color:#2aa198">&#34;i&#34;</span>, <span style="color:#2aa198">&#34;&lt;M-C-/&gt;&#34;</span>, <span style="color:#268bd2">function</span> () complete (ACMPL.WORD) <span style="color:#268bd2">end</span>)
+</span></span><span style="display:flex;"><span>vim.keymap.set (<span style="color:#2aa198">&#34;i&#34;</span>, <span style="color:#2aa198">&#34;&lt;M-C-.&gt;&#34;</span>, <span style="color:#268bd2">function</span> () complete (ACMPL.FUZZY_WORD) <span style="color:#268bd2">end</span>)
+</span></span><span style="display:flex;"><span>vim.keymap.set (<span style="color:#2aa198">&#34;i&#34;</span>, <span style="color:#2aa198">&#34;&lt;M-C-,&gt;&#34;</span>, <span style="color:#268bd2">function</span> () complete (ACMPL.FUZZY) <span style="color:#268bd2">end</span>)
+</span></span><span style="display:flex;"><span>vim.keymap.set (<span style="color:#2aa198">&#34;i&#34;</span>, <span style="color:#2aa198">&#34;&lt;M-C-&#39;&gt;&#34;</span>, <span style="color:#268bd2">function</span> () complete (ACMPL.SUFFIX) <span style="color:#268bd2">end</span>)
+</span></span><span style="display:flex;"><span>vim.keymap.set (<span style="color:#2aa198">&#34;i&#34;</span>, <span style="color:#2aa198">&#34;&lt;M-C-;&gt;&#34;</span>, <span style="color:#268bd2">function</span> () complete (ACMPL.SURROUND) <span style="color:#268bd2">end</span>)
+</span></span><span style="display:flex;"><span>vim.keymap.set (<span style="color:#2aa198">&#34;i&#34;</span>, <span style="color:#2aa198">&#34;&lt;M-C-]&gt;&#34;</span>, <span style="color:#268bd2">function</span> () complete (ACMPL.WWORD) <span style="color:#268bd2">end</span>)
+</span></span><span style="display:flex;"><span>vim.keymap.set (<span style="color:#2aa198">&#34;i&#34;</span>, <span style="color:#2aa198">&#34;&lt;M-Esc&gt;&#34;</span>, <span style="color:#268bd2">function</span> () complete (ACMPL.FUZZY_WWORD) <span style="color:#268bd2">end</span>)
+</span></span><span style="display:flex;"><span><span style="color:#586e75">-- TODO: implement an undo mapping</span>
+</span></span></code></pre></div><p>Unfortunately <strong>vim.fn.complete</strong> works only in the <strong>insert</strong> mode, I want this
+functionality to be available in the <strong>terminal</strong> mode too. But at least I have
+this great weapon in my arsenal again ))</p>
+<p>The perl script is available <a href="../acmpl">here</a>.</p>
+</div>
+
+		<p class="meta">Posted on <span class="postdate">22. August 2025</span></p>
+	</article>
+
+			</div>
+
+			<footer id="footer">
+				
+				
+				
+				
+				
+				
+
+				<div align="right"><p><a href="/gaspar.monero">monero wallet</a> | <a href="/gaspar.asc">pgp public key</a> | <a href="/gaspar.pub">ssh public key</a> | <a href="https://github.com/GasparVardanyan/gasparvardanyan.github.io/">source</a></p></div>
+
+
+			</footer>
+		</div>
+	</body>
+</html>

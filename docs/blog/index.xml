@@ -6,7 +6,85 @@
     <description>Recent content in Blogs on Gaspar Vardanyan</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 30 Jul 2025 11:30:31 +0400</lastBuildDate><atom:link href="https://gasparvardanyan.github.io/blog/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 22 Aug 2025 18:30:09 +0400</lastBuildDate><atom:link href="https://gasparvardanyan.github.io/blog/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Autocomplete</title>
+      <link>https://gasparvardanyan.github.io/blog/autocomplete/</link>
+      <pubDate>Fri, 22 Aug 2025 18:30:09 +0400</pubDate>
+      
+      <guid>https://gasparvardanyan.github.io/blog/autocomplete/</guid>
+      <description>&lt;p&gt;Back in the day &lt;a href=&#34;https://software.schmorp.de/pkg/rxvt-unicode.html&#34;&gt;urxvt&lt;/a&gt; was one of the best terminals. urxvt gives a perl interface for writing extensions. One of the best extensions available for urxvt was &lt;a href=&#34;https://github.com/Vifon/autocomplete-ALL-the-things&#34;&gt;autocomplete-ALL-the-things&lt;/a&gt;.
+&lt;img src=&#34;https://cloud.githubusercontent.com/assets/674812/3480320/3bd2e726-035f-11e4-9e64-db599724c931.gif&#34; alt=&#34;demo&#34;&gt;
+autocomplete-ALL-the-things is completing text based on the text visible on the screen. It supports multiple methods of text matching:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;aAtt:word-complete&lt;/code&gt; &amp;ndash; classical prefix-based completion for words&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;aAtt:WORD-complete&lt;/code&gt; &amp;ndash; completion for WORDS (in the Vim meaning)&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;aAtt:fuzzy-word-complete&lt;/code&gt; &amp;ndash; fuzzy completion for words&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;aAtt:fuzzy-WORD-complete&lt;/code&gt; &amp;ndash; fuzzy completion for WORDS&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;aAtt:fuzzy-complete&lt;/code&gt; &amp;ndash; fuzzy completion for arbitrary strings&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;aAtt:suffix-complete&lt;/code&gt; &amp;ndash; fuzzy completion for suffixes, disrespecting
+prefixes of both completion and given strings&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;aAtt:surround-complete&lt;/code&gt; &amp;ndash; fuzzy completion for surrounded by quotes or
+braces strings, excluding surrounding.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;When I was using &lt;a href=&#34;https://st.suckless.org/&#34;&gt;st&lt;/a&gt;, I&amp;rsquo;ve edited the perl extension of urxvt to work as an independent script. It was taking screen text from stdin, cursor position and the wanted matching method from cli parameters and giving the matches and their positions to stdout. Then I patched st to work with that script. The patch is available &lt;a href=&#34;https://st.suckless.org/patches/autocomplete/&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Then I switched to &lt;a href=&#34;https://github.com/alacritty/alacritty&#34;&gt;alacritty&lt;/a&gt;. It&amp;rsquo;s written in the safest language, whose knowledge I don&amp;rsquo;t have at all. I asked developers to implement this feature, but they were busy rewriting The World in God&amp;rsquo;s language.&lt;/p&gt;
+&lt;p&gt;I use NeoVim and I&amp;rsquo;m a little familiar with Lua, so I decided to write a NeoVim plugin to support this script.&lt;/p&gt;
+&lt;p&gt;It was a simple, small Lua script:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-lua&#34; data-lang=&#34;lua&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;local&lt;/span&gt; ACMPL &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	WORD         &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt;  &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;word-complete&amp;#34;&lt;/span&gt;        ,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	WWORD        &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt;  &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;WORD-complete&amp;#34;&lt;/span&gt;        ,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	FUZZY_WORD   &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt;  &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;fuzzy-word-complete&amp;#34;&lt;/span&gt;  ,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	FUZZY_WWORD  &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt;  &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;fuzzy-WORD-complete&amp;#34;&lt;/span&gt;  ,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	FUZZY        &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt;  &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;fuzzy-complete&amp;#34;&lt;/span&gt;       ,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	SUFFIX       &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt;  &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;suffix-complete&amp;#34;&lt;/span&gt;      ,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	SURROUND     &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt;  &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;surround-complete&amp;#34;&lt;/span&gt;    ,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;local&lt;/span&gt; &lt;span style=&#34;color:#268bd2&#34;&gt;function&lt;/span&gt; &lt;span style=&#34;color:#268bd2&#34;&gt;complete&lt;/span&gt; (action)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&lt;span style=&#34;color:#268bd2&#34;&gt;local&lt;/span&gt; win &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; vim.api.nvim_get_current_win ()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&lt;span style=&#34;color:#268bd2&#34;&gt;local&lt;/span&gt; buf &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; vim.api.nvim_win_get_buf (win)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&lt;span style=&#34;color:#268bd2&#34;&gt;local&lt;/span&gt; first &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; vim.fn.line (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;w0&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&lt;span style=&#34;color:#268bd2&#34;&gt;local&lt;/span&gt; last &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; vim.fn.line (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;w$&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&lt;span style=&#34;color:#268bd2&#34;&gt;local&lt;/span&gt; lines &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; vim.api.nvim_buf_get_lines (buf, first &lt;span style=&#34;color:#719e07&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;1&lt;/span&gt;, last, &lt;span style=&#34;color:#cb4b16&#34;&gt;false&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&lt;span style=&#34;color:#268bd2&#34;&gt;local&lt;/span&gt; pos &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; vim.api.nvim_win_get_cursor (win)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&lt;span style=&#34;color:#268bd2&#34;&gt;local&lt;/span&gt; cur_row_buf, cur_col &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; pos [&lt;span style=&#34;color:#2aa198&#34;&gt;1&lt;/span&gt;], pos [&lt;span style=&#34;color:#2aa198&#34;&gt;2&lt;/span&gt;]
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&lt;span style=&#34;color:#268bd2&#34;&gt;local&lt;/span&gt; cur_row_file &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; cur_row_buf &lt;span style=&#34;color:#719e07&#34;&gt;-&lt;/span&gt; first
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&lt;span style=&#34;color:#268bd2&#34;&gt;local&lt;/span&gt; completions &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; vim.fn.systemlist (
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;acmpl &amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;..&lt;/span&gt; action &lt;span style=&#34;color:#719e07&#34;&gt;..&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34; &amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;..&lt;/span&gt; cur_row_file &lt;span style=&#34;color:#719e07&#34;&gt;..&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34; &amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;..&lt;/span&gt; cur_col,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		lines
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&lt;span style=&#34;color:#268bd2&#34;&gt;local&lt;/span&gt; targetlen &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; completions [&lt;span style=&#34;color:#2aa198&#34;&gt;1&lt;/span&gt;]:len ()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&lt;span style=&#34;color:#268bd2&#34;&gt;local&lt;/span&gt; matches &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; { completions [&lt;span style=&#34;color:#2aa198&#34;&gt;1&lt;/span&gt;] }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&lt;span style=&#34;color:#268bd2&#34;&gt;for&lt;/span&gt; i &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;2&lt;/span&gt;, &lt;span style=&#34;color:#719e07&#34;&gt;#&lt;/span&gt;completions, &lt;span style=&#34;color:#2aa198&#34;&gt;4&lt;/span&gt; &lt;span style=&#34;color:#268bd2&#34;&gt;do&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		table.insert (matches, completions [i])
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&lt;span style=&#34;color:#268bd2&#34;&gt;end&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	vim.fn.complete (vim.fn.col (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;.&amp;#34;&lt;/span&gt;) &lt;span style=&#34;color:#719e07&#34;&gt;-&lt;/span&gt; targetlen, matches)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;end&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;vim.keymap.set (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;i&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;&amp;lt;M-C-/&amp;gt;&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#268bd2&#34;&gt;function&lt;/span&gt; () complete (ACMPL.WORD) &lt;span style=&#34;color:#268bd2&#34;&gt;end&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;vim.keymap.set (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;i&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;&amp;lt;M-C-.&amp;gt;&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#268bd2&#34;&gt;function&lt;/span&gt; () complete (ACMPL.FUZZY_WORD) &lt;span style=&#34;color:#268bd2&#34;&gt;end&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;vim.keymap.set (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;i&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;&amp;lt;M-C-,&amp;gt;&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#268bd2&#34;&gt;function&lt;/span&gt; () complete (ACMPL.FUZZY) &lt;span style=&#34;color:#268bd2&#34;&gt;end&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;vim.keymap.set (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;i&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;&amp;lt;M-C-&amp;#39;&amp;gt;&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#268bd2&#34;&gt;function&lt;/span&gt; () complete (ACMPL.SUFFIX) &lt;span style=&#34;color:#268bd2&#34;&gt;end&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;vim.keymap.set (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;i&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;&amp;lt;M-C-;&amp;gt;&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#268bd2&#34;&gt;function&lt;/span&gt; () complete (ACMPL.SURROUND) &lt;span style=&#34;color:#268bd2&#34;&gt;end&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;vim.keymap.set (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;i&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;&amp;lt;M-C-]&amp;gt;&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#268bd2&#34;&gt;function&lt;/span&gt; () complete (ACMPL.WWORD) &lt;span style=&#34;color:#268bd2&#34;&gt;end&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;vim.keymap.set (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;i&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;&amp;lt;M-Esc&amp;gt;&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#268bd2&#34;&gt;function&lt;/span&gt; () complete (ACMPL.FUZZY_WWORD) &lt;span style=&#34;color:#268bd2&#34;&gt;end&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#586e75&#34;&gt;-- TODO: implement an undo mapping&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Unfortunately &lt;strong&gt;vim.fn.complete&lt;/strong&gt; works only in the &lt;strong&gt;insert&lt;/strong&gt; mode, I want this
+functionality to be available in the &lt;strong&gt;terminal&lt;/strong&gt; mode too. But at least I have
+this great weapon in my arsenal again ))&lt;/p&gt;
+&lt;p&gt;The perl script is available &lt;a href=&#34;../acmpl&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+</description>
+    </item>
+    
     <item>
       <title>The Famous Nvidia Bug</title>
       <link>https://gasparvardanyan.github.io/blog/the-famous-nvidia-bug/</link>
