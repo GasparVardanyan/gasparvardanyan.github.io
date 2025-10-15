@@ -2,13 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://gasparvardanyan.github.io/blog/autocomplete/</loc>
-    <lastmod>2025-08-22T18:30:09+04:00</lastmod>
-  </url><url>
     <loc>https://gasparvardanyan.github.io/blog/</loc>
-    <lastmod>2025-08-22T18:30:09+04:00</lastmod>
+    <lastmod>2025-08-27T02:23:21+04:00</lastmod>
   </url><url>
     <loc>https://gasparvardanyan.github.io/</loc>
+    <lastmod>2025-08-27T02:23:21+04:00</lastmod>
+  </url><url>
+    <loc>https://gasparvardanyan.github.io/blog/autocomplete/</loc>
     <lastmod>2025-08-22T18:30:09+04:00</lastmod>
   </url><url>
     <loc>https://gasparvardanyan.github.io/blog/the-famous-nvidia-bug/</loc>
