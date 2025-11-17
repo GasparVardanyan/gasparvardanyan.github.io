@@ -4,9 +4,6 @@ title: "Gaspar Vardanyan"
 
 
 
-* ## **Improvis** Team Member
-  Software Engineer at [Improvis](https://improvis.ai/)
-
 * ## **FOSS** Contributor
 
   * ### Suckless patches:
