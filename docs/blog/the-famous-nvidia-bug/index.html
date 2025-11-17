@@ -92,8 +92,6 @@ iframe {
 			
 				<li><a href="https://matrix.to/#/@gaspar_m:matrix.org"><span>Matrix</span></a></li>
 			
-				<li><a href="https://www.reddit.com/user/GasparVardanyan/"><span>Reddit</span></a></li>
-			
 		</ul>
 	
 </nav>
@@ -101,7 +99,15 @@ iframe {
 			</div>
 
 			<div id="content">
-				<iframe style="width: 100%; min-height: 300px" src="https://www.youtube.com/embed/BIGukkcAwAI" title="Charlie Kirk | Voice of a Legend |  Tribute to The legend and Free Speech - Six Gun Siren" frameborder="0" allowfullscreen></iframe>
+				<iframe style="width: 100%; min-height: 300px" id="VIDEO" title="Charlie Kirk | Voice of a Legend |  Tribute to The legend and Free Speech - Six Gun Siren" frameborder="0" allowfullscreen></iframe>
+<script>
+videos = [
+	"https://www.youtube.com/embed/BIGukkcAwAI",
+	"https://www.youtube.com/embed/YcyKR0SzCtA",
+];
+
+document.getElementById ("VIDEO").src = videos [Math.floor(Math.random() * videos.length)];
+</script>
 
 				
 	<article class="post">

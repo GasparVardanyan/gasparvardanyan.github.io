@@ -41,9 +41,6 @@ pygmentsStyle = "solarized-dark"
     name = "Mastodon"
     url = "https://թութ.հայ/web/@gaspar"
   [[menu.2social]]
-    name = "Reddit"
-    url = "https://www.reddit.com/user/GasparVardanyan/"
-  [[menu.2social]]
     name = "Jabber"
     url = "https://mov.im/?contact/gaspar%40jabber.am"
   [[menu.2social]]
