@@ -6,7 +6,300 @@
     <description>Recent content in Blogs on Gaspar Vardanyan</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 27 Aug 2025 02:23:21 +0400</lastBuildDate><atom:link href="https://gasparvardanyan.github.io/blog/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 24 Nov 2025 21:45:13 +0400</lastBuildDate><atom:link href="https://gasparvardanyan.github.io/blog/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Managing an Arch Linux workstation. Part 2 - Pacman</title>
+      <link>https://gasparvardanyan.github.io/blog/arch-workstation-2/</link>
+      <pubDate>Mon, 24 Nov 2025 21:45:13 +0400</pubDate>
+      
+      <guid>https://gasparvardanyan.github.io/blog/arch-workstation-2/</guid>
+      <description>&lt;p&gt;Have you ever wanted to clean up your linux workstation from unneeded packages?&lt;/p&gt;
+&lt;p&gt;First you have to list them all and see which one is needed and which one already doesn&amp;rsquo;t, right? And what you typically see trying to list all installed packages is a big mess. Even if you list only the explicitly installed packages, not the ones which are installed as dependencies, you see a very big list of packages, some of which are system packages (intel igpu driver for example) and it&amp;rsquo;s very confusing to decide which one is really needed. Maintaining a system like this is very frustrating and painful.&lt;/p&gt;
+&lt;p&gt;To solve this problem I decided to take a benefit from Arch&amp;rsquo;s metapackages. Metapackages in Arch Linux (and probably in other distributions too) are just empty packages carying a list of dependencies.&lt;/p&gt;
+&lt;p&gt;The greatest package manager: Arch&amp;rsquo;s Pacman uses files called &lt;a href=&#34;https://wiki.archlinux.org/title/PKGBUILD&#34;&gt;PKGBUILD&lt;/a&gt; to describe packages. I&amp;rsquo;ve splited the packages I use to metapackages, each one containing a list of packages of a specific category as dependencies.&lt;/p&gt;
+&lt;p&gt;So the PKGBUILD of the package &lt;strong&gt;gaspar-meta-fonts&lt;/strong&gt; currently looks like:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-PKGBUILD&#34; data-lang=&#34;PKGBUILD&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;pkgname&lt;/span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt;gaspar-meta-fonts
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;pkgver&lt;/span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#2aa198&#34;&gt;1&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;pkgrel&lt;/span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#2aa198&#34;&gt;2&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;arch&lt;/span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;=(&lt;/span&gt;&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#39;any&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;options&lt;/span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;=(&lt;/span&gt;&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#39;!debug&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;groups&lt;/span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;=(&lt;/span&gt;&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#39;gaspar&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;depends&lt;/span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;=(&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	ttf-ibm-plex
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	ttf-ibmplex-mono-nerd
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	ttf-iosevka-nerd
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	noto-fonts-emoji
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	otf-font-awesome
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#586e75&#34;&gt;# vim:ft=sh&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;There are a couple of &lt;strong&gt;gaspar-meta-*&lt;/strong&gt; packages:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;gaspar-meta-arch&lt;/li&gt;
+&lt;li&gt;gaspar-meta-archdrive&lt;/li&gt;
+&lt;li&gt;gaspar-meta-base&lt;/li&gt;
+&lt;li&gt;gaspar-meta-desktoptools&lt;/li&gt;
+&lt;li&gt;gaspar-meta-devenv&lt;/li&gt;
+&lt;li&gt;gaspar-meta-fonts&lt;/li&gt;
+&lt;li&gt;gaspar-meta-git&lt;/li&gt;
+&lt;li&gt;gaspar-meta-linux&lt;/li&gt;
+&lt;li&gt;gaspar-meta-media&lt;/li&gt;
+&lt;li&gt;gaspar-meta-network&lt;/li&gt;
+&lt;li&gt;gaspar-meta-nvim&lt;/li&gt;
+&lt;li&gt;gaspar-meta-nvim-devenv&lt;/li&gt;
+&lt;li&gt;gaspar-meta-nvim-work&lt;/li&gt;
+&lt;li&gt;gaspar-meta-shell&lt;/li&gt;
+&lt;li&gt;gaspar-meta-website&lt;/li&gt;
+&lt;li&gt;gaspar-meta-work&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;gaspar-meta-git for example contains the packages needed for working with git as dependencies:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-PKGBUILD&#34; data-lang=&#34;PKGBUILD&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;pkgname&lt;/span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt;gaspar-meta-git
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;pkgver&lt;/span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#2aa198&#34;&gt;1&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;pkgrel&lt;/span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#2aa198&#34;&gt;2&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;arch&lt;/span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;=(&lt;/span&gt;&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#39;any&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;options&lt;/span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;=(&lt;/span&gt;&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#39;!debug&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;groups&lt;/span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;=(&lt;/span&gt;&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#39;gaspar&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;depends&lt;/span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;=(&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	git
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	git-delta
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	lazygit
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	less
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	neovim
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	openssh
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#586e75&#34;&gt;# vim:ft=sh&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Also there are &lt;strong&gt;gaspar-device-*&lt;/strong&gt; and &lt;strong&gt;gaspar-device-*-gpu&lt;/strong&gt; packages containing the device specific packages as dependencies.&lt;/p&gt;
+&lt;p&gt;For example &lt;strong&gt;gaspar-device-g16_7630&lt;/strong&gt; contains these dependencies:
+alsa-firmware, alsa-plugins, alsa-utils, acpi, acpi_call, tlp, scx-scheds, smartmontools, ethtool, gaspar-device-g16_7630-gpu, intel-ucode, libsmbios, nvidia-open, sof-firmware, thermald.&lt;/p&gt;
+&lt;p&gt;And &lt;strong&gt;gaspar-device-g16_7630-gpu&lt;/strong&gt; contains these dependencies:	intel-gpu-tools, intel-media-driver, libva, libva-utils, libvdpau, libvdpau-va-gl, mesa, mesa-utils, nvidia-prime, nvidia-utils, nvtop, opencl-nvidia, vdpauinfo, vpl-gpu-rt, vulkan-headers, vulkan-icd-loader, vulkan-intel, vulkan-mesa-layers, vulkan-tools.&lt;/p&gt;
+&lt;p&gt;As you can see the gpu firmware package &lt;strong&gt;nvidia-open&lt;/strong&gt; is in the device package, the gpu one contains the userspace packaged required to work with gpu.
+This is because I use the second one in the host and in the containers where I want to work with gpus too, but the firmware package needs to be installed only on host.&lt;/p&gt;
+&lt;p&gt;Pacman&amp;rsquo;s packages have this great feature: I add &lt;strong&gt;provides=(&amp;lsquo;gaspar-device-gpu&amp;rsquo;)&lt;/strong&gt; to device gpu specific packages and whenevet I install &lt;strong&gt;gaspar-device-gpu&lt;/strong&gt; either explicitly or as a dependency, pacman provides the list of all packages providing that package and asks me to choose which one I want to install.&lt;/p&gt;
+&lt;p&gt;I use Systemd Nspawn containers, each container uses different set of metapackages. To manage the container and host metapackages I&amp;rsquo;ve added another group of metapackages:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;gaspar-system-devenv - this contains the metapackages used for personal development projects as dependencies&lt;/li&gt;
+&lt;li&gt;gaspar-system-odyssey - this one is for the host (I&amp;rsquo;ve called my host &lt;strong&gt;odyssey&lt;/strong&gt;)&lt;/li&gt;
+&lt;li&gt;gaspar-system-website - this container was dedicated for thes website, but now I edit this website in devenv&lt;/li&gt;
+&lt;li&gt;gaspar-system-work - and this one is for work&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;For example gaspar-system-odyssey looks like:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-PKGBUILD&#34; data-lang=&#34;PKGBUILD&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;pkgname&lt;/span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt;gaspar-system-odyssey
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;pkgver&lt;/span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#2aa198&#34;&gt;1&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;pkgrel&lt;/span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#2aa198&#34;&gt;9&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;arch&lt;/span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;=(&lt;/span&gt;&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#39;any&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;options&lt;/span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;=(&lt;/span&gt;&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#39;!debug&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;groups&lt;/span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;=(&lt;/span&gt;&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#39;gaspar&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;depends&lt;/span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;=(&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	gaspar-meta-arch
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	gaspar-meta-base
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	gaspar-meta-desktoptools &lt;span style=&#34;color:#586e75&#34;&gt;# TODO: review&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	gaspar-meta-fonts
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	gaspar-meta-git
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	gaspar-meta-linux
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	gaspar-meta-media
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	gaspar-meta-network
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	gaspar-meta-nvim
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	gaspar-meta-shell
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	gaspar-device
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	gaspar-device-gpu
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#586e75&#34;&gt;# vim:ft=sh&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Whenever I need to install my setup from scratch I install this package, which asks me to choose the appropriate gaspar-device and gaspar-device-gpu packages for the device.&lt;/p&gt;
+&lt;p&gt;I keep these metapackages &lt;a href=&#34;https://github.com/GasparVardanyan/dotfiles/tree/master/repo&#34;&gt;in my dotfiles&lt;/a&gt;. I usually clone my dotfiles in /desktop/dotfiles and make a symlink of my repo directory from my dotfiles to /desktop/repo and add this to &lt;strong&gt;/etc/pacman.conf&lt;/strong&gt;:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-ini&#34; data-lang=&#34;ini&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;[gaspar]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;SigLevel &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;Optional TrustAll&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Server &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;file:///desktop/repo&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Then updating the repo cache with &lt;strong&gt;pacman -Syy&lt;/strong&gt; I have access to this repo.&lt;/p&gt;
+&lt;p&gt;And my system looks very clean:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;-&amp;gt; [ ~ ] :: pacman -Qe # the explicitly installed packages
+gaspar-system-odyssey 1-9
+-&amp;gt; [ ~ ] :: pacman -Qi gaspar-system-odyssey
+Name            : gaspar-system-odyssey
+Version         : 1-9
+Description     : None
+Architecture    : any
+URL             : None
+Licenses        : None
+Groups          : gaspar
+Provides        : None
+Depends On      : gaspar-meta-arch  gaspar-meta-base  gaspar-meta-desktoptools  gaspar-meta-fonts
+				  gaspar-meta-git  gaspar-meta-linux  gaspar-meta-media  gaspar-meta-network
+				  gaspar-meta-nvim  gaspar-meta-shell  gaspar-device  gaspar-device-gpu
+Optional Deps   : None
+Required By     : None
+Optional For    : None
+Conflicts With  : None
+Replaces        : None
+Installed Size  : 0.00 B
+Packager        : Unknown Packager
+Build Date      : Sun 09 Nov 2025 03:46:15 AM +04
+Install Date    : Sun 09 Nov 2025 03:48:40 AM +04
+Install Reason  : Explicitly installed
+Install Script  : No
+Validated By    : SHA-256 Sum
+
+-&amp;gt; [ ~ ] :: pacman -Qi gaspar-meta-arch
+Name            : gaspar-meta-arch
+Version         : 1-4
+Description     : None
+Architecture    : any
+URL             : None
+Licenses        : None
+Groups          : gaspar
+Provides        : None
+Depends On      : arch-wiki-docs  arch-wiki-lite  archlinux-contrib  devtools  dialog  pacman-contrib
+				  pkgfile  reflector
+Optional Deps   : None
+Required By     : gaspar-system-odyssey
+Optional For    : None
+Conflicts With  : None
+Replaces        : None
+Installed Size  : 0.00 B
+Packager        : Unknown Packager
+Build Date      : Fri 07 Nov 2025 09:09:06 PM +04
+Install Date    : Fri 07 Nov 2025 09:16:55 PM +04
+Install Reason  : Installed as a dependency for another package
+Install Script  : No
+Validated By    : SHA-256 Sum
+
+-&amp;gt; [ ~ ] ::
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;In the next part I&amp;rsquo;ll describe the Systemd Nspawn usage.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Managing an Arch Linux workstation. Part 1 - Btrfs</title>
+      <link>https://gasparvardanyan.github.io/blog/arch-workstation-1/</link>
+      <pubDate>Wed, 27 Aug 2025 02:23:21 +0400</pubDate>
+      
+      <guid>https://gasparvardanyan.github.io/blog/arch-workstation-1/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;https://wiki.archlinux.org/title/Btrfs&#34;&gt;Btrfs&lt;/a&gt; is a modern file system with many
+useful features such as subvolumes and snapshots. With Btrfs you aren&amp;rsquo;t limited to
+give fixed sizes to partitions, instead you can use Btrfs subvolumes like partitions:
+mount them separately, and do snapshots of subvolumes to avoid losing important data.
+ArchWiki explains the usage, so I&amp;rsquo;ll skip it.&lt;/p&gt;
+&lt;h2 id=&#34;partition-layout&#34;&gt;Partition layout&lt;/h2&gt;
+&lt;p&gt;This is how I setup my partition layout:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;/dev/nvm0n1p1 - 2G EFI System&lt;/li&gt;
+&lt;li&gt;/dev/nvm0n1p2 - 950G Btrfs filesystem&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;btrfs-subvolumes&#34;&gt;Btrfs subvolumes&lt;/h2&gt;
+&lt;h3 id=&#34;systems---the-subvolume-for-the-arch-linux-setup&#34;&gt;&lt;strong&gt;/systems&lt;/strong&gt; - the subvolume for the Arch Linux setup&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;/systems/archlinux-base&lt;/strong&gt; [RO] - &lt;a href=&#34;https://man.archlinux.org/man/pacstrap.8&#34;&gt;pacstrapped&lt;/a&gt; basic
+installation with base, base-devel and vi packages and zoneinfo, hwclock, locale configurations&lt;/li&gt;
+&lt;li&gt;&lt;del&gt;&lt;strong&gt;/systems/archlinux-base/var/lib/portables&lt;/strong&gt;&lt;/del&gt; an autogenerated subvolume by systemd, but not needed
+since Btrfs snapshots aren&amp;rsquo;t recursive and archlinux-base is just a read-only template subvolume&lt;/li&gt;
+&lt;li&gt;&lt;del&gt;&lt;strong&gt;/systems/archlinux-base/var/lib/machines&lt;/strong&gt;&lt;/del&gt; same as the above&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;/systems/archlinux-linux&lt;/strong&gt; [RO] - a snapshot of archlinux-base with linux, linux-headers and
+linux-firmware* packages&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;/systems/archlinux-packaged&lt;/strong&gt; [RO] - a snapshot of archlinux-linux with packages my basic setup contains
+(will be discussed in detail in a separate article)&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;/systems/archlinux-workstation&lt;/strong&gt; [RO] - a snapshot of archlinux-packaged with a normal user,
+fstab configuration, system/dotfiles configuration and some systemd services enabled - a ready to go place&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;/systems/archlinux-current&lt;/strong&gt; - a snapshot of archlinux-workstation used as host&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;/systems/archlinux-current/var/lib/portables&lt;/strong&gt; - created with systemd-tmpfiles&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;/systems/archlinux-current/var/lib/machines&lt;/strong&gt; - created with systemd-tmpfiles&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;/systems/snapshots&lt;/strong&gt; - snapshots of archlinux-current&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;containers---the-subvolume-for-systemd-nspawn-containers&#34;&gt;&lt;strong&gt;/containers&lt;/strong&gt; - the subvolume for systemd-nspawn containers&lt;/h3&gt;
+&lt;p&gt;Will be discussed in detail in a separate article.&lt;/p&gt;
+&lt;h3 id=&#34;data---user-data&#34;&gt;&lt;strong&gt;/data&lt;/strong&gt; - user data&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;/data/home&lt;/strong&gt; - a subvolume for user home directories&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;/data/desktop&lt;/strong&gt; - user/container/system -wise setup for:
+&lt;ul&gt;
+&lt;li&gt;desktop package sources to be compiled&lt;/li&gt;
+&lt;li&gt;dotfiles&lt;/li&gt;
+&lt;li&gt;neovim config&lt;/li&gt;
+&lt;li&gt;themes&lt;/li&gt;
+&lt;li&gt;wallpapers&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;/data/books&lt;/strong&gt; - tech-related books&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;/data/music&lt;/strong&gt; - music&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;/data/movies&lt;/strong&gt; - movies&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;/data/media&lt;/strong&gt; - user-wise data&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;/data/soloarized&lt;/strong&gt; - here&amp;rsquo;s everything &lt;a href=&#34;https://ethanschoonover.com/solarized/&#34;&gt;solariozed&lt;/a&gt;!&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;/data/src&lt;/strong&gt; - a subvolume for personal projects&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;/data/work&lt;/strong&gt; - work data&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;/data/snapshots&lt;/strong&gt; - a subvolume for snapshots&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;swap---btrfs-supports-swap&#34;&gt;&lt;strong&gt;/swap&lt;/strong&gt; - &lt;a href=&#34;https://wiki.archlinux.org/title/Btrfs#Swap_file&#34;&gt;Btrfs supports swap&lt;/a&gt;&lt;/h3&gt;
+&lt;h2 id=&#34;mountpoints&#34;&gt;Mountpoints&lt;/h2&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th&gt;subvolume&lt;/th&gt;
+          &lt;th&gt;mountpoint&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;/td&gt;
+          &lt;td&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;/systems/archlinux-current&lt;/td&gt;
+          &lt;td&gt;/&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;/data/home&lt;/td&gt;
+          &lt;td&gt;/home/&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;/swap&lt;/td&gt;
+          &lt;td&gt;/swap/&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;/td&gt;
+          &lt;td&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;/data/media&lt;/td&gt;
+          &lt;td&gt;/media/&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;/data/books&lt;/td&gt;
+          &lt;td&gt;/media/books/&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;/data/movies&lt;/td&gt;
+          &lt;td&gt;/media/movies/&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;/data/music&lt;/td&gt;
+          &lt;td&gt;/media/music/&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;/td&gt;
+          &lt;td&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;/&lt;/td&gt;
+          &lt;td&gt;/rootfs/&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;/data/desktop&lt;/td&gt;
+          &lt;td&gt;/desktop/&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;/data/solarized&lt;/td&gt;
+          &lt;td&gt;/desktop/solarized/&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;/data/src&lt;/td&gt;
+          &lt;td&gt;/src/&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;hr&gt;
+</description>
+    </item>
+    
     <item>
       <title>Autocomplete</title>
       <link>https://gasparvardanyan.github.io/blog/autocomplete/</link>
@@ -577,7 +870,8 @@ extended the local playlist / mix launcher scripts to use sockets:&lt;/p&gt;
 &lt;li&gt;&lt;strong&gt;plctrl select_source&lt;/strong&gt; - find active mpv instances via sockets, determine
 whether cmus is running and open a dmenu prompt to select the player to control.&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;plctrl next/prev/play/pause&lt;/strong&gt; - control the selected player if any, otherwise
-do &lt;strong&gt;select_source&lt;/strong&gt; first** - find active mpv instances via sockets, determine
+do &lt;strong&gt;select_source&lt;/strong&gt; first
+** - find active mpv instances via sockets, determine
 whether cmus is running and open a dmenu prompt to select the player to control.&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;plctrl next/prev/play/pause&lt;/strong&gt; - control the selected player if any, otherwise
 do &lt;strong&gt;select_source&lt;/strong&gt; first.&lt;/li&gt;
@@ -894,22 +1188,21 @@ control cmus or an opened youtube mix inside mpv.&lt;/p&gt;
       <guid>https://gasparvardanyan.github.io/blog/what-i-use/</guid>
       <description>&lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://archlinux.org/&#34;&gt;Arch Linux OS&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://gitlab.com/GasparVardanyan/dwm&#34;&gt;my fork of the dwm window manager&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://gitlab.com/GasparVardanyan/st&#34;&gt;my fork of the st terminal emulator&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://gitlab.com/GasparVardanyan/themes/-/blob/master/solarized-dark.xdefaults&#34;&gt;my fork of the Solarized theme (dark version)&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://github.com/IBM/plex&#34;&gt;the IBM Plex Mono font&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://git.disroot.org/gaspar/dwm&#34;&gt;my fork of the dwm window manager&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;del&gt;&lt;a href=&#34;https://gitlab.com/GasparVardanyan/st&#34;&gt;my fork of the st terminal emulator&lt;/a&gt;&lt;/del&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://dwm.suckless.org/patches/solarized/&#34;&gt;my fork of the Solarized theme (dark version)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;the &lt;a href=&#34;https://github.com/be5invis/Iosevka&#34;&gt;Iosevka&lt;/a&gt; font (&lt;a href=&#34;https://github.com/ryanoasis/nerd-fonts/tree/master/patched-fonts/Iosevka&#34;&gt;nerd patched&lt;/a&gt;)&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;https://neovim.io/&#34;&gt;the NeoVim hyperextensible Vim-based text editor&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://wiki.archlinux.org/title/Systemd-nspawn&#34;&gt;Systemd Nspawn&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;http://codemadness.org/sfeed_curses-ui.html&#34;&gt;sfeed curses - RSS and Atom reader&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;https://www.qutebrowser.org/&#34;&gt;qutebrowser web browser&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;https://www.zsh.org/&#34;&gt;zsh shell&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;https://codeberg.org/nsxiv/nsxiv&#34;&gt;nsxiv image viewer&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;https://mpv.io/&#34;&gt;mpv video player&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://cmus.github.io/&#34;&gt;cmus music player&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;del&gt;&lt;a href=&#34;https://cmus.github.io/&#34;&gt;cmus music player&lt;/a&gt;&lt;/del&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;https://www.passwordstore.org/&#34;&gt;pass password manager&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://gitlab.com/GasparVardanyan/dotfiles/-/blob/master/sysinit/packages.install&#34;&gt;some other foss and simple tools&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://gitlab.com/GasparVardanyan/workstation/&#34;&gt;and some others&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://gitlab.com/GasparVardanyan/utilsbin/-/tree/master/bin&#34;&gt;and some small scripts&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://gitlab.com/GasparVardanyan/wallpapers&#34;&gt;my wallpapers collection&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://git.disroot.org/gaspar/dotfiles/src/commit/f8e45da461cf9d18c865c8c1f490bb54fc100970/skel/utilsbin/.local/bin&#34;&gt;some small scripts&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://gasparvardanyan.github.io/wallpapers/&#34;&gt;my wallpapers collection&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;https://gitlab.com/GasparVardanyan/dotfiles/-/tree/master/skel&#34;&gt;and my dotfiles&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 </description>

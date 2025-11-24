@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width">
+		
+
+		<title>Managing an Arch Linux workstation. Part 2 - Pacman</title>
+
+		
+		<link rel="stylesheet" href="/css/colors-dark.min.9ce07affbfe84fc8345761dc792a8a8743f97e40fde853efc81b2829b99b46be.css">
+
+		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/Iosevka.css" />
+
+<style>
+body {
+	 
+	 
+	font-family: 'Iosevka Web', monospace;
+}
+
+.copyright {
+	text-align: right;
+}
+
+table, th, td {
+	border: 1px solid;
+	border-collapse: collapse;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+iframe {
+	border: 4px solid #073642;
+	border-radius: 12px;
+}
+</style>
+
+	</head>
+	<body>
+		<header id="header">
+			<h1><a href="https://gasparvardanyan.github.io/">Gaspar Vardanyan</a></h1>
+			<p>btw i use arch :d</p>
+		</header>
+
+		<div id="page">
+			<div id="sidebar">
+				<nav>
+	
+		<ul class="nav">
+			
+				<li><a href="/blog/"><span>Blog</span></a></li>
+			
+				<li><a href="/coding/"><span>Coding</span></a></li>
+			
+				<li><a href="https://github.com/GasparVardanyan/gasparvardanyan.github.io/discussions"><span>Discussions</span></a></li>
+			
+				<li><a href="/index.xml"><span>Feed</span></a></li>
+			
+				<li><a href="/wallpapers/"><span>Wallpapers</span></a></li>
+			
+		</ul>
+	
+		<ul class="nav">
+			
+				<li><a href="mailto:gaspar_pm@proton.me"><span>Email</span></a></li>
+			
+				<li><a href="https://github.com/GasparVardanyan"><span>GitHub</span></a></li>
+			
+				<li><a href="https://gitlab.com/GasparVardanyan"><span>GitLab</span></a></li>
+			
+				<li><a href="https://mov.im/?contact/gaspar%40jabber.am"><span>Jabber</span></a></li>
+			
+				<li><a rel="me" href="https://%d5%a9%d5%b8%d6%82%d5%a9.%d5%b0%d5%a1%d5%b5/web/@gaspar"><span>Mastodon</span></a></li>
+			
+				<li><a href="https://matrix.to/#/@gaspar_m:matrix.org"><span>Matrix</span></a></li>
+			
+		</ul>
+	
+</nav>
+
+			</div>
+
+			<div id="content">
+				<iframe style="width: 100%; min-height: 300px" id="VIDEO" title="Charlie Kirk | Voice of a Legend |  Tribute to The legend and Free Speech - Six Gun Siren" frameborder="0" allowfullscreen></iframe>
+<script>
+videos = [
+	"https://www.youtube.com/embed/BIGukkcAwAI",
+	"https://www.youtube.com/embed/YcyKR0SzCtA",
+];
+
+document.getElementById ("VIDEO").src = videos [Math.floor(Math.random() * videos.length)];
+</script>
+
+				
+	<article class="post">
+		<h1><a href="https://gasparvardanyan.github.io/blog/arch-workstation-2/">Managing an Arch Linux workstation. Part 2 - Pacman</a> </h1>
+
+		<div class="post-content"><p>Have you ever wanted to clean up your linux workstation from unneeded packages?</p>
+<p>First you have to list them all and see which one is needed and which one already doesn&rsquo;t, right? And what you typically see trying to list all installed packages is a big mess. Even if you list only the explicitly installed packages, not the ones which are installed as dependencies, you see a very big list of packages, some of which are system packages (intel igpu driver for example) and it&rsquo;s very confusing to decide which one is really needed. Maintaining a system like this is very frustrating and painful.</p>
+<p>To solve this problem I decided to take a benefit from Arch&rsquo;s metapackages. Metapackages in Arch Linux (and probably in other distributions too) are just empty packages carying a list of dependencies.</p>
+<p>The greatest package manager: Arch&rsquo;s Pacman uses files called <a href="https://wiki.archlinux.org/title/PKGBUILD">PKGBUILD</a> to describe packages. I&rsquo;ve splited the packages I use to metapackages, each one containing a list of packages of a specific category as dependencies.</p>
+<p>So the PKGBUILD of the package <strong>gaspar-meta-fonts</strong> currently looks like:</p>
+<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-PKGBUILD" data-lang="PKGBUILD"><span style="display:flex;"><span><span style="color:#268bd2">pkgname</span><span style="color:#719e07">=</span>gaspar-meta-fonts
+</span></span><span style="display:flex;"><span><span style="color:#268bd2">pkgver</span><span style="color:#719e07">=</span><span style="color:#2aa198">1</span>
+</span></span><span style="display:flex;"><span><span style="color:#268bd2">pkgrel</span><span style="color:#719e07">=</span><span style="color:#2aa198">2</span>
+</span></span><span style="display:flex;"><span><span style="color:#268bd2">arch</span><span style="color:#719e07">=(</span><span style="color:#2aa198">&#39;any&#39;</span><span style="color:#719e07">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#268bd2">options</span><span style="color:#719e07">=(</span><span style="color:#2aa198">&#39;!debug&#39;</span><span style="color:#719e07">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#268bd2">groups</span><span style="color:#719e07">=(</span><span style="color:#2aa198">&#39;gaspar&#39;</span><span style="color:#719e07">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#268bd2">depends</span><span style="color:#719e07">=(</span>
+</span></span><span style="display:flex;"><span>	ttf-ibm-plex
+</span></span><span style="display:flex;"><span>	ttf-ibmplex-mono-nerd
+</span></span><span style="display:flex;"><span>	ttf-iosevka-nerd
+</span></span><span style="display:flex;"><span>	noto-fonts-emoji
+</span></span><span style="display:flex;"><span>	otf-font-awesome
+</span></span><span style="display:flex;"><span><span style="color:#719e07">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#586e75"># vim:ft=sh</span>
+</span></span></code></pre></div><p>There are a couple of <strong>gaspar-meta-*</strong> packages:</p>
+<ul>
+<li>gaspar-meta-arch</li>
+<li>gaspar-meta-archdrive</li>
+<li>gaspar-meta-base</li>
+<li>gaspar-meta-desktoptools</li>
+<li>gaspar-meta-devenv</li>
+<li>gaspar-meta-fonts</li>
+<li>gaspar-meta-git</li>
+<li>gaspar-meta-linux</li>
+<li>gaspar-meta-media</li>
+<li>gaspar-meta-network</li>
+<li>gaspar-meta-nvim</li>
+<li>gaspar-meta-nvim-devenv</li>
+<li>gaspar-meta-nvim-work</li>
+<li>gaspar-meta-shell</li>
+<li>gaspar-meta-website</li>
+<li>gaspar-meta-work</li>
+</ul>
+<p>gaspar-meta-git for example contains the packages needed for working with git as dependencies:</p>
+<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-PKGBUILD" data-lang="PKGBUILD"><span style="display:flex;"><span><span style="color:#268bd2">pkgname</span><span style="color:#719e07">=</span>gaspar-meta-git
+</span></span><span style="display:flex;"><span><span style="color:#268bd2">pkgver</span><span style="color:#719e07">=</span><span style="color:#2aa198">1</span>
+</span></span><span style="display:flex;"><span><span style="color:#268bd2">pkgrel</span><span style="color:#719e07">=</span><span style="color:#2aa198">2</span>
+</span></span><span style="display:flex;"><span><span style="color:#268bd2">arch</span><span style="color:#719e07">=(</span><span style="color:#2aa198">&#39;any&#39;</span><span style="color:#719e07">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#268bd2">options</span><span style="color:#719e07">=(</span><span style="color:#2aa198">&#39;!debug&#39;</span><span style="color:#719e07">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#268bd2">groups</span><span style="color:#719e07">=(</span><span style="color:#2aa198">&#39;gaspar&#39;</span><span style="color:#719e07">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#268bd2">depends</span><span style="color:#719e07">=(</span>
+</span></span><span style="display:flex;"><span>	git
+</span></span><span style="display:flex;"><span>	git-delta
+</span></span><span style="display:flex;"><span>	lazygit
+</span></span><span style="display:flex;"><span>	less
+</span></span><span style="display:flex;"><span>	neovim
+</span></span><span style="display:flex;"><span>	openssh
+</span></span><span style="display:flex;"><span><span style="color:#719e07">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#586e75"># vim:ft=sh</span>
+</span></span></code></pre></div><p>Also there are <strong>gaspar-device-*</strong> and <strong>gaspar-device-*-gpu</strong> packages containing the device specific packages as dependencies.</p>
+<p>For example <strong>gaspar-device-g16_7630</strong> contains these dependencies:
+alsa-firmware, alsa-plugins, alsa-utils, acpi, acpi_call, tlp, scx-scheds, smartmontools, ethtool, gaspar-device-g16_7630-gpu, intel-ucode, libsmbios, nvidia-open, sof-firmware, thermald.</p>
+<p>And <strong>gaspar-device-g16_7630-gpu</strong> contains these dependencies:	intel-gpu-tools, intel-media-driver, libva, libva-utils, libvdpau, libvdpau-va-gl, mesa, mesa-utils, nvidia-prime, nvidia-utils, nvtop, opencl-nvidia, vdpauinfo, vpl-gpu-rt, vulkan-headers, vulkan-icd-loader, vulkan-intel, vulkan-mesa-layers, vulkan-tools.</p>
+<p>As you can see the gpu firmware package <strong>nvidia-open</strong> is in the device package, the gpu one contains the userspace packaged required to work with gpu.
+This is because I use the second one in the host and in the containers where I want to work with gpus too, but the firmware package needs to be installed only on host.</p>
+<p>Pacman&rsquo;s packages have this great feature: I add <strong>provides=(&lsquo;gaspar-device-gpu&rsquo;)</strong> to device gpu specific packages and whenevet I install <strong>gaspar-device-gpu</strong> either explicitly or as a dependency, pacman provides the list of all packages providing that package and asks me to choose which one I want to install.</p>
+<p>I use Systemd Nspawn containers, each container uses different set of metapackages. To manage the container and host metapackages I&rsquo;ve added another group of metapackages:</p>
+<ul>
+<li>gaspar-system-devenv - this contains the metapackages used for personal development projects as dependencies</li>
+<li>gaspar-system-odyssey - this one is for the host (I&rsquo;ve called my host <strong>odyssey</strong>)</li>
+<li>gaspar-system-website - this container was dedicated for thes website, but now I edit this website in devenv</li>
+<li>gaspar-system-work - and this one is for work</li>
+</ul>
+<p>For example gaspar-system-odyssey looks like:</p>
+<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-PKGBUILD" data-lang="PKGBUILD"><span style="display:flex;"><span><span style="color:#268bd2">pkgname</span><span style="color:#719e07">=</span>gaspar-system-odyssey
+</span></span><span style="display:flex;"><span><span style="color:#268bd2">pkgver</span><span style="color:#719e07">=</span><span style="color:#2aa198">1</span>
+</span></span><span style="display:flex;"><span><span style="color:#268bd2">pkgrel</span><span style="color:#719e07">=</span><span style="color:#2aa198">9</span>
+</span></span><span style="display:flex;"><span><span style="color:#268bd2">arch</span><span style="color:#719e07">=(</span><span style="color:#2aa198">&#39;any&#39;</span><span style="color:#719e07">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#268bd2">options</span><span style="color:#719e07">=(</span><span style="color:#2aa198">&#39;!debug&#39;</span><span style="color:#719e07">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#268bd2">groups</span><span style="color:#719e07">=(</span><span style="color:#2aa198">&#39;gaspar&#39;</span><span style="color:#719e07">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#268bd2">depends</span><span style="color:#719e07">=(</span>
+</span></span><span style="display:flex;"><span>	gaspar-meta-arch
+</span></span><span style="display:flex;"><span>	gaspar-meta-base
+</span></span><span style="display:flex;"><span>	gaspar-meta-desktoptools <span style="color:#586e75"># TODO: review</span>
+</span></span><span style="display:flex;"><span>	gaspar-meta-fonts
+</span></span><span style="display:flex;"><span>	gaspar-meta-git
+</span></span><span style="display:flex;"><span>	gaspar-meta-linux
+</span></span><span style="display:flex;"><span>	gaspar-meta-media
+</span></span><span style="display:flex;"><span>	gaspar-meta-network
+</span></span><span style="display:flex;"><span>	gaspar-meta-nvim
+</span></span><span style="display:flex;"><span>	gaspar-meta-shell
+</span></span><span style="display:flex;"><span>	gaspar-device
+</span></span><span style="display:flex;"><span>	gaspar-device-gpu
+</span></span><span style="display:flex;"><span><span style="color:#719e07">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#586e75"># vim:ft=sh</span>
+</span></span></code></pre></div><p>Whenever I need to install my setup from scratch I install this package, which asks me to choose the appropriate gaspar-device and gaspar-device-gpu packages for the device.</p>
+<p>I keep these metapackages <a href="https://github.com/GasparVardanyan/dotfiles/tree/master/repo">in my dotfiles</a>. I usually clone my dotfiles in /desktop/dotfiles and make a symlink of my repo directory from my dotfiles to /desktop/repo and add this to <strong>/etc/pacman.conf</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ini" data-lang="ini"><span style="display:flex;"><span><span style="color:#719e07">[gaspar]</span>
+</span></span><span style="display:flex;"><span>SigLevel <span style="color:#719e07">=</span> <span style="color:#2aa198">Optional TrustAll</span>
+</span></span><span style="display:flex;"><span>Server <span style="color:#719e07">=</span> <span style="color:#2aa198">file:///desktop/repo</span>
+</span></span></code></pre></div><p>Then updating the repo cache with <strong>pacman -Syy</strong> I have access to this repo.</p>
+<p>And my system looks very clean:</p>
+<pre tabindex="0"><code>-&gt; [ ~ ] :: pacman -Qe # the explicitly installed packages
+gaspar-system-odyssey 1-9
+-&gt; [ ~ ] :: pacman -Qi gaspar-system-odyssey
+Name            : gaspar-system-odyssey
+Version         : 1-9
+Description     : None
+Architecture    : any
+URL             : None
+Licenses        : None
+Groups          : gaspar
+Provides        : None
+Depends On      : gaspar-meta-arch  gaspar-meta-base  gaspar-meta-desktoptools  gaspar-meta-fonts
+				  gaspar-meta-git  gaspar-meta-linux  gaspar-meta-media  gaspar-meta-network
+				  gaspar-meta-nvim  gaspar-meta-shell  gaspar-device  gaspar-device-gpu
+Optional Deps   : None
+Required By     : None
+Optional For    : None
+Conflicts With  : None
+Replaces        : None
+Installed Size  : 0.00 B
+Packager        : Unknown Packager
+Build Date      : Sun 09 Nov 2025 03:46:15 AM +04
+Install Date    : Sun 09 Nov 2025 03:48:40 AM +04
+Install Reason  : Explicitly installed
+Install Script  : No
+Validated By    : SHA-256 Sum
+
+-&gt; [ ~ ] :: pacman -Qi gaspar-meta-arch
+Name            : gaspar-meta-arch
+Version         : 1-4
+Description     : None
+Architecture    : any
+URL             : None
+Licenses        : None
+Groups          : gaspar
+Provides        : None
+Depends On      : arch-wiki-docs  arch-wiki-lite  archlinux-contrib  devtools  dialog  pacman-contrib
+				  pkgfile  reflector
+Optional Deps   : None
+Required By     : gaspar-system-odyssey
+Optional For    : None
+Conflicts With  : None
+Replaces        : None
+Installed Size  : 0.00 B
+Packager        : Unknown Packager
+Build Date      : Fri 07 Nov 2025 09:09:06 PM +04
+Install Date    : Fri 07 Nov 2025 09:16:55 PM +04
+Install Reason  : Installed as a dependency for another package
+Install Script  : No
+Validated By    : SHA-256 Sum
+
+-&gt; [ ~ ] ::
+</code></pre><p>In the next part I&rsquo;ll describe the Systemd Nspawn usage.</p>
+</div>
+
+		<p class="meta">Posted on <span class="postdate">24. November 2025</span></p>
+	</article>
+
+			</div>
+
+			<footer id="footer">
+				
+				
+				
+				
+				
+				
+
+				<div align="right"><p><a href="/gaspar.monero">monero wallet</a> | <a href="/gaspar.asc">pgp public key</a> | <a href="/gaspar.pub">ssh public key</a> | <a href="https://github.com/GasparVardanyan/gasparvardanyan.github.io/">source</a></p></div>
+
+
+			</footer>
+		</div>
+	</body>
+</html>
