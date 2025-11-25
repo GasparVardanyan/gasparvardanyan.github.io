@@ -249,12 +249,9 @@ The interface to use is:
 1. **plctrl select_source** - find active mpv instances via sockets, determine
 whether cmus is running and open a dmenu prompt to select the player to control.
 2. **plctrl next/prev/play/pause** - control the selected player if any, otherwise
-do **select_source** first** - find active mpv instances via sockets, determine
-whether cmus is running and open a dmenu prompt to select the player to control.
-2. **plctrl next/prev/play/pause** - control the selected player if any, otherwise
-do **select_source** first.
+do **select_source** first
 3. **plctrl optimize** - I store my local playlists with videos in
-/media/music/music_best and name video files with youtube id. This command finds
+/media/music/music_best and name video files with youtube ids. This command finds
 already downloaded videos and replaces them with local files inside the playlist.
 This command is invoked from ytmpv_server.py
 
