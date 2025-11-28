@@ -14,7 +14,7 @@
       
       <guid>https://gasparvardanyan.github.io/blog/arch-workstation-3/</guid>
       <description>&lt;h2 id=&#34;the-basic-setup&#34;&gt;The basic setup&lt;/h2&gt;
-&lt;p&gt;As I mentioned in Part 1 and Part 2 I use &lt;a href=&#34;https://wiki.archlinux.org/title/Systemd-nspawn&#34;&gt;Systemd Nspawn&lt;/a&gt; to manage containers. It&amp;rsquo;s like the chroot command, but it is a chroot on steroids.
+&lt;p&gt;As I mentioned in &lt;a href=&#34;../arch-workstation-1/&#34;&gt;Part 1&lt;/a&gt; and &lt;a href=&#34;../arch-workstation-2/&#34;&gt;Part 2&lt;/a&gt; I use &lt;a href=&#34;https://wiki.archlinux.org/title/Systemd-nspawn&#34;&gt;Systemd Nspawn&lt;/a&gt; to manage containers. It&amp;rsquo;s like the chroot command, but it is a chroot on steroids.
 By using containers, I can keep the host system minimal (currently it has only 684 packages installed) while maintaining separate, well-organized environments for different tasks.&lt;/p&gt;
 &lt;p&gt;As I described in Part 1 I have these subvolumes:&lt;/p&gt;
 &lt;ul&gt;
@@ -22,8 +22,7 @@ By using containers, I can keep the host system minimal (currently it has only 6
 installation with base, base-devel and vi packages and zoneinfo, hwclock, locale configurations&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;/systems/archlinux-linux&lt;/strong&gt; [RO] - a snapshot of archlinux-base with linux, linux-headers and
 linux-firmware* packages&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;/systems/archlinux-packaged&lt;/strong&gt; [RO] - a snapshot of archlinux-linux with packages my basic setup contains
-(will be discussed in detail in a separate article)&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;/systems/archlinux-packaged&lt;/strong&gt; [RO] - a snapshot of archlinux-linux with packages my basic setup contains&lt;/li&gt;
 &lt;li&gt;&amp;hellip;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;And the &lt;strong&gt;/containers&lt;/strong&gt; subvolume: the subvolume for systemd-nspawn containers.

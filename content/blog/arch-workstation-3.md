@@ -5,7 +5,7 @@ date: 2025-11-25T18:02:27+04:00
 
 
 ## The basic setup
-As I mentioned in Part 1 and Part 2 I use [Systemd Nspawn](https://wiki.archlinux.org/title/Systemd-nspawn) to manage containers. It's like the chroot command, but it is a chroot on steroids.
+As I mentioned in [Part 1](../arch-workstation-1/) and [Part 2](../arch-workstation-2/) I use [Systemd Nspawn](https://wiki.archlinux.org/title/Systemd-nspawn) to manage containers. It's like the chroot command, but it is a chroot on steroids.
 By using containers, I can keep the host system minimal (currently it has only 684 packages installed) while maintaining separate, well-organized environments for different tasks.
 
 As I described in Part 1 I have these subvolumes:
@@ -15,7 +15,6 @@ installation with base, base-devel and vi packages and zoneinfo, hwclock, locale
 - **/systems/archlinux-linux** \[RO\] - a snapshot of archlinux-base with linux, linux-headers and
 linux-firmware* packages
 - **/systems/archlinux-packaged** \[RO\] - a snapshot of archlinux-linux with packages my basic setup contains
-(will be discussed in detail in a separate article)
 - ...
 
 And the **/containers** subvolume: the subvolume for systemd-nspawn containers.
