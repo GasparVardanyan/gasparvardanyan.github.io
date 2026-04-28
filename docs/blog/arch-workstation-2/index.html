@@ -118,7 +118,7 @@ document.getElementById ("VIDEO").src = videos [Math.floor(Math.random() * video
 <p>To solve this problem I decided to take a benefit from Arch&rsquo;s metapackages. Metapackages in Arch Linux (and probably in other distributions too) are just empty packages carying a list of dependencies.</p>
 <p>The greatest package manager: Arch&rsquo;s Pacman uses files called <a href="https://wiki.archlinux.org/title/PKGBUILD">PKGBUILD</a> to describe packages. I&rsquo;ve splited the packages I use to metapackages, each one containing a list of packages of a specific category as dependencies.</p>
 <p>So the PKGBUILD of the package <strong>gaspar-meta-fonts</strong> currently looks like:</p>
-<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-PKGBUILD" data-lang="PKGBUILD"><span style="display:flex;"><span><span style="color:#268bd2">pkgname</span><span style="color:#719e07">=</span>gaspar-meta-fonts
+<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-PKGBUILD" data-lang="PKGBUILD"><span style="display:flex;"><span><span style="color:#268bd2">pkgname</span><span style="color:#719e07">=</span>gaspar-meta-fonts
 </span></span><span style="display:flex;"><span><span style="color:#268bd2">pkgver</span><span style="color:#719e07">=</span><span style="color:#2aa198">1</span>
 </span></span><span style="display:flex;"><span><span style="color:#268bd2">pkgrel</span><span style="color:#719e07">=</span><span style="color:#2aa198">2</span>
 </span></span><span style="display:flex;"><span><span style="color:#268bd2">arch</span><span style="color:#719e07">=(</span><span style="color:#2aa198">&#39;any&#39;</span><span style="color:#719e07">)</span>
@@ -153,7 +153,7 @@ document.getElementById ("VIDEO").src = videos [Math.floor(Math.random() * video
 <li>gaspar-meta-work</li>
 </ul>
 <p>gaspar-meta-git for example contains the packages needed for working with git as dependencies:</p>
-<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-PKGBUILD" data-lang="PKGBUILD"><span style="display:flex;"><span><span style="color:#268bd2">pkgname</span><span style="color:#719e07">=</span>gaspar-meta-git
+<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-PKGBUILD" data-lang="PKGBUILD"><span style="display:flex;"><span><span style="color:#268bd2">pkgname</span><span style="color:#719e07">=</span>gaspar-meta-git
 </span></span><span style="display:flex;"><span><span style="color:#268bd2">pkgver</span><span style="color:#719e07">=</span><span style="color:#2aa198">1</span>
 </span></span><span style="display:flex;"><span><span style="color:#268bd2">pkgrel</span><span style="color:#719e07">=</span><span style="color:#2aa198">2</span>
 </span></span><span style="display:flex;"><span><span style="color:#268bd2">arch</span><span style="color:#719e07">=(</span><span style="color:#2aa198">&#39;any&#39;</span><span style="color:#719e07">)</span>
@@ -184,7 +184,7 @@ This is because I use the second one in the host and in the containers where I w
 <li>gaspar-system-work - and this one is for work</li>
 </ul>
 <p>For example gaspar-system-odyssey looks like:</p>
-<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-PKGBUILD" data-lang="PKGBUILD"><span style="display:flex;"><span><span style="color:#268bd2">pkgname</span><span style="color:#719e07">=</span>gaspar-system-odyssey
+<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-PKGBUILD" data-lang="PKGBUILD"><span style="display:flex;"><span><span style="color:#268bd2">pkgname</span><span style="color:#719e07">=</span>gaspar-system-odyssey
 </span></span><span style="display:flex;"><span><span style="color:#268bd2">pkgver</span><span style="color:#719e07">=</span><span style="color:#2aa198">1</span>
 </span></span><span style="display:flex;"><span><span style="color:#268bd2">pkgrel</span><span style="color:#719e07">=</span><span style="color:#2aa198">9</span>
 </span></span><span style="display:flex;"><span><span style="color:#268bd2">arch</span><span style="color:#719e07">=(</span><span style="color:#2aa198">&#39;any&#39;</span><span style="color:#719e07">)</span>
@@ -208,7 +208,7 @@ This is because I use the second one in the host and in the containers where I w
 </span></span><span style="display:flex;"><span><span style="color:#586e75"># vim:ft=sh</span>
 </span></span></code></pre></div><p>Whenever I need to install my setup from scratch I install this package, which asks me to choose the appropriate gaspar-device and gaspar-device-gpu packages for the device.</p>
 <p>I keep these metapackages <a href="https://github.com/GasparVardanyan/dotfiles/tree/master/repo">in my dotfiles</a>. I usually clone my dotfiles in /desktop/dotfiles and make a symlink of my repo directory from my dotfiles to /desktop/repo and add this to <strong>/etc/pacman.conf</strong>:</p>
-<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ini" data-lang="ini"><span style="display:flex;"><span><span style="color:#719e07">[gaspar]</span>
+<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-ini" data-lang="ini"><span style="display:flex;"><span><span style="color:#719e07">[gaspar]</span>
 </span></span><span style="display:flex;"><span>SigLevel <span style="color:#719e07">=</span> <span style="color:#2aa198">Optional TrustAll</span>
 </span></span><span style="display:flex;"><span>Server <span style="color:#719e07">=</span> <span style="color:#2aa198">file:///desktop/repo</span>
 </span></span></code></pre></div><p>Then updating the repo cache with <strong>pacman -Syy</strong> I have access to this repo.</p>

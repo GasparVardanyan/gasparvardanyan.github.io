@@ -1,0 +1,13 @@
+{{ $file := .Get 0 }}
+{{ $raw := readFile $file }}
+
+{{/* Split on front matter delimiter */}}
+{{ $parts := split $raw "---" }}
+
+{{/* If front matter exists, content starts after second --- */}}
+{{ if ge (len $parts) 3 }}
+  {{ $content := index $parts 2 }}
+  {{ $content | markdownify }}
+{{ else }}
+  {{ $raw | markdownify }}
+{{ end }}

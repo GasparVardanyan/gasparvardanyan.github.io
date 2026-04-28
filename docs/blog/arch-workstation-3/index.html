@@ -136,7 +136,7 @@ For the containers the &ldquo;linux&rdquo; and the firmware packages aren&rsquo;
 <li>Edit the machine&rsquo;s config: by default if it&rsquo;s started with machinectl it&rsquo;ll use namespacing and virtual networking. Booting the container in a namespaced environment will use different set of UIDs and GIDs. This is good for security, but if you want to mount file, directory or a device from host to the container, unmatching UIDs and GIDs will cause some problems. If you disable the namespacing later, probably the container will not recognize the old UIDs and GIDs set to files from previous boots and will cause problems.
 To disable the user namespacing and the virtual network we have to edit the machine&rsquo;s config: <strong>machinectl edit test</strong> and add:</li>
 </ol>
-<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ini" data-lang="ini"><span style="display:flex;"><span><span style="color:#719e07">[Exec]</span>
+<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-ini" data-lang="ini"><span style="display:flex;"><span><span style="color:#719e07">[Exec]</span>
 </span></span><span style="display:flex;"><span>PrivateUsers<span style="color:#719e07">=</span><span style="color:#2aa198">no</span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#719e07">[Network]</span>
@@ -149,30 +149,30 @@ To disable the user namespacing and the virtual network we have to edit the mach
 <p>As far as I know there&rsquo;s no way to do scripting in the container&rsquo;s files.
 For example I want to mount all the fonts installed on the host to the container to avoid duplicate big packages (ttf-iosevka-nerd is ~1GiB). The file lists of packages can change from version to version, so we need a dynamic solution.</p>
 <p>When a container starts with machinectl (either explicitly with the start command or at boot if enabled), it will run the <strong>systemd-nspawn@.service.d</strong> unit passing the container&rsquo;s name as an argument. So editing <strong>/etc/systemd/system/systemd-nspawn@.service.d/override.conf</strong> we can make it to run a bash script which will decide which files from host to mount:</p>
-<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ini" data-lang="ini"><span style="display:flex;"><span><span style="color:#719e07">[Service]</span>
+<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-ini" data-lang="ini"><span style="display:flex;"><span><span style="color:#719e07">[Service]</span>
 </span></span><span style="display:flex;"><span>ExecStartPost<span style="color:#719e07">=</span><span style="color:#2aa198">/usr/local/etc/nspawn/machine.sh %I</span>
 </span></span></code></pre></div><p>From <strong>machine.sh</strong> we can do:</p>
-<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#719e07">#!/usr/bin/env bash
-</span></span></span><span style="display:flex;"><span><span style="color:#719e07"></span>
+<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#719e07">#!/usr/bin/env bash
+</span></span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#268bd2">MACHINE</span><span style="color:#719e07">=</span><span style="color:#2aa198">&#34;</span><span style="color:#268bd2">$1</span><span style="color:#2aa198">&#34;</span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>pacman -Ql <span style="color:#719e07">$(</span>pactree gaspar-meta-fonts -d <span style="color:#2aa198">1</span> -l | sed <span style="color:#2aa198">&#39;1d&#39;</span> | paste -s -d <span style="color:#2aa198">&#39; &#39;</span><span style="color:#719e07">)</span> <span style="color:#cb4b16">\
-</span></span></span><span style="display:flex;"><span><span style="color:#cb4b16"></span>	| cut -f 2- -d <span style="color:#2aa198">&#39; &#39;</span> <span style="color:#cb4b16">\
-</span></span></span><span style="display:flex;"><span><span style="color:#cb4b16"></span>	| grep -v <span style="color:#2aa198">&#39;/$&#39;</span> <span style="color:#cb4b16">\
-</span></span></span><span style="display:flex;"><span><span style="color:#cb4b16"></span>	| xargs -I _ machinectl <span style="color:#b58900">bind</span> --mkdir --read-only <span style="color:#268bd2">$MACHINE</span> <span style="color:#2aa198">&#34;_&#34;</span>
+</span></span></span><span style="display:flex;"><span>	| cut -f 2- -d <span style="color:#2aa198">&#39; &#39;</span> <span style="color:#cb4b16">\
+</span></span></span><span style="display:flex;"><span>	| grep -v <span style="color:#2aa198">&#39;/$&#39;</span> <span style="color:#cb4b16">\
+</span></span></span><span style="display:flex;"><span>	| xargs -I _ machinectl <span style="color:#b58900">bind</span> --mkdir --read-only <span style="color:#268bd2">$MACHINE</span> <span style="color:#2aa198">&#34;_&#34;</span>
 </span></span></code></pre></div><p>This will find all dependencies of gaspar-meta-fonts - the fonts I use, read the files lists of that packages and mount them all to the container.</p>
 <h2 id="a-better-setup">A better setup</h2>
 <p>So let&rsquo;s make a more flexible setup for various use cases of containers.
 First let&rsquo;s move the font part to a separate script <strong>/usr/local/etc/nspawn/configs/font.sh</strong>:</p>
-<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>pacman -Ql <span style="color:#719e07">$(</span>pactree gaspar-meta-fonts -d <span style="color:#2aa198">1</span> -l | sed <span style="color:#2aa198">&#39;1d&#39;</span> | paste -s -d <span style="color:#2aa198">&#39; &#39;</span><span style="color:#719e07">)</span> <span style="color:#cb4b16">\
-</span></span></span><span style="display:flex;"><span><span style="color:#cb4b16"></span>	| cut -f 2- -d <span style="color:#2aa198">&#39; &#39;</span> <span style="color:#cb4b16">\
-</span></span></span><span style="display:flex;"><span><span style="color:#cb4b16"></span>	| grep -v <span style="color:#2aa198">&#39;/$&#39;</span> <span style="color:#cb4b16">\
-</span></span></span><span style="display:flex;"><span><span style="color:#cb4b16"></span>	| xargs -I _ machinectl <span style="color:#b58900">bind</span> --mkdir --read-only <span style="color:#268bd2">$MACHINE</span> <span style="color:#2aa198">&#34;_&#34;</span>
+<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>pacman -Ql <span style="color:#719e07">$(</span>pactree gaspar-meta-fonts -d <span style="color:#2aa198">1</span> -l | sed <span style="color:#2aa198">&#39;1d&#39;</span> | paste -s -d <span style="color:#2aa198">&#39; &#39;</span><span style="color:#719e07">)</span> <span style="color:#cb4b16">\
+</span></span></span><span style="display:flex;"><span>	| cut -f 2- -d <span style="color:#2aa198">&#39; &#39;</span> <span style="color:#cb4b16">\
+</span></span></span><span style="display:flex;"><span>	| grep -v <span style="color:#2aa198">&#39;/$&#39;</span> <span style="color:#cb4b16">\
+</span></span></span><span style="display:flex;"><span>	| xargs -I _ machinectl <span style="color:#b58900">bind</span> --mkdir --read-only <span style="color:#268bd2">$MACHINE</span> <span style="color:#2aa198">&#34;_&#34;</span>
 </span></span></code></pre></div><p>And make some more configs:</p>
 <ul>
 <li><strong>/usr/local/etc/nspawn/configs/gpu.sh</strong> - for accessing gpus from the container (even cuda works with this setup):</li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>machinectl <span style="color:#b58900">bind</span> --mkdir <span style="color:#268bd2">$MACHINE</span> /dev/dri
+<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>machinectl <span style="color:#b58900">bind</span> --mkdir <span style="color:#268bd2">$MACHINE</span> /dev/dri
 </span></span><span style="display:flex;"><span>machinectl <span style="color:#b58900">bind</span> --mkdir <span style="color:#268bd2">$MACHINE</span> /dev/shm
 </span></span><span style="display:flex;"><span>machinectl <span style="color:#b58900">bind</span> --mkdir <span style="color:#268bd2">$MACHINE</span> /dev/nvidia0
 </span></span><span style="display:flex;"><span>machinectl <span style="color:#b58900">bind</span> --mkdir <span style="color:#268bd2">$MACHINE</span> /dev/nvidiactl
@@ -181,55 +181,55 @@ First let&rsquo;s move the font part to a separate script <strong>/usr/local/etc
 </span></span><span style="display:flex;"><span>machinectl <span style="color:#b58900">bind</span> --mkdir <span style="color:#268bd2">$MACHINE</span> /dev/nvidia-uvm-tools
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>systemctl set-property --runtime systemd-nspawn@<span style="color:#268bd2">$MACHINE</span>.service <span style="color:#cb4b16">\
-</span></span></span><span style="display:flex;"><span><span style="color:#cb4b16"></span>	<span style="color:#268bd2">DeviceAllow</span><span style="color:#719e07">=</span><span style="color:#2aa198">&#34;/dev/dri/renderD128&#34;</span> <span style="color:#cb4b16">\
-</span></span></span><span style="display:flex;"><span><span style="color:#cb4b16"></span>	<span style="color:#268bd2">DeviceAllow</span><span style="color:#719e07">=</span><span style="color:#2aa198">&#34;/dev/dri/renderD129&#34;</span> <span style="color:#cb4b16">\
-</span></span></span><span style="display:flex;"><span><span style="color:#cb4b16"></span>	<span style="color:#268bd2">DeviceAllow</span><span style="color:#719e07">=</span><span style="color:#2aa198">&#34;/dev/nvidia0&#34;</span> <span style="color:#cb4b16">\
-</span></span></span><span style="display:flex;"><span><span style="color:#cb4b16"></span>	<span style="color:#268bd2">DeviceAllow</span><span style="color:#719e07">=</span><span style="color:#2aa198">&#34;/dev/nvidiactl&#34;</span> <span style="color:#cb4b16">\
-</span></span></span><span style="display:flex;"><span><span style="color:#cb4b16"></span>	<span style="color:#268bd2">DeviceAllow</span><span style="color:#719e07">=</span><span style="color:#2aa198">&#34;/dev/nvidia-modeset&#34;</span> <span style="color:#cb4b16">\
-</span></span></span><span style="display:flex;"><span><span style="color:#cb4b16"></span>	<span style="color:#268bd2">DeviceAllow</span><span style="color:#719e07">=</span><span style="color:#2aa198">&#34;/dev/nvidia-uvm&#34;</span> <span style="color:#cb4b16">\
-</span></span></span><span style="display:flex;"><span><span style="color:#cb4b16"></span>	<span style="color:#268bd2">DeviceAllow</span><span style="color:#719e07">=</span><span style="color:#2aa198">&#34;/dev/nvidia-uvm-tools&#34;</span>
+</span></span></span><span style="display:flex;"><span>	<span style="color:#268bd2">DeviceAllow</span><span style="color:#719e07">=</span><span style="color:#2aa198">&#34;/dev/dri/renderD128&#34;</span> <span style="color:#cb4b16">\
+</span></span></span><span style="display:flex;"><span>	<span style="color:#268bd2">DeviceAllow</span><span style="color:#719e07">=</span><span style="color:#2aa198">&#34;/dev/dri/renderD129&#34;</span> <span style="color:#cb4b16">\
+</span></span></span><span style="display:flex;"><span>	<span style="color:#268bd2">DeviceAllow</span><span style="color:#719e07">=</span><span style="color:#2aa198">&#34;/dev/nvidia0&#34;</span> <span style="color:#cb4b16">\
+</span></span></span><span style="display:flex;"><span>	<span style="color:#268bd2">DeviceAllow</span><span style="color:#719e07">=</span><span style="color:#2aa198">&#34;/dev/nvidiactl&#34;</span> <span style="color:#cb4b16">\
+</span></span></span><span style="display:flex;"><span>	<span style="color:#268bd2">DeviceAllow</span><span style="color:#719e07">=</span><span style="color:#2aa198">&#34;/dev/nvidia-modeset&#34;</span> <span style="color:#cb4b16">\
+</span></span></span><span style="display:flex;"><span>	<span style="color:#268bd2">DeviceAllow</span><span style="color:#719e07">=</span><span style="color:#2aa198">&#34;/dev/nvidia-uvm&#34;</span> <span style="color:#cb4b16">\
+</span></span></span><span style="display:flex;"><span>	<span style="color:#268bd2">DeviceAllow</span><span style="color:#719e07">=</span><span style="color:#2aa198">&#34;/dev/nvidia-uvm-tools&#34;</span>
 </span></span></code></pre></div><ul>
 <li><strong>/usr/local/etc/nspawn/configs/resolv.sh</strong> - after switching the wifi network, this file changes and the container must have an identical one to be able to access the Internet.</li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>machinectl <span style="color:#b58900">bind</span> --mkdir --read-only <span style="color:#268bd2">$MACHINE</span> /etc/resolv.conf
+<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>machinectl <span style="color:#b58900">bind</span> --mkdir --read-only <span style="color:#268bd2">$MACHINE</span> /etc/resolv.conf
 </span></span></code></pre></div><ul>
 <li><strong>/usr/local/etc/nspawn/configs/mirrorlist.sh</strong> - To use the host&rsquo;s package mirrorlist which can be regenerated with <a href="https://wiki.archlinux.org/title/Reflector">reflector</a> to get the fastest ones.</li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>machinectl <span style="color:#b58900">bind</span> --mkdir --read-only <span style="color:#268bd2">$MACHINE</span> /etc/pacman.d/mirrorlist
+<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>machinectl <span style="color:#b58900">bind</span> --mkdir --read-only <span style="color:#268bd2">$MACHINE</span> /etc/pacman.d/mirrorlist
 </span></span></code></pre></div><ul>
 <li><strong>/usr/local/etc/nspawn/configs/desktop.sh</strong> - mount the desktop related stuff: dotfiles, etc</li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>machinectl <span style="color:#b58900">bind</span> --mkdir --read-only <span style="color:#268bd2">$MACHINE</span> /desktop
+<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>machinectl <span style="color:#b58900">bind</span> --mkdir --read-only <span style="color:#268bd2">$MACHINE</span> /desktop
 </span></span></code></pre></div><ul>
 <li><strong>/usr/local/etc/nspawn/configs/kvm.sh</strong> - to be able to run vms from the container</li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>machinectl <span style="color:#b58900">bind</span> --mkdir <span style="color:#268bd2">$MACHINE</span> /dev/kvm
+<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>machinectl <span style="color:#b58900">bind</span> --mkdir <span style="color:#268bd2">$MACHINE</span> /dev/kvm
 </span></span><span style="display:flex;"><span>systemctl set-property --runtime systemd-nspawn@<span style="color:#268bd2">$MACHINE</span>.service <span style="color:#cb4b16">\
-</span></span></span><span style="display:flex;"><span><span style="color:#cb4b16"></span>	<span style="color:#268bd2">DeviceAllow</span><span style="color:#719e07">=</span><span style="color:#2aa198">&#34;/dev/kvm&#34;</span>
+</span></span></span><span style="display:flex;"><span>	<span style="color:#268bd2">DeviceAllow</span><span style="color:#719e07">=</span><span style="color:#2aa198">&#34;/dev/kvm&#34;</span>
 </span></span></code></pre></div><ul>
 <li><strong>/usr/local/etc/nspawn/configs/limits.sh</strong> - had your program accidentially crashed your os filling the RAM and forcing you to reboot? Using these limits it will never happen again ))</li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>systemctl set-property --runtime systemd-nspawn@<span style="color:#268bd2">$MACHINE</span>.service	<span style="color:#cb4b16">\
-</span></span></span><span style="display:flex;"><span><span style="color:#cb4b16"></span>	<span style="color:#268bd2">MemoryHigh</span><span style="color:#719e07">=</span>10G							<span style="color:#cb4b16">\
-</span></span></span><span style="display:flex;"><span><span style="color:#cb4b16"></span>	<span style="color:#268bd2">MemoryMax</span><span style="color:#719e07">=</span>10G							<span style="color:#cb4b16">\
-</span></span></span><span style="display:flex;"><span><span style="color:#cb4b16"></span>	<span style="color:#268bd2">CPUQuota</span><span style="color:#719e07">=</span>1000%
+<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>systemctl set-property --runtime systemd-nspawn@<span style="color:#268bd2">$MACHINE</span>.service	<span style="color:#cb4b16">\
+</span></span></span><span style="display:flex;"><span>	<span style="color:#268bd2">MemoryHigh</span><span style="color:#719e07">=</span>10G							<span style="color:#cb4b16">\
+</span></span></span><span style="display:flex;"><span>	<span style="color:#268bd2">MemoryMax</span><span style="color:#719e07">=</span>10G							<span style="color:#cb4b16">\
+</span></span></span><span style="display:flex;"><span>	<span style="color:#268bd2">CPUQuota</span><span style="color:#719e07">=</span>1000%
 </span></span></code></pre></div><ul>
 <li><strong>/usr/local/etc/nspawn/configs/xorg.sh</strong> - running gui apps from the container requires an authentication. First from <strong>~/.xinitrc</strong> I do:</li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>mkdir /tmp/nspawn
+<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>mkdir /tmp/nspawn
 </span></span><span style="display:flex;"><span>touch /tmp/nspawn/xauth
 </span></span><span style="display:flex;"><span>xauth nextract - <span style="color:#2aa198">&#34;</span><span style="color:#268bd2">$DISPLAY</span><span style="color:#2aa198">&#34;</span> | sed -e <span style="color:#2aa198">&#39;s/^..../ffff/&#39;</span> | xauth -f /tmp/nspawn/xauth nmerge -
 </span></span><span style="display:flex;"><span>chmod +r /tmp/nspawn/xauth
 </span></span><span style="display:flex;"><span>pactl load-module module-native-protocol-tcp <span style="color:#268bd2">port</span><span style="color:#719e07">=</span><span style="color:#2aa198">4656</span> <span style="color:#268bd2">listen</span><span style="color:#719e07">=</span>0.0.0.0 auth-anonymous<span style="color:#719e07">=</span><span style="color:#b58900">true</span> 2&gt;&amp;<span style="color:#2aa198">1</span> &gt;/dev/null &amp;
 </span></span></code></pre></div><p>As I&rsquo;m lazy to make a separate script for the audio protocol authentication, I do it along with corg configs. This export xorg&rsquo;s xauth key to /tmp/nspawn/xauth, which will be mounted to the container. Xorg reads the key from thr $XAUTHORITY file, so we also need to automate it. When you log in, the scripts from /etc/profile.d/ <a href="https://wiki.archlinux.org/title/Bash#Configuration_files">get executed</a>. We can make one which sets XAUTHORITY to /tmp/nspawn/xauth.
 <strong>/usr/local/etc/nspawn/profile.d/xorg.sh</strong> - inside the host:</p>
-<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#719e07">#!/bin/sh
-</span></span></span><span style="display:flex;"><span><span style="color:#719e07"></span>
+<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#719e07">#!/bin/sh
+</span></span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#b58900">export</span> <span style="color:#268bd2">DISPLAY</span><span style="color:#719e07">=</span>:0
 </span></span><span style="display:flex;"><span><span style="color:#b58900">export</span> <span style="color:#268bd2">XAUTHORITY</span><span style="color:#719e07">=</span>/tmp/nspawn/xauth
 </span></span><span style="display:flex;"><span><span style="color:#b58900">export</span> <span style="color:#268bd2">PULSE_SERVER</span><span style="color:#719e07">=</span><span style="color:#2aa198">&#34;0.0.0.0:4656&#34;</span>
 </span></span></code></pre></div><p>And finally edit the <strong>/usr/local/etc/nspawn/configs/xorg.sh</strong> to mount the neccessary files:</p>
-<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>machinectl <span style="color:#b58900">bind</span> --mkdir <span style="color:#268bd2">$MACHINE</span> /tmp/.X11-unix
+<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>machinectl <span style="color:#b58900">bind</span> --mkdir <span style="color:#268bd2">$MACHINE</span> /tmp/.X11-unix
 </span></span><span style="display:flex;"><span>machinectl <span style="color:#b58900">bind</span> --mkdir --read-only <span style="color:#268bd2">$MACHINE</span> /usr/local/etc/nspawn/profile.d/xorg.sh /etc/profile.d/nspawn_xorg.sh
 </span></span><span style="display:flex;"><span>mkdir /tmp/nspawn
 </span></span><span style="display:flex;"><span>chmod +rwx /tmp/nspawn
@@ -237,25 +237,25 @@ First let&rsquo;s move the font part to a separate script <strong>/usr/local/etc
 </span></span></code></pre></div><ul>
 <li><strong>/usr/local/etc/nspawn/configs/userconfig.sh</strong> - other container specific settings loader:</li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#719e07">if</span> <span style="color:#719e07">[</span> -d <span style="color:#2aa198">&#34;/usr/local/etc/nspawn/userconfig/</span><span style="color:#268bd2">$MACHINE</span><span style="color:#2aa198">&#34;</span> <span style="color:#719e07">]</span> ; <span style="color:#719e07">then</span>
+<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#719e07">if</span> <span style="color:#719e07">[</span> -d <span style="color:#2aa198">&#34;/usr/local/etc/nspawn/userconfig/</span><span style="color:#268bd2">$MACHINE</span><span style="color:#2aa198">&#34;</span> <span style="color:#719e07">]</span> ; <span style="color:#719e07">then</span>
 </span></span><span style="display:flex;"><span>	find <span style="color:#2aa198">&#34;/usr/local/etc/nspawn/userconfig/</span><span style="color:#268bd2">$MACHINE</span><span style="color:#2aa198">&#34;</span> -type f -name <span style="color:#2aa198">&#34;*.sh&#34;</span> <span style="color:#cb4b16">\
-</span></span></span><span style="display:flex;"><span><span style="color:#cb4b16"></span>		| sort -n -t / -k 8n <span style="color:#cb4b16">\
-</span></span></span><span style="display:flex;"><span><span style="color:#cb4b16"></span>		| <span style="color:#719e07">while</span> <span style="color:#b58900">read</span> f
+</span></span></span><span style="display:flex;"><span>		| sort -n -t / -k 8n <span style="color:#cb4b16">\
+</span></span></span><span style="display:flex;"><span>		| <span style="color:#719e07">while</span> <span style="color:#b58900">read</span> f
 </span></span><span style="display:flex;"><span>		<span style="color:#719e07">do</span>
 </span></span><span style="display:flex;"><span>			<span style="color:#b58900">source</span> <span style="color:#2aa198">&#34;</span><span style="color:#268bd2">$f</span><span style="color:#2aa198">&#34;</span>
 </span></span><span style="display:flex;"><span>		<span style="color:#719e07">done</span>
 </span></span><span style="display:flex;"><span><span style="color:#719e07">fi</span>
 </span></span></code></pre></div><p>This script lists all files inside <strong>/usr/local/etc/nspawn/userconfig/$MACHINE</strong>, sorts numberically and runs them.
 For example <strong>/usr/local/etc/nspawn/userconfig/devenv/1-src.sh</strong> mounts personal development specific sources subvolume to /src inside the container:</p>
-<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>machinectl <span style="color:#b58900">bind</span> --mkdir <span style="color:#268bd2">$MACHINE</span> /rootfs/data/devenv /src
+<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>machinectl <span style="color:#b58900">bind</span> --mkdir <span style="color:#268bd2">$MACHINE</span> /rootfs/data/devenv /src
 </span></span></code></pre></div><ul>
 <li><strong>/usr/local/etc/nspawn/configs/upgrade.sh</strong> - mounts the upgrade scripts to the container:</li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#719e07">if</span> <span style="color:#719e07">[</span> -d <span style="color:#2aa198">&#34;/usr/local/etc/nspawn/upgrade/</span><span style="color:#268bd2">$MACHINE</span><span style="color:#2aa198">&#34;</span> <span style="color:#719e07">]</span> ; <span style="color:#719e07">then</span>
+<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#719e07">if</span> <span style="color:#719e07">[</span> -d <span style="color:#2aa198">&#34;/usr/local/etc/nspawn/upgrade/</span><span style="color:#268bd2">$MACHINE</span><span style="color:#2aa198">&#34;</span> <span style="color:#719e07">]</span> ; <span style="color:#719e07">then</span>
 </span></span><span style="display:flex;"><span>	machinectl <span style="color:#b58900">bind</span> --mkdir --read-only <span style="color:#268bd2">$MACHINE</span> <span style="color:#2aa198">&#34;/usr/local/etc/nspawn/upgrade/</span><span style="color:#268bd2">$MACHINE</span><span style="color:#2aa198">&#34;</span> /tmp/upgrade
 </span></span><span style="display:flex;"><span><span style="color:#719e07">fi</span>
 </span></span></code></pre></div><p>For example <strong>/usr/local/etc/nspawn/upgrade/devenv/</strong> contains these files:</p>
-<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#586e75">### 1-compiledb@gaspar.sh: ###</span>
+<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#586e75">### 1-compiledb@gaspar.sh: ###</span>
 </span></span><span style="display:flex;"><span><span style="color:#586e75">#!/usr/bin/env bash</span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>pipx upgrade compiledb
@@ -276,7 +276,7 @@ For example <strong>/usr/local/etc/nspawn/userconfig/devenv/1-src.sh</strong> mo
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>pipx upgrade cppman
 </span></span></code></pre></div><p>With this bash function these <a href="mailto:NUM-NAME@USER.sh">NUM-NAME@USER.sh</a> scripts get called in numberical order from the user USER inside the container:</p>
-<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>upgrade<span style="color:#719e07">()</span> <span style="color:#719e07">{</span>
+<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>upgrade<span style="color:#719e07">()</span> <span style="color:#719e07">{</span>
 </span></span><span style="display:flex;"><span>	<span style="color:#586e75"># TODO:</span>
 </span></span><span style="display:flex;"><span>	<span style="color:#586e75"># collect the package list of the container(s), download to a directory on</span>
 </span></span><span style="display:flex;"><span>	<span style="color:#586e75"># host with pacman -Sw, then mount it to the containers and then upgrade</span>
@@ -312,7 +312,7 @@ For example <strong>/usr/local/etc/nspawn/userconfig/devenv/1-src.sh</strong> mo
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>		<span style="color:#719e07">if</span> <span style="color:#719e07">[</span> -d <span style="color:#2aa198">&#34;/usr/local/etc/nspawn/upgrade/</span><span style="color:#268bd2">$m</span><span style="color:#2aa198">&#34;</span> <span style="color:#719e07">]</span> ; <span style="color:#719e07">then</span>
 </span></span><span style="display:flex;"><span>			<span style="color:#719e07">for</span> f in <span style="color:#719e07">$(</span>find <span style="color:#2aa198">&#34;/usr/local/etc/nspawn/upgrade/</span><span style="color:#268bd2">$m</span><span style="color:#2aa198">&#34;</span> -type f -name <span style="color:#2aa198">&#34;*.sh&#34;</span> <span style="color:#cb4b16">\
-</span></span></span><span style="display:flex;"><span><span style="color:#cb4b16"></span>				| sort -n -t / -k 8n<span style="color:#719e07">)</span>
+</span></span></span><span style="display:flex;"><span>				| sort -n -t / -k 8n<span style="color:#719e07">)</span>
 </span></span><span style="display:flex;"><span>			<span style="color:#719e07">do</span>
 </span></span><span style="display:flex;"><span>				<span style="color:#268bd2">fname</span><span style="color:#719e07">=</span><span style="color:#719e07">$(</span>basename <span style="color:#2aa198">&#34;</span><span style="color:#268bd2">$f</span><span style="color:#2aa198">&#34;</span><span style="color:#719e07">)</span>
 </span></span><span style="display:flex;"><span>				<span style="color:#719e07">if</span> <span style="color:#b58900">echo</span> <span style="color:#2aa198">&#34;</span><span style="color:#268bd2">$fname</span><span style="color:#2aa198">&#34;</span> | grep -Fq @
@@ -339,19 +339,19 @@ For example <strong>/usr/local/etc/nspawn/userconfig/devenv/1-src.sh</strong> mo
 </span></span><span style="display:flex;"><span><span style="color:#719e07">}</span>
 </span></span></code></pre></div><h2 id="configuring-the-containers">Configuring the containers.</h2>
 <p>First I have <strong>/usr/local/etc/nspawn/configpacks/desktop.sh:</strong></p>
-<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#b58900">source</span> /usr/local/etc/nspawn/configs/desktop.sh
+<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#b58900">source</span> /usr/local/etc/nspawn/configs/desktop.sh
 </span></span><span style="display:flex;"><span><span style="color:#b58900">source</span> /usr/local/etc/nspawn/configs/font.sh
 </span></span><span style="display:flex;"><span><span style="color:#b58900">source</span> /usr/local/etc/nspawn/configs/gpu.sh
 </span></span><span style="display:flex;"><span><span style="color:#b58900">source</span> /usr/local/etc/nspawn/configs/xorg.sh
 </span></span></code></pre></div><p>And <strong>/usr/local/etc/nspawn/configpacks/essentials.sh:</strong></p>
-<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#b58900">source</span> /usr/local/etc/nspawn/configs/mirrorlist.sh
+<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#b58900">source</span> /usr/local/etc/nspawn/configs/mirrorlist.sh
 </span></span><span style="display:flex;"><span><span style="color:#b58900">source</span> /usr/local/etc/nspawn/configs/resolv.sh
 </span></span><span style="display:flex;"><span><span style="color:#b58900">source</span> /usr/local/etc/nspawn/configs/upgrade.sh
 </span></span><span style="display:flex;"><span><span style="color:#b58900">source</span> /usr/local/etc/nspawn/configs/userconfig.sh
 </span></span></code></pre></div><p>These are &ldquo;config packs&rdquo; for quick setups.
 The <strong>/usr/local/etc/nspawn/machine.sh</strong> which gets called after a container boots now looks for machine specific configs in <strong>/usr/local/etc/nspawn/machines/</strong> and sources them together with the &ldquo;essentials&rdquo;:</p>
-<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#719e07">#!/usr/bin/env bash
-</span></span></span><span style="display:flex;"><span><span style="color:#719e07"></span>
+<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#719e07">#!/usr/bin/env bash
+</span></span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#268bd2">MACHINE</span><span style="color:#719e07">=</span><span style="color:#2aa198">&#34;</span><span style="color:#268bd2">$1</span><span style="color:#2aa198">&#34;</span>
 </span></span><span style="display:flex;"><span><span style="color:#268bd2">CONF</span><span style="color:#719e07">=</span><span style="color:#2aa198">&#34;/usr/local/etc/nspawn/machines/</span><span style="color:#268bd2">$MACHINE</span><span style="color:#2aa198">.sh&#34;</span>
 </span></span><span style="display:flex;"><span>
@@ -361,7 +361,7 @@ The <strong>/usr/local/etc/nspawn/machine.sh</strong> which gets called after a 
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#b58900">source</span> /usr/local/etc/nspawn/configpacks/essentials.sh
 </span></span></code></pre></div><p>For example <strong>/usr/local/etc/nspawn/machines/work.sh</strong> does:</p>
-<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#b58900">source</span> /usr/local/etc/nspawn/configs/limits.sh
+<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#b58900">source</span> /usr/local/etc/nspawn/configs/limits.sh
 </span></span><span style="display:flex;"><span><span style="color:#b58900">source</span> /usr/local/etc/nspawn/configpacks/desktop.sh
 </span></span></code></pre></div><p>So now to create a new container, let&rsquo;s name it &ldquo;hello&rdquo;, I have to follow <a href="#the-basic-setup">the basic setup</a>, create <strong>/usr/local/etc/nspawn/machines/hello.sh</strong> which will include the configs/configpacks I want the container to use, add custom upgrade scripts in <strong>/usr/local/etc/nspawn/upgrade/hello/</strong> and custom container-specific scripts in <strong>/usr/local/etc/nspawn/userconfig/hello/</strong>.</p>
 <p><strong>machinectl start hello</strong> will start the container and <strong>machinectl enable hello</strong> will enable the appropriate systemd unit to boot the container when host boots.</p>
@@ -369,11 +369,11 @@ The <strong>/usr/local/etc/nspawn/machine.sh</strong> which gets called after a 
 <p>The management utility to start/stop a container, run shell or terminal from a container and to upgrade containers is available <a href="https://github.com/GasparVardanyan/dotfiles/blob/master/skel/utilsbin/.local/bin/nspawn">here</a>.</p>
 <h2 id="package-management">Package management</h2>
 <p>configs/desktop.sh mounts /desktop to the container. As described in <a href="../arch-workstation-2/">Part 2</a> I have multpile gaspar-system-* metapackages. Repo is symlinked to /desktop/repo. So in the container I have to add:</p>
-<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ini" data-lang="ini"><span style="display:flex;"><span><span style="color:#719e07">[gaspar]</span>
+<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-ini" data-lang="ini"><span style="display:flex;"><span><span style="color:#719e07">[gaspar]</span>
 </span></span><span style="display:flex;"><span>SigLevel <span style="color:#719e07">=</span> <span style="color:#2aa198">Optional TrustAll</span>
 </span></span><span style="display:flex;"><span>Server <span style="color:#719e07">=</span> <span style="color:#2aa198">file:///desktop/repo</span>
 </span></span></code></pre></div><p>to /etc/pacman.conf and install the appropriate metapackage. For example for the devenv container I have <strong>gaspar-system-devenv</strong>:</p>
-<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-PKGBUILD" data-lang="PKGBUILD"><span style="display:flex;"><span><span style="color:#268bd2">pkgname</span><span style="color:#719e07">=</span>gaspar-system-devenv
+<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-PKGBUILD" data-lang="PKGBUILD"><span style="display:flex;"><span><span style="color:#268bd2">pkgname</span><span style="color:#719e07">=</span>gaspar-system-devenv
 </span></span><span style="display:flex;"><span><span style="color:#268bd2">pkgver</span><span style="color:#719e07">=</span><span style="color:#2aa198">1</span>
 </span></span><span style="display:flex;"><span><span style="color:#268bd2">pkgrel</span><span style="color:#719e07">=</span><span style="color:#2aa198">1</span>
 </span></span><span style="display:flex;"><span><span style="color:#268bd2">arch</span><span style="color:#719e07">=(</span><span style="color:#2aa198">&#39;any&#39;</span><span style="color:#719e07">)</span>

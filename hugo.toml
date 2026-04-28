@@ -7,7 +7,7 @@ pygmentsStyle = "solarized-dark"
 
 [markup]
   [markup.highlight]
-    style = 'solarized-dark'
+	style = 'solarized-dark'
 
 [params]
   scheme = "dark" # light, dark, gray or preference
@@ -16,8 +16,8 @@ pygmentsStyle = "solarized-dark"
 
 [menu]
   [[menu.1main]]
-    name = "Feed"
-    url = "/index.xml"
+	name = "Feed"
+	url = "/index.xml"
   [[menu.1main]]
 	name = "Coding"
 	url = "/coding/"
@@ -32,23 +32,23 @@ pygmentsStyle = "solarized-dark"
 	url = "https://github.com/GasparVardanyan/gasparvardanyan.github.io/discussions"
 
   [[menu.2social]]
-    name = "GitLab"
-    url = "https://gitlab.com/GasparVardanyan"
+	name = "GitLab"
+	url = "https://gitlab.com/GasparVardanyan"
   [[menu.2social]]
-    name = "GitHub"
-    url = "https://github.com/GasparVardanyan"
+	name = "GitHub"
+	url = "https://github.com/GasparVardanyan"
   [[menu.2social]]
-    name = "Mastodon"
-    url = "https://թութ.հայ/web/@gaspar"
+	name = "Mastodon"
+	url = "https://թութ.հայ/web/@gaspar"
   [[menu.2social]]
-    name = "Jabber"
-    url = "https://mov.im/?contact/gaspar%40jabber.am"
+	name = "Jabber"
+	url = "https://mov.im/?contact/gaspar%40jabber.am"
   [[menu.2social]]
-    name = "Matrix"
-    url = "https://matrix.to/#/@gaspar_m:matrix.org"
+	name = "Matrix"
+	url = "https://matrix.to/#/@gaspar_m:matrix.org"
   [[menu.2social]]
-    name = "Email"
-    url = "mailto:gaspar_pm@proton.me"
+	name = "Email"
+	url = "mailto:gaspar_pm@proton.me"
 
   # [[menu.3other]]
   #   name = "Avatar"

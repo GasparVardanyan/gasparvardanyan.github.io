@@ -118,8 +118,8 @@ document.getElementById ("VIDEO").src = videos [Math.floor(Math.random() * video
 <p>Another workaround was to always use dGPU for rendering, but it had it&rsquo;s problem too: qutebrowser (and probably all QtWebEngine based browsers) doesn&rsquo;t do hardware video decoding when the primary gpu is the nvidia one (chrome://gpu shows the related info).</p>
 <p>With a little bit of tinkering I&rsquo;ve found that instead of disabling and then re-enabling the monitor I can change the resolution to something else and then change back: it unfreezes the monitor keeping all windows in their place and no monitor-related settings (layouts on tags, etc) drop in dwm since monitor isn&rsquo;t being disconnected.</p>
 <p>When the external monitor freezes, journalctl shows related logs, so I automated the unfreeze workaround:</p>
-<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#719e07">#!/usr/bin/env bash
-</span></span></span><span style="display:flex;"><span><span style="color:#719e07"></span>
+<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#719e07">#!/usr/bin/env bash
+</span></span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#719e07">[</span> ! -f /usr/local/bin/journalfollow <span style="color:#719e07">]</span> <span style="color:#719e07">&amp;&amp;</span> <span style="color:#b58900">exit</span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#268bd2">s</span><span style="color:#719e07">=</span><span style="color:#2aa198">0</span>

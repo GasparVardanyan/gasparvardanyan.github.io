@@ -123,8 +123,8 @@ videos of the mix youtube generated for me: it was seeing only the first video t
 url.</p>
 <p>I use mpv for local playlists and it uses nvdec to decode videos with the Nvidia
 discrete gpu. I use <a href="https://github.com/GasparVardanyan/dotfiles/blob/master/skel/utilsbin/.local/bin/plman">this little script</a> to manage my local playlists and this one to play them:</p>
-<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#719e07">#!/bin/sh
-</span></span></span><span style="display:flex;"><span><span style="color:#719e07"></span>
+<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#719e07">#!/bin/sh
+</span></span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#268bd2">embed</span><span style="color:#719e07">=</span><span style="color:#2aa198">&#34;&#34;</span>
 </span></span><span style="display:flex;"><span><span style="color:#719e07">[</span> <span style="color:#2aa198">&#34;</span><span style="color:#268bd2">$XEMBED</span><span style="color:#2aa198">&#34;</span> !<span style="color:#719e07">=</span> <span style="color:#2aa198">&#39;&#39;</span> <span style="color:#719e07">]</span> <span style="color:#719e07">&amp;&amp;</span> <span style="color:#268bd2">embed</span><span style="color:#719e07">=</span><span style="color:#2aa198">&#34;-w </span><span style="color:#268bd2">$XEMBED</span><span style="color:#2aa198">&#34;</span>
 </span></span><span style="display:flex;"><span>
@@ -144,7 +144,7 @@ in Arch repos seem to use gtk&hellip; I hate it, I&rsquo;ve <a href="https://git
 <p>Qutebrowser have out of the box <strong>greasemonkey userscript</strong> support&hellip;</p>
 <p>Inspecting youtube's page of a mix, I&rsquo;ve managed to extract titles and urls of
 the videos inside the mix&hellip; with this crap code :d</p>
-<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#586e75">// ==UserScript==
+<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#586e75">// ==UserScript==
 </span></span></span><span style="display:flex;"><span><span style="color:#586e75">// @name         YTMPV
 </span></span></span><span style="display:flex;"><span><span style="color:#586e75">// @namespace    http://your-namespace/
 </span></span></span><span style="display:flex;"><span><span style="color:#586e75">// @version      1.0
@@ -153,7 +153,7 @@ the videos inside the mix&hellip; with this crap code :d</p>
 </span></span></span><span style="display:flex;"><span><span style="color:#586e75">// @grant        GM.xmlHttpRequest
 </span></span></span><span style="display:flex;"><span><span style="color:#586e75">// @connect      localhost
 </span></span></span><span style="display:flex;"><span><span style="color:#586e75">// ==/UserScript==
-</span></span></span><span style="display:flex;"><span><span style="color:#586e75"></span>
+</span></span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#b58900">window</span>.addEventListener(<span style="color:#2aa198">&#39;load&#39;</span>, <span style="color:#268bd2">function</span>() {
 </span></span><span style="display:flex;"><span>	pl<span style="color:#719e07">=</span><span style="color:#b58900">document</span>.getElementsByTagName (<span style="color:#2aa198">&#39;ytd-playlist-panel-video-renderer&#39;</span>);
@@ -199,7 +199,7 @@ video 2 url
 <p>With the help of ChatGPT I&rsquo;ve got this crap code, which takes the list, does
 neccessary modifications and stores as a M3U playlist. Then notifies me about
 the new playlist via <strong>dunstify</strong>:</p>
-<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#586e75">#!/usr/bin/env python</span>
+<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#586e75">#!/usr/bin/env python</span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#719e07">from</span> http.server <span style="color:#719e07">import</span> BaseHTTPRequestHandler, HTTPServer
 </span></span><span style="display:flex;"><span><span style="color:#719e07">import</span> os
@@ -258,8 +258,8 @@ the new playlist via <strong>dunstify</strong>:</p>
 <ol>
 <li>creat another m3u launcher for these lists:</li>
 </ol>
-<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#719e07">#!/bin/sh
-</span></span></span><span style="display:flex;"><span><span style="color:#719e07"></span>
+<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#719e07">#!/bin/sh
+</span></span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#719e07">[</span> ! -d /tmp/ytmpv <span style="color:#719e07">]</span> <span style="color:#719e07">&amp;&amp;</span> <span style="color:#b58900">exit</span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#268bd2">embed</span><span style="color:#719e07">=</span><span style="color:#2aa198">&#34;&#34;</span>

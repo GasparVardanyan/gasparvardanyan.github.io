@@ -4,3 +4,6 @@
 [submodule "content/wallpapers/img/themes"]
 	path = content/wallpapers/img/themes
 	url = https://git.disroot.org/gaspar/themes.git
+[submodule "external/TupleInCPP20"]
+	path = external/TupleInCPP20
+	url = https://github.com/GasparVardanyan/TupleInCPP20

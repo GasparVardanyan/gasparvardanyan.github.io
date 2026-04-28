@@ -119,8 +119,8 @@ instance playing a mix or a local playlist.</p>
 <p>To control mpv instances I needed to have ipc sockets for each instance, so I
 extended the local playlist / mix launcher scripts to use sockets:</p>
 <p>play:</p>
-<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#719e07">#!/bin/sh
-</span></span></span><span style="display:flex;"><span><span style="color:#719e07"></span>
+<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#719e07">#!/bin/sh
+</span></span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#268bd2">dmenu_embed</span><span style="color:#719e07">=</span><span style="color:#2aa198">&#34;&#34;</span>
 </span></span><span style="display:flex;"><span><span style="color:#268bd2">mpv_embed</span><span style="color:#719e07">=</span><span style="color:#2aa198">&#34;&#34;</span>
 </span></span><span style="display:flex;"><span><span style="color:#719e07">if</span> <span style="color:#719e07">[</span> <span style="color:#2aa198">&#34;</span><span style="color:#268bd2">$XEMBED</span><span style="color:#2aa198">&#34;</span> !<span style="color:#719e07">=</span> <span style="color:#2aa198">&#39;&#39;</span> <span style="color:#719e07">]</span>
@@ -138,8 +138,8 @@ extended the local playlist / mix launcher scripts to use sockets:</p>
 </span></span><span style="display:flex;"><span>	rm <span style="color:#2aa198">&#34;</span><span style="color:#268bd2">$socket</span><span style="color:#2aa198">&#34;</span>
 </span></span><span style="display:flex;"><span><span style="color:#719e07">fi</span>
 </span></span></code></pre></div><p>ytmpv:</p>
-<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#719e07">#!/bin/sh
-</span></span></span><span style="display:flex;"><span><span style="color:#719e07"></span>
+<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#719e07">#!/bin/sh
+</span></span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#719e07">[</span> ! -d /tmp/ytmpv <span style="color:#719e07">]</span> <span style="color:#719e07">&amp;&amp;</span> <span style="color:#b58900">exit</span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#268bd2">dmenu_embed</span><span style="color:#719e07">=</span><span style="color:#2aa198">&#34;&#34;</span>
@@ -159,8 +159,8 @@ extended the local playlist / mix launcher scripts to use sockets:</p>
 </span></span><span style="display:flex;"><span>	rm <span style="color:#2aa198">&#34;</span><span style="color:#268bd2">$socket</span><span style="color:#2aa198">&#34;</span>
 </span></span><span style="display:flex;"><span><span style="color:#719e07">fi</span>
 </span></span></code></pre></div><p>Then wrote this buggy shell script (plctrl):</p>
-<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#719e07">#!/usr/bin/env bash
-</span></span></span><span style="display:flex;"><span><span style="color:#719e07"></span>
+<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#719e07">#!/usr/bin/env bash
+</span></span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#268bd2">YTMPV_DIR</span><span style="color:#719e07">=</span><span style="color:#2aa198">&#34;</span><span style="color:#2aa198">${</span><span style="color:#268bd2">YTMPV_DIR</span><span style="color:#719e07">:-</span>/tmp/ytmpv<span style="color:#2aa198">}</span><span style="color:#2aa198">&#34;</span>
 </span></span><span style="display:flex;"><span><span style="color:#268bd2">PLCTRL_SOURCE</span><span style="color:#719e07">=</span><span style="color:#2aa198">&#34;</span><span style="color:#2aa198">${</span><span style="color:#268bd2">PLCTRL_SOURCE</span><span style="color:#719e07">:-</span>/tmp/plctrl<span style="color:#2aa198">}</span><span style="color:#2aa198">&#34;</span>
 </span></span><span style="display:flex;"><span><span style="color:#268bd2">PLMAN_DIR</span><span style="color:#719e07">=</span><span style="color:#2aa198">&#34;</span><span style="color:#268bd2">$HOME</span><span style="color:#2aa198">/.local/share/playlists&#34;</span>
@@ -356,77 +356,77 @@ already downloaded videos and replaces them with local files inside the playlist
 This command is invoked from ytmpv_server.py</li>
 </ol>
 <p>And finally remappings in dwm:</p>
-<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-diff" data-lang="diff"><span style="display:flex;"><span><span style="color:#cb4b16">diff --git a/config.h b/config.h
+<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-diff" data-lang="diff"><span style="display:flex;"><span><span style="color:#cb4b16">diff --git a/config.h b/config.h
 </span></span></span><span style="display:flex;"><span><span style="color:#cb4b16">index f65e096..8de9df3 100644
-</span></span></span><span style="display:flex;"><span><span style="color:#cb4b16"></span><span style="color:#dc322f">--- a/config.h
-</span></span></span><span style="display:flex;"><span><span style="color:#dc322f"></span><span style="color:#719e07">+++ b/config.h
-</span></span></span><span style="display:flex;"><span><span style="color:#719e07"></span><span style="color:#268bd2">@@ -141,7 +141,7 @@ static Key keys[] = {
-</span></span></span><span style="display:flex;"><span><span style="color:#268bd2"></span> 	{ MODKEY|ControlMask,                     XK_space,      focusmaster,           { .i    = 0              } },
+</span></span></span><span style="display:flex;"><span><span style="color:#dc322f">--- a/config.h
+</span></span></span><span style="display:flex;"><span><span style="color:#719e07">+++ b/config.h
+</span></span></span><span style="display:flex;"><span><span style="color:#268bd2">@@ -141,7 +141,7 @@ static Key keys[] = {
+</span></span></span><span style="display:flex;"><span> 	{ MODKEY|ControlMask,                     XK_space,      focusmaster,           { .i    = 0              } },
 </span></span><span style="display:flex;"><span> 	{ MODKEY|ShiftMask,                       XK_space,      togglefloating,        { .i    = 0              } },
 </span></span><span style="display:flex;"><span> 	{ MODKEY|ControlMask|ShiftMask,           XK_space,      togglealwaysontop,     { .i    = 0              } },
 </span></span><span style="display:flex;"><span><span style="color:#dc322f">-	// { MODKEY|ControlMask,                     XK_p,          togglesticky,          { .i    = 0              } }, // TODO: remap
-</span></span></span><span style="display:flex;"><span><span style="color:#dc322f"></span><span style="color:#719e07">+	{ MODKEY|AltMask,                         XK_s,          togglesticky,          { .i    = 0              } },
-</span></span></span><span style="display:flex;"><span><span style="color:#719e07"></span> 	{ MODKEY,                                 XK_comma,      focusmon,              { .i    = +1             } },
+</span></span></span><span style="display:flex;"><span><span style="color:#719e07">+	{ MODKEY|AltMask,                         XK_s,          togglesticky,          { .i    = 0              } },
+</span></span></span><span style="display:flex;"><span> 	{ MODKEY,                                 XK_comma,      focusmon,              { .i    = +1             } },
 </span></span><span style="display:flex;"><span> 	{ MODKEY,                                 XK_period,     focusmon,              { .i    = -1             } },
 </span></span><span style="display:flex;"><span> 	{ MODKEY|ShiftMask,                       XK_comma,      tagmon,                { .i    = +1             } },
 </span></span><span style="display:flex;"><span><span style="color:#268bd2">@@ -188,6 +188,8 @@ static Key keys[] = {
-</span></span></span><span style="display:flex;"><span><span style="color:#268bd2"></span> 	SPAWN_KEY   ( MODKEY|ControlMask,             XK_i,              FlameshotGui         )
+</span></span></span><span style="display:flex;"><span> 	SPAWN_KEY   ( MODKEY|ControlMask,             XK_i,              FlameshotGui         )
 </span></span><span style="display:flex;"><span> 	SPAWN_KEY   ( MODKEY|ControlMask,             XK_o,              CmusStop             )
 </span></span><span style="display:flex;"><span> 	SPAWN_KEY   ( MODKEY|ControlMask|ShiftMask,   XK_i,              MpvPlay              )
 </span></span><span style="display:flex;"><span><span style="color:#719e07">+	SPAWN_KEY   ( MODKEY|AltMask,                 XK_u,              MusSelect            )
 </span></span></span><span style="display:flex;"><span><span style="color:#719e07">+	SPAWN_KEY   ( MODKEY|AltMask,                 XK_i,              YtMpv                )
-</span></span></span><span style="display:flex;"><span><span style="color:#719e07"></span> 	SPAWN_KEY   ( 0,                              XK_Print,          FlameshotFull        )
+</span></span></span><span style="display:flex;"><span> 	SPAWN_KEY   ( 0,                              XK_Print,          FlameshotFull        )
 </span></span><span style="display:flex;"><span> 	SPAWN_KEY   ( ShiftMask,                      XK_Print,          FlameshotGui         )
 </span></span><span style="display:flex;"><span> 	SPAWN_KEY   ( MODKEY,                         XK_backslash,      PassFill             )
 </span></span><span style="display:flex;"><span><span style="color:#cb4b16">diff --git a/spawn_cmds.c b/spawn_cmds.c
 </span></span></span><span style="display:flex;"><span><span style="color:#cb4b16">index 7c96d47..f3cd3e3 100644
-</span></span></span><span style="display:flex;"><span><span style="color:#cb4b16"></span><span style="color:#dc322f">--- a/spawn_cmds.c
-</span></span></span><span style="display:flex;"><span><span style="color:#dc322f"></span><span style="color:#719e07">+++ b/spawn_cmds.c
-</span></span></span><span style="display:flex;"><span><span style="color:#719e07"></span><span style="color:#268bd2">@@ -11,8 +11,9 @@ struct {
-</span></span></span><span style="display:flex;"><span><span style="color:#268bd2"></span> 	}
+</span></span></span><span style="display:flex;"><span><span style="color:#dc322f">--- a/spawn_cmds.c
+</span></span></span><span style="display:flex;"><span><span style="color:#719e07">+++ b/spawn_cmds.c
+</span></span></span><span style="display:flex;"><span><span style="color:#268bd2">@@ -11,8 +11,9 @@ struct {
+</span></span></span><span style="display:flex;"><span> 	}
 </span></span><span style="display:flex;"><span> 		Terminal,           Dmenu,
 </span></span><span style="display:flex;"><span> 		VolUp,              VolDown,               VolToggle,
 </span></span><span style="display:flex;"><span><span style="color:#dc322f">-		CmusNext,           CmusPrev,              CmusToggle,         CmusStop,
-</span></span></span><span style="display:flex;"><span><span style="color:#dc322f"></span><span style="color:#719e07">+		CmusNext,           CmusPrev,              CmusToggle,         CmusStop,           MusSelect,
-</span></span></span><span style="display:flex;"><span><span style="color:#719e07"></span> 		FlameshotGui,       FlameshotFull,
+</span></span></span><span style="display:flex;"><span><span style="color:#719e07">+		CmusNext,           CmusPrev,              CmusToggle,         CmusStop,           MusSelect,
+</span></span></span><span style="display:flex;"><span> 		FlameshotGui,       FlameshotFull,
 </span></span><span style="display:flex;"><span><span style="color:#719e07">+		YtMpv,
-</span></span></span><span style="display:flex;"><span><span style="color:#719e07"></span> 		MpvPlay,
+</span></span></span><span style="display:flex;"><span> 		MpvPlay,
 </span></span><span style="display:flex;"><span> 		BacklightUp,        BacklightDown,         BacklightMax,       BacklightMid,
 </span></span><span style="display:flex;"><span> 		KbdBrightOn,        KbdBrightOff,
 </span></span><span style="display:flex;"><span><span style="color:#268bd2">@@ -62,22 +63,27 @@ struct {
-</span></span></span><span style="display:flex;"><span><span style="color:#268bd2"></span>
+</span></span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span> 	.CmusPrev = {
 </span></span><span style="display:flex;"><span> 		.args = (const char * []) {
 </span></span><span style="display:flex;"><span><span style="color:#dc322f">-			&#34;sh&#34;, &#34;-c&#34;, &#34;cmus-remote -r &amp;&amp; dwmstatus&#34;, NULL
-</span></span></span><span style="display:flex;"><span><span style="color:#dc322f"></span><span style="color:#719e07">+			&#34;sh&#34;, &#34;-c&#34;, &#34;plctrl prev &amp;&amp; dwmstatus&#34;, NULL
-</span></span></span><span style="display:flex;"><span><span style="color:#719e07"></span> 		}
+</span></span></span><span style="display:flex;"><span><span style="color:#719e07">+			&#34;sh&#34;, &#34;-c&#34;, &#34;plctrl prev &amp;&amp; dwmstatus&#34;, NULL
+</span></span></span><span style="display:flex;"><span> 		}
 </span></span><span style="display:flex;"><span> 	},
 </span></span><span style="display:flex;"><span> 	.CmusNext = {
 </span></span><span style="display:flex;"><span> 		.args = (const char * []) {
 </span></span><span style="display:flex;"><span><span style="color:#dc322f">-			&#34;sh&#34;, &#34;-c&#34;, &#34;cmus-remote -n &amp;&amp; dwmstatus&#34;, NULL
-</span></span></span><span style="display:flex;"><span><span style="color:#dc322f"></span><span style="color:#719e07">+			&#34;sh&#34;, &#34;-c&#34;, &#34;plctrl next &amp;&amp; dwmstatus&#34;, NULL
-</span></span></span><span style="display:flex;"><span><span style="color:#719e07"></span> 		}
+</span></span></span><span style="display:flex;"><span><span style="color:#719e07">+			&#34;sh&#34;, &#34;-c&#34;, &#34;plctrl next &amp;&amp; dwmstatus&#34;, NULL
+</span></span></span><span style="display:flex;"><span> 		}
 </span></span><span style="display:flex;"><span> 	},
 </span></span><span style="display:flex;"><span> 	.CmusToggle = {
 </span></span><span style="display:flex;"><span> 		.args = (const char * []) {
 </span></span><span style="display:flex;"><span><span style="color:#dc322f">-			&#34;sh&#34;, &#34;-c&#34;, &#34;cmus-remote -u &amp;&amp; dwmstatus&#34;, NULL
-</span></span></span><span style="display:flex;"><span><span style="color:#dc322f"></span><span style="color:#719e07">+			&#34;sh&#34;, &#34;-c&#34;, &#34;plctrl toggle_play &amp;&amp; dwmstatus&#34;, NULL
-</span></span></span><span style="display:flex;"><span><span style="color:#719e07"></span> 		}
+</span></span></span><span style="display:flex;"><span><span style="color:#719e07">+			&#34;sh&#34;, &#34;-c&#34;, &#34;plctrl toggle_play &amp;&amp; dwmstatus&#34;, NULL
+</span></span></span><span style="display:flex;"><span> 		}
 </span></span><span style="display:flex;"><span> 	},
 </span></span><span style="display:flex;"><span> 	.CmusStop = {
 </span></span><span style="display:flex;"><span> 		.args = (const char * []) {
 </span></span><span style="display:flex;"><span><span style="color:#dc322f">-			&#34;sh&#34;, &#34;-c&#34;, &#34;cmus-remote -s &amp;&amp; dwmstatus&#34;, NULL
-</span></span></span><span style="display:flex;"><span><span style="color:#dc322f"></span><span style="color:#719e07">+			&#34;sh&#34;, &#34;-c&#34;, &#34;plctrl stop &amp;&amp; dwmstatus&#34;, NULL
+</span></span></span><span style="display:flex;"><span><span style="color:#719e07">+			&#34;sh&#34;, &#34;-c&#34;, &#34;plctrl stop &amp;&amp; dwmstatus&#34;, NULL
 </span></span></span><span style="display:flex;"><span><span style="color:#719e07">+		}
 </span></span></span><span style="display:flex;"><span><span style="color:#719e07">+	},
 </span></span></span><span style="display:flex;"><span><span style="color:#719e07">+	.MusSelect = {
 </span></span></span><span style="display:flex;"><span><span style="color:#719e07">+		.args = (const char * []) {
 </span></span></span><span style="display:flex;"><span><span style="color:#719e07">+			&#34;sh&#34;, &#34;-c&#34;, &#34;plctrl select_source &amp;&amp; dwmstatus&#34;, NULL
-</span></span></span><span style="display:flex;"><span><span style="color:#719e07"></span> 		}
+</span></span></span><span style="display:flex;"><span> 		}
 </span></span><span style="display:flex;"><span> 	},
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#268bd2">@@ -92,6 +98,12 @@ struct {
-</span></span></span><span style="display:flex;"><span><span style="color:#268bd2"></span> 		}
+</span></span></span><span style="display:flex;"><span> 		}
 </span></span><span style="display:flex;"><span> 	},
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#719e07">+	.YtMpv = {
@@ -435,7 +435,7 @@ This command is invoked from ytmpv_server.py</li>
 </span></span></span><span style="display:flex;"><span><span style="color:#719e07">+		}
 </span></span></span><span style="display:flex;"><span><span style="color:#719e07">+	},
 </span></span></span><span style="display:flex;"><span><span style="color:#719e07">+
-</span></span></span><span style="display:flex;"><span><span style="color:#719e07"></span> 	.MpvPlay = {
+</span></span></span><span style="display:flex;"><span> 	.MpvPlay = {
 </span></span><span style="display:flex;"><span> 		.args = (const char * []) {
 </span></span><span style="display:flex;"><span> 			&#34;play&#34;, NULL
 </span></span></code></pre></div><p>I use u,i,o keys for volume/music control (and other things), so replaced
