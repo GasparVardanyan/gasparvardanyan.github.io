@@ -3,6 +3,8 @@ title: "Implementing a tuple in C++20. Deep dive."
 date: 2026-04-28T17:26:31+04:00
 ---
 
+![](/blog/2026-04-28_18-02_crop.png)
+
 This is a beginner's guide to a few advanced topics in C++ with the
 example of implementing a tuple.  I've tried to explain everything from the
 ground up in detail keeping everything beginner-friendly and practical.

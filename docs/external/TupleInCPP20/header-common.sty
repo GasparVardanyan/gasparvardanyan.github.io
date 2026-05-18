@@ -1,0 +1,16 @@
+\usepackage{pagecolor}
+\usepackage{fontspec}
+
+\setmainfont{Iosevka Nerd Font}[
+	Scale = 1.0,
+	Ligatures = TeX
+]
+\setmonofont{Iosevka Nerd Font Mono}[
+	Ligatures=NoCommon,    % disables common ligatures like fi, fl
+	Contextuals=NoAlternate,
+	RawFeature=-liga,      % turn off standard ligatures
+	RawFeature=-calt,      % turn off contextual alternates (often source of ::, ->)
+	Scale=1.0
+]
+
+\usepackage{minted}

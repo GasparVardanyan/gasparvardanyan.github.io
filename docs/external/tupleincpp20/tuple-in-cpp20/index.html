@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-	<head>
+	<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width">
 		
@@ -56,7 +56,7 @@ iframe {
 	</head>
 	<body>
 		<header id="header">
-			<h1><a href="https://gasparvardanyan.github.io/">Gaspar Vardanyan</a></h1>
+			<h1><a href="http://localhost:1313/">Gaspar Vardanyan</a></h1>
 			<p>C&#43;&#43; Software Engineer and Instructor</p>
 		</header>
 
@@ -105,32 +105,39 @@ iframe {
 
 				
 	<article class="post">
-		<h1><a href="https://gasparvardanyan.github.io/blog/tuple-in-cpp20/">Implementing a tuple in C&#43;&#43;20. Deep dive.</a> </h1>
+		<h1><a href="http://localhost:1313/external/tupleincpp20/tuple-in-cpp20/">Implementing a tuple in C&#43;&#43;20. Deep dive.</a> </h1>
 
-		<div class="post-content"><p><img src="/blog/2026-04-28_18-02_crop.png" alt=""></p>
-<p>This is a beginner&rsquo;s guide to a few advanced topics in C++ with the
-example of implementing a tuple.  I&rsquo;ve tried to explain everything from the
-ground up in detail keeping everything beginner-friendly and practical.
-No single line is written by AI 🙂 I&rsquo;ve started this as an article,
-but the size of it continues to grow. At the end I think this will
-become a book.  You can find the most up to date version with pdf builds
-<a href="https://github.com/GasparVardanyan/TupleInCPP20">here</a>.</p>
-<h2 id="downloads">Downloads</h2>
-<ul>
-<li><a href="https://github.com/GasparVardanyan/TupleInCPP20/releases/download/initial_release/tuple-in-cpp20.pdf">Regular PDF</a></li>
-<li><a href="https://github.com/GasparVardanyan/TupleInCPP20/releases/download/initial_release/tuple-in-cpp20.SolarizedDark.pdf">Solarized Dark PDF</a></li>
-<li><a href="https://github.com/GasparVardanyan/TupleInCPP20/releases/download/initial_release/tuple-in-cpp20.SolarizedLight.pdf">Solarized Light PDF</a></li>
-</ul>
-
-
-
-
-
-
-
-
-  
-  <h2 id="storing-values-in-the-inheritance-hierarchy">Storing values in the inheritance hierarchy</h2>
+		<nav id="TableOfContents">
+  <ul>
+    <li><a href="#storing-values-in-the-inheritance-hierarchy">Storing values in the inheritance hierarchy</a></li>
+    <li><a href="#perfect-forwarding">Perfect forwarding</a>
+      <ul>
+        <li><a href="#template-specialization">Template specialization</a></li>
+        <li><a href="#reference-collapsing">Reference collapsing</a></li>
+        <li><a href="#preserving-reference-categories-of-function-arguments">Preserving reference categories of function arguments</a></li>
+        <li><a href="#stdforward-and-stdmove">std::forward and std::move</a></li>
+      </ul>
+    </li>
+    <li><a href="#parameter-packs-and-template-recursion">Parameter packs and template recursion</a>
+      <ul>
+        <li><a href="#parameter-packs">Parameter packs</a></li>
+        <li><a href="#template-recursion">Template recursion</a></li>
+        <li><a href="#compile-time-if-statement">Compile-time if statement</a></li>
+        <li><a href="#template-recursion-with-structs">Template recursion with structs</a></li>
+        <li><a href="#recursions-done-right">Recursions done right</a></li>
+        <li><a href="#c-utilities-to-work-with-templates">C++ utilities to work with templates</a></li>
+        <li><a href="#generating-parameter-packs-with-inheritance-recursion">Generating parameter packs with inheritance recursion</a></li>
+      </ul>
+    </li>
+    <li><a href="#the-tuple-finally-">The tuple. Finally !!</a>
+      <ul>
+        <li><a href="#the-requires-clause">The requires clause</a></li>
+        <li><a href="#structured-bindings">Structured bindings</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+		<div class="post-content"><h2 id="storing-values-in-the-inheritance-hierarchy">Storing values in the inheritance hierarchy</h2>
 <p>First let&rsquo;s understand how a single struct can store variable amount of data
 of different types (all compile time defined). When the type is fixed we use
 arrays to avoid using different names for each data field. But now types
@@ -2723,9 +2730,6 @@ can be more intuitive:</p>
 parameter to an lvalue reference of the appropriate inheritance level type
 to access the correct base subobject, then explicitly convert the member to
 an xvalue using std::move.</p>
-
-
-
 </div>
 
 		<p class="meta">Posted on <span class="postdate">28. April 2026</span></p>
