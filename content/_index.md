@@ -6,6 +6,9 @@ title: "Gaspar Vardanyan"
 
 * ## **FOSS** Contributor
 
+  * ### Articles:
+	* [Implementing a tuple in C++20. Deep dive.](/blog/tuple-in-cpp20)
+
   * ### Suckless patches:
 	* [st's autocomplete patch](https://st.suckless.org/patches/autocomplete/)
 	* [dwm's exitmenu patch](https://dwm.suckless.org/patches/exitmenu/)
