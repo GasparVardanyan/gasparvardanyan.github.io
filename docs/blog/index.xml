@@ -23,9 +23,9 @@ become a book.  You can find the most up to date version with pdf builds
 &lt;a href=&#34;https://github.com/GasparVardanyan/TupleInCPP20&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
 &lt;h2 id=&#34;downloads&#34;&gt;Downloads&lt;/h2&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://github.com/GasparVardanyan/TupleInCPP20/releases/download/initial_release/tuple-in-cpp20.pdf&#34;&gt;Regular PDF&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://github.com/GasparVardanyan/TupleInCPP20/releases/download/initial_release/tuple-in-cpp20.SolarizedDark.pdf&#34;&gt;Solarized Dark PDF&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://github.com/GasparVardanyan/TupleInCPP20/releases/download/initial_release/tuple-in-cpp20.SolarizedLight.pdf&#34;&gt;Solarized Light PDF&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/GasparVardanyan/TupleInCPP20/releases/latest/download/tuple-in-cpp20.pdf&#34;&gt;Regular PDF&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/GasparVardanyan/TupleInCPP20/releases/latest/download/tuple-in-cpp20_SolarizedDark.pdf&#34;&gt;Solarized Dark PDF&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/GasparVardanyan/TupleInCPP20/releases/latest/download/tuple-in-cpp20_SolarizedLight.pdf&#34;&gt;Solarized Light PDF&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
 
@@ -37,9 +37,9 @@ become a book.  You can find the most up to date version with pdf builds
 
   
   &lt;h2 id=&#34;storing-values-in-the-inheritance-hierarchy&#34;&gt;Storing values in the inheritance hierarchy&lt;/h2&gt;
-&lt;p&gt;First let&amp;rsquo;s understand how a single struct can store variable amount of data
-of different types (all compile time defined). When the type is fixed we use
-arrays to avoid using different names for each data field. But now types
+&lt;p&gt;First, let&amp;rsquo;s understand how a single struct can store a variable amount of data
+of different types, all defined at compile time. When the type is fixed, we use
+arrays to avoid using different names for each data field. But now the types
 are arbitrary. The easiest solution is to store data in the inheritance
 hierarchy where at each level we store a distinct member:&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-cpp&#34; data-lang=&#34;cpp&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;# include &amp;lt;iostream&amp;gt;
@@ -60,10 +60,218 @@ hierarchy where at each level we store a distinct member:&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;The output is:&lt;/p&gt;
 &lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;2.3
 10
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;This is member hiding, not something like overloading. Both value members
-are stored in the S2 class. static_cast helps to access the base class&amp;rsquo;s
-value member.&lt;/p&gt;
-&lt;p&gt;Now let&amp;rsquo;s do the same with templates and value initializers:&lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;This is member hiding, not something like overloading. Both value
+members are separately stored in the S2 class, static_cast helps
+to access the base class&amp;rsquo;s value member. S2 being inherited from S1
+&lt;a href=&#34;https://en.cppreference.com/cpp/language/derived_class#Syntax&#34;&gt;have&lt;/a&gt;
+an S1 &lt;em&gt;subobject&lt;/em&gt; inside it which
+&lt;a href=&#34;https://en.cppreference.com/index.php?title=cpp/language/object#Subobjects&#34;&gt;stores&lt;/a&gt;
+S2&amp;rsquo;s &lt;em&gt;subobjects&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;Let&amp;rsquo;s see what happens here:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-cpp&#34; data-lang=&#34;cpp&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;# include &amp;lt;iostream&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#dc322f&#34;&gt;int&lt;/span&gt; &lt;span style=&#34;color:#268bd2&#34;&gt;main&lt;/span&gt; ()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;{
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#719e07&#34;&gt;struct&lt;/span&gt; &lt;span style=&#34;color:#268bd2&#34;&gt;S1&lt;/span&gt; { &lt;span style=&#34;color:#dc322f&#34;&gt;int&lt;/span&gt; x; };
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#719e07&#34;&gt;struct&lt;/span&gt; &lt;span style=&#34;color:#268bd2&#34;&gt;S2&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;:&lt;/span&gt; S1 {}; &lt;span style=&#34;color:#586e75&#34;&gt;// S2 has S1 subobject
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    S2 s2 {}; &lt;span style=&#34;color:#586e75&#34;&gt;// S2 { S1 { x } }
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    s2.x &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;10&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    std&lt;span style=&#34;color:#719e07&#34;&gt;::&lt;/span&gt;cout &lt;span style=&#34;color:#719e07&#34;&gt;&amp;lt;&amp;lt;&lt;/span&gt; s2.x &lt;span style=&#34;color:#719e07&#34;&gt;&amp;lt;&amp;lt;&lt;/span&gt; std&lt;span style=&#34;color:#719e07&#34;&gt;::&lt;/span&gt;endl;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Here since S2 has only one x member in its subobject hierarchy, S2::x isn&amp;rsquo;t
+ambiguous, the compiler successfully finds the x subobject.&lt;/p&gt;
+&lt;p&gt;Let&amp;rsquo;s see what happens when the most derived class has multiple subobjects
+with the same name:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-cpp&#34; data-lang=&#34;cpp&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;# include &amp;lt;iostream&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#dc322f&#34;&gt;int&lt;/span&gt; &lt;span style=&#34;color:#268bd2&#34;&gt;main&lt;/span&gt; () {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#719e07&#34;&gt;struct&lt;/span&gt; &lt;span style=&#34;color:#268bd2&#34;&gt;A&lt;/span&gt; { &lt;span style=&#34;color:#dc322f&#34;&gt;int&lt;/span&gt; a &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;1&lt;/span&gt;; };
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#719e07&#34;&gt;struct&lt;/span&gt; &lt;span style=&#34;color:#268bd2&#34;&gt;X&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;:&lt;/span&gt; A {}; &lt;span style=&#34;color:#586e75&#34;&gt;// X have A subobject
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#719e07&#34;&gt;struct&lt;/span&gt; &lt;span style=&#34;color:#268bd2&#34;&gt;Y&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;:&lt;/span&gt; A {}; &lt;span style=&#34;color:#586e75&#34;&gt;// Y have A subobject
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#719e07&#34;&gt;struct&lt;/span&gt; &lt;span style=&#34;color:#268bd2&#34;&gt;AA&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;:&lt;/span&gt; X, Y {};    &lt;span style=&#34;color:#586e75&#34;&gt;// AA has X and Y subobjects each of which has
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;                            &lt;span style=&#34;color:#586e75&#34;&gt;// a distinct A subobject
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    AA aa; &lt;span style=&#34;color:#586e75&#34;&gt;// AA { X { A { a } }, Y { A { a } } }
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#586e75&#34;&gt;// aa.A::a = 0; // error1 : Ambiguous conversion from derived class &amp;#39;AA&amp;#39; to base class &amp;#39;A&amp;#39;:
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;                    &lt;span style=&#34;color:#586e75&#34;&gt;//          struct AA -&amp;gt; X -&amp;gt; A
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;                    &lt;span style=&#34;color:#586e75&#34;&gt;//          struct AA -&amp;gt; Y -&amp;gt; A
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    aa.X&lt;span style=&#34;color:#719e07&#34;&gt;::&lt;/span&gt;a &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;1&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    aa.Y&lt;span style=&#34;color:#719e07&#34;&gt;::&lt;/span&gt;a &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;2&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    std&lt;span style=&#34;color:#719e07&#34;&gt;::&lt;/span&gt;cout &lt;span style=&#34;color:#719e07&#34;&gt;&amp;lt;&amp;lt;&lt;/span&gt; aa.X&lt;span style=&#34;color:#719e07&#34;&gt;::&lt;/span&gt;a &lt;span style=&#34;color:#719e07&#34;&gt;&amp;lt;&amp;lt;&lt;/span&gt; aa.Y&lt;span style=&#34;color:#719e07&#34;&gt;::&lt;/span&gt;a &lt;span style=&#34;color:#719e07&#34;&gt;&amp;lt;&amp;lt;&lt;/span&gt; std&lt;span style=&#34;color:#719e07&#34;&gt;::&lt;/span&gt;endl;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#586e75&#34;&gt;// aa.a = 3;	// error2 :  Non-static member &amp;#39;a&amp;#39; found in multiple base-class subobjects of type &amp;#39;A&amp;#39;:
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;                    &lt;span style=&#34;color:#586e75&#34;&gt;//           struct AA -&amp;gt; X -&amp;gt; A
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;                    &lt;span style=&#34;color:#586e75&#34;&gt;//           struct AA -&amp;gt; Y -&amp;gt; A
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#586e75&#34;&gt;// aa.X::A::a = 4; // error1
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#586e75&#34;&gt;// static_cast &amp;lt;A &amp;amp;&amp;gt; (aa).a = 3; // error1
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#586e75&#34;&gt;// static_cast &amp;lt;X::A &amp;amp;&amp;gt; (aa).a = 3; // error1
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#719e07&#34;&gt;static_cast&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;&amp;lt;&lt;/span&gt;X &lt;span style=&#34;color:#719e07&#34;&gt;&amp;amp;&amp;gt;&lt;/span&gt; (aa).a &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;3&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#719e07&#34;&gt;static_cast&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;&amp;lt;&lt;/span&gt;Y &lt;span style=&#34;color:#719e07&#34;&gt;&amp;amp;&amp;gt;&lt;/span&gt; (aa).a &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;4&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    std&lt;span style=&#34;color:#719e07&#34;&gt;::&lt;/span&gt;cout &lt;span style=&#34;color:#719e07&#34;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;static_cast&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;&amp;lt;&lt;/span&gt;X &lt;span style=&#34;color:#719e07&#34;&gt;&amp;amp;&amp;gt;&lt;/span&gt; (aa).a &lt;span style=&#34;color:#719e07&#34;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;static_cast&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;&amp;lt;&lt;/span&gt;Y &lt;span style=&#34;color:#719e07&#34;&gt;&amp;amp;&amp;gt;&lt;/span&gt; (aa).a &lt;span style=&#34;color:#719e07&#34;&gt;&amp;lt;&amp;lt;&lt;/span&gt; std&lt;span style=&#34;color:#719e07&#34;&gt;::&lt;/span&gt;endl;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Output:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;12
+34
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Here AA have X and Y base-class subobjects, each of which have a distinct
+A subobject. Access to a subobject through aa itself is ambiguous, because
+AA have two &lt;strong&gt;int a&lt;/strong&gt; subobjects in its subobject hirarchy and the access
+is ambigious. But since both X and Y have single &lt;strong&gt;int a&lt;/strong&gt; subobjects,
+access expressions like &lt;strong&gt;aa.X::a&lt;/strong&gt; and &lt;strong&gt;static_cast &amp;lt;Y &amp;amp;&amp;gt; (aa)&lt;/strong&gt; are well
+defined and evaluate to the appropriate integer.&lt;/p&gt;
+&lt;p&gt;If you code with NeoVim, there is an &lt;a href=&#34;https://github.com/J-Cowsert/classlayout.nvim&#34;&gt;extension&lt;/a&gt;
+which helps visualize class object layouts. In case of the AA class it is:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;Class Layout: AA
+========================================
+         0 | struct AA
+         0 |   struct X (base)
+         0 |     struct A (base)
+         0 |       int a
+         4 |   struct Y (base)
+         4 |     struct A (base)
+         4 |       int a
+           | [sizeof=8, dsize=8, align=4,
+           |  nvsize=8, nvalign=4]
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;An interesting case is when we have virtual inheritance:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-cpp&#34; data-lang=&#34;cpp&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;# include &amp;lt;iostream&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#dc322f&#34;&gt;int&lt;/span&gt; &lt;span style=&#34;color:#268bd2&#34;&gt;main&lt;/span&gt; () {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	{
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		&lt;span style=&#34;color:#719e07&#34;&gt;struct&lt;/span&gt; &lt;span style=&#34;color:#268bd2&#34;&gt;A&lt;/span&gt; { &lt;span style=&#34;color:#dc322f&#34;&gt;int&lt;/span&gt; a &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;1&lt;/span&gt;; };
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		&lt;span style=&#34;color:#719e07&#34;&gt;struct&lt;/span&gt; &lt;span style=&#34;color:#268bd2&#34;&gt;X&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;virtual&lt;/span&gt; A {};
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		&lt;span style=&#34;color:#719e07&#34;&gt;struct&lt;/span&gt; &lt;span style=&#34;color:#268bd2&#34;&gt;Y&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;:&lt;/span&gt; A {};
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		&lt;span style=&#34;color:#719e07&#34;&gt;struct&lt;/span&gt; &lt;span style=&#34;color:#268bd2&#34;&gt;AA&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;:&lt;/span&gt; X, Y {};
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		AA aa; &lt;span style=&#34;color:#586e75&#34;&gt;// { AA, X, virtual A, Y, A }
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		&lt;span style=&#34;color:#586e75&#34;&gt;// aa.A::a = 0; // error1
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		aa.X&lt;span style=&#34;color:#719e07&#34;&gt;::&lt;/span&gt;a &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;1&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		aa.Y&lt;span style=&#34;color:#719e07&#34;&gt;::&lt;/span&gt;a &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;2&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		aa.a &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;3&lt;/span&gt;; &lt;span style=&#34;color:#586e75&#34;&gt;// error2
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		std&lt;span style=&#34;color:#719e07&#34;&gt;::&lt;/span&gt;cout &lt;span style=&#34;color:#719e07&#34;&gt;&amp;lt;&amp;lt;&lt;/span&gt; aa.X&lt;span style=&#34;color:#719e07&#34;&gt;::&lt;/span&gt;a &lt;span style=&#34;color:#719e07&#34;&gt;&amp;lt;&amp;lt;&lt;/span&gt; aa.Y&lt;span style=&#34;color:#719e07&#34;&gt;::&lt;/span&gt;a &lt;span style=&#34;color:#719e07&#34;&gt;&amp;lt;&amp;lt;&lt;/span&gt; std&lt;span style=&#34;color:#719e07&#34;&gt;::&lt;/span&gt;endl;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	}
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	std&lt;span style=&#34;color:#719e07&#34;&gt;::&lt;/span&gt;cout &lt;span style=&#34;color:#719e07&#34;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;====================&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;&amp;lt;&amp;lt;&lt;/span&gt; std&lt;span style=&#34;color:#719e07&#34;&gt;::&lt;/span&gt;endl;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	{
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		&lt;span style=&#34;color:#719e07&#34;&gt;struct&lt;/span&gt; &lt;span style=&#34;color:#268bd2&#34;&gt;A&lt;/span&gt; { &lt;span style=&#34;color:#dc322f&#34;&gt;int&lt;/span&gt; a &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;10&lt;/span&gt;; };
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		&lt;span style=&#34;color:#719e07&#34;&gt;struct&lt;/span&gt; &lt;span style=&#34;color:#268bd2&#34;&gt;X&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;virtual&lt;/span&gt; A {};
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		&lt;span style=&#34;color:#719e07&#34;&gt;struct&lt;/span&gt; &lt;span style=&#34;color:#268bd2&#34;&gt;Y&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;virtual&lt;/span&gt; A {};
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		&lt;span style=&#34;color:#719e07&#34;&gt;struct&lt;/span&gt; &lt;span style=&#34;color:#268bd2&#34;&gt;AA&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;:&lt;/span&gt; X, Y {};
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		AA aa; &lt;span style=&#34;color:#586e75&#34;&gt;// { AA, X, virtual A, Y }
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		std&lt;span style=&#34;color:#719e07&#34;&gt;::&lt;/span&gt;cout &lt;span style=&#34;color:#719e07&#34;&gt;&amp;lt;&amp;lt;&lt;/span&gt; aa.A&lt;span style=&#34;color:#719e07&#34;&gt;::&lt;/span&gt;a &lt;span style=&#34;color:#719e07&#34;&gt;&amp;lt;&amp;lt;&lt;/span&gt; aa.X&lt;span style=&#34;color:#719e07&#34;&gt;::&lt;/span&gt;a &lt;span style=&#34;color:#719e07&#34;&gt;&amp;lt;&amp;lt;&lt;/span&gt; aa.Y&lt;span style=&#34;color:#719e07&#34;&gt;::&lt;/span&gt;a &lt;span style=&#34;color:#719e07&#34;&gt;&amp;lt;&amp;lt;&lt;/span&gt; aa.AA&lt;span style=&#34;color:#719e07&#34;&gt;::&lt;/span&gt;a &lt;span style=&#34;color:#719e07&#34;&gt;&amp;lt;&amp;lt;&lt;/span&gt; aa.a &lt;span style=&#34;color:#719e07&#34;&gt;&amp;lt;&amp;lt;&lt;/span&gt; std&lt;span style=&#34;color:#719e07&#34;&gt;::&lt;/span&gt;endl;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		aa.A&lt;span style=&#34;color:#719e07&#34;&gt;::&lt;/span&gt;a &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;0&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		std&lt;span style=&#34;color:#719e07&#34;&gt;::&lt;/span&gt;cout &lt;span style=&#34;color:#719e07&#34;&gt;&amp;lt;&amp;lt;&lt;/span&gt; aa.A&lt;span style=&#34;color:#719e07&#34;&gt;::&lt;/span&gt;a &lt;span style=&#34;color:#719e07&#34;&gt;&amp;lt;&amp;lt;&lt;/span&gt; aa.X&lt;span style=&#34;color:#719e07&#34;&gt;::&lt;/span&gt;a &lt;span style=&#34;color:#719e07&#34;&gt;&amp;lt;&amp;lt;&lt;/span&gt; aa.Y&lt;span style=&#34;color:#719e07&#34;&gt;::&lt;/span&gt;a &lt;span style=&#34;color:#719e07&#34;&gt;&amp;lt;&amp;lt;&lt;/span&gt; aa.AA&lt;span style=&#34;color:#719e07&#34;&gt;::&lt;/span&gt;a &lt;span style=&#34;color:#719e07&#34;&gt;&amp;lt;&amp;lt;&lt;/span&gt; aa.a &lt;span style=&#34;color:#719e07&#34;&gt;&amp;lt;&amp;lt;&lt;/span&gt; std&lt;span style=&#34;color:#719e07&#34;&gt;::&lt;/span&gt;endl;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		aa.X&lt;span style=&#34;color:#719e07&#34;&gt;::&lt;/span&gt;a &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;1&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		std&lt;span style=&#34;color:#719e07&#34;&gt;::&lt;/span&gt;cout &lt;span style=&#34;color:#719e07&#34;&gt;&amp;lt;&amp;lt;&lt;/span&gt; aa.A&lt;span style=&#34;color:#719e07&#34;&gt;::&lt;/span&gt;a &lt;span style=&#34;color:#719e07&#34;&gt;&amp;lt;&amp;lt;&lt;/span&gt; aa.X&lt;span style=&#34;color:#719e07&#34;&gt;::&lt;/span&gt;a &lt;span style=&#34;color:#719e07&#34;&gt;&amp;lt;&amp;lt;&lt;/span&gt; aa.Y&lt;span style=&#34;color:#719e07&#34;&gt;::&lt;/span&gt;a &lt;span style=&#34;color:#719e07&#34;&gt;&amp;lt;&amp;lt;&lt;/span&gt; aa.AA&lt;span style=&#34;color:#719e07&#34;&gt;::&lt;/span&gt;a &lt;span style=&#34;color:#719e07&#34;&gt;&amp;lt;&amp;lt;&lt;/span&gt; aa.a &lt;span style=&#34;color:#719e07&#34;&gt;&amp;lt;&amp;lt;&lt;/span&gt; std&lt;span style=&#34;color:#719e07&#34;&gt;::&lt;/span&gt;endl;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		aa.Y&lt;span style=&#34;color:#719e07&#34;&gt;::&lt;/span&gt;a &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;2&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		std&lt;span style=&#34;color:#719e07&#34;&gt;::&lt;/span&gt;cout &lt;span style=&#34;color:#719e07&#34;&gt;&amp;lt;&amp;lt;&lt;/span&gt; aa.A&lt;span style=&#34;color:#719e07&#34;&gt;::&lt;/span&gt;a &lt;span style=&#34;color:#719e07&#34;&gt;&amp;lt;&amp;lt;&lt;/span&gt; aa.X&lt;span style=&#34;color:#719e07&#34;&gt;::&lt;/span&gt;a &lt;span style=&#34;color:#719e07&#34;&gt;&amp;lt;&amp;lt;&lt;/span&gt; aa.Y&lt;span style=&#34;color:#719e07&#34;&gt;::&lt;/span&gt;a &lt;span style=&#34;color:#719e07&#34;&gt;&amp;lt;&amp;lt;&lt;/span&gt; aa.AA&lt;span style=&#34;color:#719e07&#34;&gt;::&lt;/span&gt;a &lt;span style=&#34;color:#719e07&#34;&gt;&amp;lt;&amp;lt;&lt;/span&gt; aa.a &lt;span style=&#34;color:#719e07&#34;&gt;&amp;lt;&amp;lt;&lt;/span&gt; std&lt;span style=&#34;color:#719e07&#34;&gt;::&lt;/span&gt;endl;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		aa.a &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;3&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		std&lt;span style=&#34;color:#719e07&#34;&gt;::&lt;/span&gt;cout &lt;span style=&#34;color:#719e07&#34;&gt;&amp;lt;&amp;lt;&lt;/span&gt; aa.A&lt;span style=&#34;color:#719e07&#34;&gt;::&lt;/span&gt;a &lt;span style=&#34;color:#719e07&#34;&gt;&amp;lt;&amp;lt;&lt;/span&gt; aa.X&lt;span style=&#34;color:#719e07&#34;&gt;::&lt;/span&gt;a &lt;span style=&#34;color:#719e07&#34;&gt;&amp;lt;&amp;lt;&lt;/span&gt; aa.Y&lt;span style=&#34;color:#719e07&#34;&gt;::&lt;/span&gt;a &lt;span style=&#34;color:#719e07&#34;&gt;&amp;lt;&amp;lt;&lt;/span&gt; aa.AA&lt;span style=&#34;color:#719e07&#34;&gt;::&lt;/span&gt;a &lt;span style=&#34;color:#719e07&#34;&gt;&amp;lt;&amp;lt;&lt;/span&gt; aa.a &lt;span style=&#34;color:#719e07&#34;&gt;&amp;lt;&amp;lt;&lt;/span&gt; std&lt;span style=&#34;color:#719e07&#34;&gt;::&lt;/span&gt;endl;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	}
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Output:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;12
+====================
+1010101010
+00000
+11111
+22222
+33333
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;The most-derived object contains only one A subobject if and only if either
+A appears exactly once in the inheritance hierarchy, virtual or non virtual,
+or every inheritance path leading to A is virtual with respect to A.&lt;/p&gt;
+&lt;p&gt;Furthermore consider the complete inheritance graph of a class AA.  For any
+base type AX, conceptually flatten the graph so that every inheritance path
+to AX becomes a direct occurrence in a list.  Then:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;every non-virtual occurrence of AX remains a distinct AX subobject;&lt;/li&gt;
+&lt;li&gt;all occurrences of AX reached through virtual inheritance are merged
+into a single shared AX subobject.
+The resulting set exactly describes how many AX subobjects physically reside
+inside an object of type AA.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;In the first case in the example above, we had two &lt;strong&gt;A&lt;/strong&gt; subobjects in &lt;strong&gt;AA&lt;/strong&gt;:
+one through virtual inheritance and one through regular inheritance, but in the
+second case, since all inheritance paths leading to &lt;strong&gt;A&lt;/strong&gt; were virtual with
+respect to &lt;strong&gt;A&lt;/strong&gt;, they are merged into a single &lt;strong&gt;A&lt;/strong&gt; subobject.&lt;/p&gt;
+&lt;p&gt;Furthermore directly virtually inherited classes are initialized only in the most
+derived class:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-cpp&#34; data-lang=&#34;cpp&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;# include &amp;lt;iostream&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;struct&lt;/span&gt; &lt;span style=&#34;color:#268bd2&#34;&gt;A&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&lt;span style=&#34;color:#dc322f&#34;&gt;int&lt;/span&gt; a;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	A () &lt;span style=&#34;color:#719e07&#34;&gt;:&lt;/span&gt; a (&lt;span style=&#34;color:#2aa198&#34;&gt;0&lt;/span&gt;) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		std&lt;span style=&#34;color:#719e07&#34;&gt;::&lt;/span&gt;cout &lt;span style=&#34;color:#719e07&#34;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;A initialized with 0&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;&amp;lt;&amp;lt;&lt;/span&gt; std&lt;span style=&#34;color:#719e07&#34;&gt;::&lt;/span&gt;endl;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	}
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	A (&lt;span style=&#34;color:#dc322f&#34;&gt;int&lt;/span&gt; param) &lt;span style=&#34;color:#719e07&#34;&gt;:&lt;/span&gt; a (param) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		std&lt;span style=&#34;color:#719e07&#34;&gt;::&lt;/span&gt;cout &lt;span style=&#34;color:#719e07&#34;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;A initialized with param=&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;&amp;lt;&amp;lt;&lt;/span&gt; param &lt;span style=&#34;color:#719e07&#34;&gt;&amp;lt;&amp;lt;&lt;/span&gt; std&lt;span style=&#34;color:#719e07&#34;&gt;::&lt;/span&gt;endl;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	}
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;};
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;struct&lt;/span&gt; &lt;span style=&#34;color:#268bd2&#34;&gt;B1&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;:&lt;/span&gt; A {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&lt;span style=&#34;color:#dc322f&#34;&gt;int&lt;/span&gt; b;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	B1 (&lt;span style=&#34;color:#dc322f&#34;&gt;int&lt;/span&gt; param) &lt;span style=&#34;color:#719e07&#34;&gt;:&lt;/span&gt; A (param), b (param) {}
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;};
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;struct&lt;/span&gt; &lt;span style=&#34;color:#268bd2&#34;&gt;C1&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;:&lt;/span&gt; B1 {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&lt;span style=&#34;color:#dc322f&#34;&gt;int&lt;/span&gt; c;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	C1 (&lt;span style=&#34;color:#dc322f&#34;&gt;int&lt;/span&gt; param) &lt;span style=&#34;color:#719e07&#34;&gt;:&lt;/span&gt; B1 (param), c (param) {}
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;};
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;struct&lt;/span&gt; &lt;span style=&#34;color:#268bd2&#34;&gt;B2&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;virtual&lt;/span&gt; A {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&lt;span style=&#34;color:#dc322f&#34;&gt;int&lt;/span&gt; b;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	B2 (&lt;span style=&#34;color:#dc322f&#34;&gt;int&lt;/span&gt; param) &lt;span style=&#34;color:#719e07&#34;&gt;:&lt;/span&gt; A (param), b (param) {}
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;};
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;struct&lt;/span&gt; &lt;span style=&#34;color:#268bd2&#34;&gt;C2&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;:&lt;/span&gt; B2 {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&lt;span style=&#34;color:#dc322f&#34;&gt;int&lt;/span&gt; c;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	C2 (&lt;span style=&#34;color:#dc322f&#34;&gt;int&lt;/span&gt; param) &lt;span style=&#34;color:#719e07&#34;&gt;:&lt;/span&gt; B2 (param), c (param) {}
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;};
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#dc322f&#34;&gt;int&lt;/span&gt; &lt;span style=&#34;color:#268bd2&#34;&gt;main&lt;/span&gt; () {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	C1 c1 (&lt;span style=&#34;color:#2aa198&#34;&gt;42&lt;/span&gt;);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	std&lt;span style=&#34;color:#719e07&#34;&gt;::&lt;/span&gt;cout &lt;span style=&#34;color:#719e07&#34;&gt;&amp;lt;&amp;lt;&lt;/span&gt; c1.c &lt;span style=&#34;color:#719e07&#34;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34; &amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;&amp;lt;&amp;lt;&lt;/span&gt; c1.b &lt;span style=&#34;color:#719e07&#34;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34; &amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;&amp;lt;&amp;lt;&lt;/span&gt; c1.a &lt;span style=&#34;color:#719e07&#34;&gt;&amp;lt;&amp;lt;&lt;/span&gt; std&lt;span style=&#34;color:#719e07&#34;&gt;::&lt;/span&gt;endl;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	C2 c2 (&lt;span style=&#34;color:#2aa198&#34;&gt;42&lt;/span&gt;);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	std&lt;span style=&#34;color:#719e07&#34;&gt;::&lt;/span&gt;cout &lt;span style=&#34;color:#719e07&#34;&gt;&amp;lt;&amp;lt;&lt;/span&gt; c2.c &lt;span style=&#34;color:#719e07&#34;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34; &amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;&amp;lt;&amp;lt;&lt;/span&gt; c2.b &lt;span style=&#34;color:#719e07&#34;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34; &amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;&amp;lt;&amp;lt;&lt;/span&gt; c2.a &lt;span style=&#34;color:#719e07&#34;&gt;&amp;lt;&amp;lt;&lt;/span&gt; std&lt;span style=&#34;color:#719e07&#34;&gt;::&lt;/span&gt;endl;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    B1 b1 (&lt;span style=&#34;color:#2aa198&#34;&gt;42&lt;/span&gt;);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	std&lt;span style=&#34;color:#719e07&#34;&gt;::&lt;/span&gt;cout &lt;span style=&#34;color:#719e07&#34;&gt;&amp;lt;&amp;lt;&lt;/span&gt; b1.b &lt;span style=&#34;color:#719e07&#34;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34; &amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;&amp;lt;&amp;lt;&lt;/span&gt; b1.a &lt;span style=&#34;color:#719e07&#34;&gt;&amp;lt;&amp;lt;&lt;/span&gt; std&lt;span style=&#34;color:#719e07&#34;&gt;::&lt;/span&gt;endl;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    B2 b2 (&lt;span style=&#34;color:#2aa198&#34;&gt;42&lt;/span&gt;);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	std&lt;span style=&#34;color:#719e07&#34;&gt;::&lt;/span&gt;cout &lt;span style=&#34;color:#719e07&#34;&gt;&amp;lt;&amp;lt;&lt;/span&gt; b2.b &lt;span style=&#34;color:#719e07&#34;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34; &amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;&amp;lt;&amp;lt;&lt;/span&gt; b2.a &lt;span style=&#34;color:#719e07&#34;&gt;&amp;lt;&amp;lt;&lt;/span&gt; std&lt;span style=&#34;color:#719e07&#34;&gt;::&lt;/span&gt;endl;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;The output is:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;A initialized with param=42
+42 42 42
+A initialized with 0
+42 42 0
+A initialized with param=42
+42 42
+A initialized with param=42
+42 42
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;In case of C1-B1, everything is obvious: C1&amp;rsquo;s parametrized constructor takes
+an integer, passes it to B1&amp;rsquo;s parametrized constructor and initializes its
+member integer c. Then B1&amp;rsquo;s parametrized constructor passes the value to
+A&amp;rsquo;s parametrized constructor and initializes its member integer b. Then
+A&amp;rsquo;s parametrized constructor initializes its member integer a.&lt;/p&gt;
+&lt;p&gt;In case of C2-B2, the only difference is that B2 inherits A virtually.  Since A
+is virtually inherited, it must be initialized in the most derived class:
+C2. C2 doesn&amp;rsquo;t pass the value to A&amp;rsquo;s constructor. Even though C2 calls B2&amp;rsquo;s
+parametrized constructor, which at first glance seems to call A&amp;rsquo;s parametrized
+constructor, it doesn&amp;rsquo;t, so A&amp;rsquo;s default constructor is called.&lt;/p&gt;
+&lt;p&gt;In case of &lt;strong&gt;b2&lt;/strong&gt;, &lt;strong&gt;B2&lt;/strong&gt; is the most derived class so the call to A&amp;rsquo;s
+parametrized constructor gets evaluated.&lt;/p&gt;
+&lt;p&gt;So far we&amp;rsquo;ve got the S2 class which allows to store two distinct members of
+different types, and the types and values are fixed in the class. Let&amp;rsquo;s make
+types arbitrary and add value initializers:&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-cpp&#34; data-lang=&#34;cpp&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;# include &amp;lt;iostream&amp;gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;template&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;typename&lt;/span&gt; T&lt;span style=&#34;color:#719e07&#34;&gt;&amp;gt;&lt;/span&gt;
@@ -1257,7 +1465,7 @@ base type.&lt;/li&gt;
 &lt;p&gt;To support rvalue expressions too, we have to overload our Forward
 implementation:&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-cpp&#34; data-lang=&#34;cpp&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;template&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;typename&lt;/span&gt; T&lt;span style=&#34;color:#719e07&#34;&gt;&amp;gt;&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;T &lt;span style=&#34;color:#719e07&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; Forward (T &lt;span style=&#34;color:#719e07&#34;&gt;&amp;amp;%&lt;/span&gt; t) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;T &lt;span style=&#34;color:#719e07&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; Forward (T &lt;span style=&#34;color:#719e07&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; t) {
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&lt;span style=&#34;color:#719e07&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;static_cast&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;&amp;lt;&lt;/span&gt;T &lt;span style=&#34;color:#719e07&#34;&gt;&amp;amp;&amp;amp;&amp;gt;&lt;/span&gt; (t);
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;This would work if we didn&amp;rsquo;t specify the template type parameter

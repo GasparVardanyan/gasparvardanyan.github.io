@@ -117,9 +117,9 @@ become a book.  You can find the most up to date version with pdf builds
 <a href="https://github.com/GasparVardanyan/TupleInCPP20">here</a>.</p>
 <h2 id="downloads">Downloads</h2>
 <ul>
-<li><a href="https://github.com/GasparVardanyan/TupleInCPP20/releases/download/initial_release/tuple-in-cpp20.pdf">Regular PDF</a></li>
-<li><a href="https://github.com/GasparVardanyan/TupleInCPP20/releases/download/initial_release/tuple-in-cpp20.SolarizedDark.pdf">Solarized Dark PDF</a></li>
-<li><a href="https://github.com/GasparVardanyan/TupleInCPP20/releases/download/initial_release/tuple-in-cpp20.SolarizedLight.pdf">Solarized Light PDF</a></li>
+<li><a href="https://github.com/GasparVardanyan/TupleInCPP20/releases/latest/download/tuple-in-cpp20.pdf">Regular PDF</a></li>
+<li><a href="https://github.com/GasparVardanyan/TupleInCPP20/releases/latest/download/tuple-in-cpp20_SolarizedDark.pdf">Solarized Dark PDF</a></li>
+<li><a href="https://github.com/GasparVardanyan/TupleInCPP20/releases/latest/download/tuple-in-cpp20_SolarizedLight.pdf">Solarized Light PDF</a></li>
 </ul>
 
 
@@ -131,9 +131,9 @@ become a book.  You can find the most up to date version with pdf builds
 
   
   <h2 id="storing-values-in-the-inheritance-hierarchy">Storing values in the inheritance hierarchy</h2>
-<p>First let&rsquo;s understand how a single struct can store variable amount of data
-of different types (all compile time defined). When the type is fixed we use
-arrays to avoid using different names for each data field. But now types
+<p>First, let&rsquo;s understand how a single struct can store a variable amount of data
+of different types, all defined at compile time. When the type is fixed, we use
+arrays to avoid using different names for each data field. But now the types
 are arbitrary. The easiest solution is to store data in the inheritance
 hierarchy where at each level we store a distinct member:</p>
 <div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#719e07"># include &lt;iostream&gt;
@@ -154,10 +154,218 @@ hierarchy where at each level we store a distinct member:</p>
 </span></span></code></pre></div><p>The output is:</p>
 <pre tabindex="0"><code>2.3
 10
-</code></pre><p>This is member hiding, not something like overloading. Both value members
-are stored in the S2 class. static_cast helps to access the base class&rsquo;s
-value member.</p>
-<p>Now let&rsquo;s do the same with templates and value initializers:</p>
+</code></pre><p>This is member hiding, not something like overloading. Both value
+members are separately stored in the S2 class, static_cast helps
+to access the base class&rsquo;s value member. S2 being inherited from S1
+<a href="https://en.cppreference.com/cpp/language/derived_class#Syntax">have</a>
+an S1 <em>subobject</em> inside it which
+<a href="https://en.cppreference.com/index.php?title=cpp/language/object#Subobjects">stores</a>
+S2&rsquo;s <em>subobjects</em>.</p>
+<p>Let&rsquo;s see what happens here:</p>
+<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#719e07"># include &lt;iostream&gt;
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#dc322f">int</span> <span style="color:#268bd2">main</span> ()
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#719e07">struct</span> <span style="color:#268bd2">S1</span> { <span style="color:#dc322f">int</span> x; };
+</span></span><span style="display:flex;"><span>    <span style="color:#719e07">struct</span> <span style="color:#268bd2">S2</span> <span style="color:#719e07">:</span> S1 {}; <span style="color:#586e75">// S2 has S1 subobject
+</span></span></span><span style="display:flex;"><span>    S2 s2 {}; <span style="color:#586e75">// S2 { S1 { x } }
+</span></span></span><span style="display:flex;"><span>    s2.x <span style="color:#719e07">=</span> <span style="color:#2aa198">10</span>;
+</span></span><span style="display:flex;"><span>    std<span style="color:#719e07">::</span>cout <span style="color:#719e07">&lt;&lt;</span> s2.x <span style="color:#719e07">&lt;&lt;</span> std<span style="color:#719e07">::</span>endl;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Here since S2 has only one x member in its subobject hierarchy, S2::x isn&rsquo;t
+ambiguous, the compiler successfully finds the x subobject.</p>
+<p>Let&rsquo;s see what happens when the most derived class has multiple subobjects
+with the same name:</p>
+<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#719e07"># include &lt;iostream&gt;
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#dc322f">int</span> <span style="color:#268bd2">main</span> () {
+</span></span><span style="display:flex;"><span>    <span style="color:#719e07">struct</span> <span style="color:#268bd2">A</span> { <span style="color:#dc322f">int</span> a <span style="color:#719e07">=</span> <span style="color:#2aa198">1</span>; };
+</span></span><span style="display:flex;"><span>    <span style="color:#719e07">struct</span> <span style="color:#268bd2">X</span> <span style="color:#719e07">:</span> A {}; <span style="color:#586e75">// X have A subobject
+</span></span></span><span style="display:flex;"><span>    <span style="color:#719e07">struct</span> <span style="color:#268bd2">Y</span> <span style="color:#719e07">:</span> A {}; <span style="color:#586e75">// Y have A subobject
+</span></span></span><span style="display:flex;"><span>    <span style="color:#719e07">struct</span> <span style="color:#268bd2">AA</span> <span style="color:#719e07">:</span> X, Y {};    <span style="color:#586e75">// AA has X and Y subobjects each of which has
+</span></span></span><span style="display:flex;"><span>                            <span style="color:#586e75">// a distinct A subobject
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    AA aa; <span style="color:#586e75">// AA { X { A { a } }, Y { A { a } } }
+</span></span></span><span style="display:flex;"><span>    <span style="color:#586e75">// aa.A::a = 0; // error1 : Ambiguous conversion from derived class &#39;AA&#39; to base class &#39;A&#39;:
+</span></span></span><span style="display:flex;"><span>                    <span style="color:#586e75">//          struct AA -&gt; X -&gt; A
+</span></span></span><span style="display:flex;"><span>                    <span style="color:#586e75">//          struct AA -&gt; Y -&gt; A
+</span></span></span><span style="display:flex;"><span>    aa.X<span style="color:#719e07">::</span>a <span style="color:#719e07">=</span> <span style="color:#2aa198">1</span>;
+</span></span><span style="display:flex;"><span>    aa.Y<span style="color:#719e07">::</span>a <span style="color:#719e07">=</span> <span style="color:#2aa198">2</span>;
+</span></span><span style="display:flex;"><span>    std<span style="color:#719e07">::</span>cout <span style="color:#719e07">&lt;&lt;</span> aa.X<span style="color:#719e07">::</span>a <span style="color:#719e07">&lt;&lt;</span> aa.Y<span style="color:#719e07">::</span>a <span style="color:#719e07">&lt;&lt;</span> std<span style="color:#719e07">::</span>endl;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#586e75">// aa.a = 3;	// error2 :  Non-static member &#39;a&#39; found in multiple base-class subobjects of type &#39;A&#39;:
+</span></span></span><span style="display:flex;"><span>                    <span style="color:#586e75">//           struct AA -&gt; X -&gt; A
+</span></span></span><span style="display:flex;"><span>                    <span style="color:#586e75">//           struct AA -&gt; Y -&gt; A
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#586e75">// aa.X::A::a = 4; // error1
+</span></span></span><span style="display:flex;"><span>    <span style="color:#586e75">// static_cast &lt;A &amp;&gt; (aa).a = 3; // error1
+</span></span></span><span style="display:flex;"><span>    <span style="color:#586e75">// static_cast &lt;X::A &amp;&gt; (aa).a = 3; // error1
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#719e07">static_cast</span> <span style="color:#719e07">&lt;</span>X <span style="color:#719e07">&amp;&gt;</span> (aa).a <span style="color:#719e07">=</span> <span style="color:#2aa198">3</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#719e07">static_cast</span> <span style="color:#719e07">&lt;</span>Y <span style="color:#719e07">&amp;&gt;</span> (aa).a <span style="color:#719e07">=</span> <span style="color:#2aa198">4</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    std<span style="color:#719e07">::</span>cout <span style="color:#719e07">&lt;&lt;</span> <span style="color:#719e07">static_cast</span> <span style="color:#719e07">&lt;</span>X <span style="color:#719e07">&amp;&gt;</span> (aa).a <span style="color:#719e07">&lt;&lt;</span> <span style="color:#719e07">static_cast</span> <span style="color:#719e07">&lt;</span>Y <span style="color:#719e07">&amp;&gt;</span> (aa).a <span style="color:#719e07">&lt;&lt;</span> std<span style="color:#719e07">::</span>endl;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Output:</p>
+<pre tabindex="0"><code>12
+34
+</code></pre><p>Here AA have X and Y base-class subobjects, each of which have a distinct
+A subobject. Access to a subobject through aa itself is ambiguous, because
+AA have two <strong>int a</strong> subobjects in its subobject hirarchy and the access
+is ambigious. But since both X and Y have single <strong>int a</strong> subobjects,
+access expressions like <strong>aa.X::a</strong> and <strong>static_cast &lt;Y &amp;&gt; (aa)</strong> are well
+defined and evaluate to the appropriate integer.</p>
+<p>If you code with NeoVim, there is an <a href="https://github.com/J-Cowsert/classlayout.nvim">extension</a>
+which helps visualize class object layouts. In case of the AA class it is:</p>
+<pre tabindex="0"><code>Class Layout: AA
+========================================
+         0 | struct AA
+         0 |   struct X (base)
+         0 |     struct A (base)
+         0 |       int a
+         4 |   struct Y (base)
+         4 |     struct A (base)
+         4 |       int a
+           | [sizeof=8, dsize=8, align=4,
+           |  nvsize=8, nvalign=4]
+</code></pre><p>An interesting case is when we have virtual inheritance:</p>
+<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#719e07"># include &lt;iostream&gt;
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#dc322f">int</span> <span style="color:#268bd2">main</span> () {
+</span></span><span style="display:flex;"><span>	{
+</span></span><span style="display:flex;"><span>		<span style="color:#719e07">struct</span> <span style="color:#268bd2">A</span> { <span style="color:#dc322f">int</span> a <span style="color:#719e07">=</span> <span style="color:#2aa198">1</span>; };
+</span></span><span style="display:flex;"><span>		<span style="color:#719e07">struct</span> <span style="color:#268bd2">X</span> <span style="color:#719e07">:</span> <span style="color:#719e07">virtual</span> A {};
+</span></span><span style="display:flex;"><span>		<span style="color:#719e07">struct</span> <span style="color:#268bd2">Y</span> <span style="color:#719e07">:</span> A {};
+</span></span><span style="display:flex;"><span>		<span style="color:#719e07">struct</span> <span style="color:#268bd2">AA</span> <span style="color:#719e07">:</span> X, Y {};
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		AA aa; <span style="color:#586e75">// { AA, X, virtual A, Y, A }
+</span></span></span><span style="display:flex;"><span>		<span style="color:#586e75">// aa.A::a = 0; // error1
+</span></span></span><span style="display:flex;"><span>		aa.X<span style="color:#719e07">::</span>a <span style="color:#719e07">=</span> <span style="color:#2aa198">1</span>;
+</span></span><span style="display:flex;"><span>		aa.Y<span style="color:#719e07">::</span>a <span style="color:#719e07">=</span> <span style="color:#2aa198">2</span>;
+</span></span><span style="display:flex;"><span>		aa.a <span style="color:#719e07">=</span> <span style="color:#2aa198">3</span>; <span style="color:#586e75">// error2
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		std<span style="color:#719e07">::</span>cout <span style="color:#719e07">&lt;&lt;</span> aa.X<span style="color:#719e07">::</span>a <span style="color:#719e07">&lt;&lt;</span> aa.Y<span style="color:#719e07">::</span>a <span style="color:#719e07">&lt;&lt;</span> std<span style="color:#719e07">::</span>endl;
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	std<span style="color:#719e07">::</span>cout <span style="color:#719e07">&lt;&lt;</span> <span style="color:#2aa198">&#34;====================&#34;</span> <span style="color:#719e07">&lt;&lt;</span> std<span style="color:#719e07">::</span>endl;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	{
+</span></span><span style="display:flex;"><span>		<span style="color:#719e07">struct</span> <span style="color:#268bd2">A</span> { <span style="color:#dc322f">int</span> a <span style="color:#719e07">=</span> <span style="color:#2aa198">10</span>; };
+</span></span><span style="display:flex;"><span>		<span style="color:#719e07">struct</span> <span style="color:#268bd2">X</span> <span style="color:#719e07">:</span> <span style="color:#719e07">virtual</span> A {};
+</span></span><span style="display:flex;"><span>		<span style="color:#719e07">struct</span> <span style="color:#268bd2">Y</span> <span style="color:#719e07">:</span> <span style="color:#719e07">virtual</span> A {};
+</span></span><span style="display:flex;"><span>		<span style="color:#719e07">struct</span> <span style="color:#268bd2">AA</span> <span style="color:#719e07">:</span> X, Y {};
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		AA aa; <span style="color:#586e75">// { AA, X, virtual A, Y }
+</span></span></span><span style="display:flex;"><span>		std<span style="color:#719e07">::</span>cout <span style="color:#719e07">&lt;&lt;</span> aa.A<span style="color:#719e07">::</span>a <span style="color:#719e07">&lt;&lt;</span> aa.X<span style="color:#719e07">::</span>a <span style="color:#719e07">&lt;&lt;</span> aa.Y<span style="color:#719e07">::</span>a <span style="color:#719e07">&lt;&lt;</span> aa.AA<span style="color:#719e07">::</span>a <span style="color:#719e07">&lt;&lt;</span> aa.a <span style="color:#719e07">&lt;&lt;</span> std<span style="color:#719e07">::</span>endl;
+</span></span><span style="display:flex;"><span>		aa.A<span style="color:#719e07">::</span>a <span style="color:#719e07">=</span> <span style="color:#2aa198">0</span>;
+</span></span><span style="display:flex;"><span>		std<span style="color:#719e07">::</span>cout <span style="color:#719e07">&lt;&lt;</span> aa.A<span style="color:#719e07">::</span>a <span style="color:#719e07">&lt;&lt;</span> aa.X<span style="color:#719e07">::</span>a <span style="color:#719e07">&lt;&lt;</span> aa.Y<span style="color:#719e07">::</span>a <span style="color:#719e07">&lt;&lt;</span> aa.AA<span style="color:#719e07">::</span>a <span style="color:#719e07">&lt;&lt;</span> aa.a <span style="color:#719e07">&lt;&lt;</span> std<span style="color:#719e07">::</span>endl;
+</span></span><span style="display:flex;"><span>		aa.X<span style="color:#719e07">::</span>a <span style="color:#719e07">=</span> <span style="color:#2aa198">1</span>;
+</span></span><span style="display:flex;"><span>		std<span style="color:#719e07">::</span>cout <span style="color:#719e07">&lt;&lt;</span> aa.A<span style="color:#719e07">::</span>a <span style="color:#719e07">&lt;&lt;</span> aa.X<span style="color:#719e07">::</span>a <span style="color:#719e07">&lt;&lt;</span> aa.Y<span style="color:#719e07">::</span>a <span style="color:#719e07">&lt;&lt;</span> aa.AA<span style="color:#719e07">::</span>a <span style="color:#719e07">&lt;&lt;</span> aa.a <span style="color:#719e07">&lt;&lt;</span> std<span style="color:#719e07">::</span>endl;
+</span></span><span style="display:flex;"><span>		aa.Y<span style="color:#719e07">::</span>a <span style="color:#719e07">=</span> <span style="color:#2aa198">2</span>;
+</span></span><span style="display:flex;"><span>		std<span style="color:#719e07">::</span>cout <span style="color:#719e07">&lt;&lt;</span> aa.A<span style="color:#719e07">::</span>a <span style="color:#719e07">&lt;&lt;</span> aa.X<span style="color:#719e07">::</span>a <span style="color:#719e07">&lt;&lt;</span> aa.Y<span style="color:#719e07">::</span>a <span style="color:#719e07">&lt;&lt;</span> aa.AA<span style="color:#719e07">::</span>a <span style="color:#719e07">&lt;&lt;</span> aa.a <span style="color:#719e07">&lt;&lt;</span> std<span style="color:#719e07">::</span>endl;
+</span></span><span style="display:flex;"><span>		aa.a <span style="color:#719e07">=</span> <span style="color:#2aa198">3</span>;
+</span></span><span style="display:flex;"><span>		std<span style="color:#719e07">::</span>cout <span style="color:#719e07">&lt;&lt;</span> aa.A<span style="color:#719e07">::</span>a <span style="color:#719e07">&lt;&lt;</span> aa.X<span style="color:#719e07">::</span>a <span style="color:#719e07">&lt;&lt;</span> aa.Y<span style="color:#719e07">::</span>a <span style="color:#719e07">&lt;&lt;</span> aa.AA<span style="color:#719e07">::</span>a <span style="color:#719e07">&lt;&lt;</span> aa.a <span style="color:#719e07">&lt;&lt;</span> std<span style="color:#719e07">::</span>endl;
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Output:</p>
+<pre tabindex="0"><code>12
+====================
+1010101010
+00000
+11111
+22222
+33333
+</code></pre><p>The most-derived object contains only one A subobject if and only if either
+A appears exactly once in the inheritance hierarchy, virtual or non virtual,
+or every inheritance path leading to A is virtual with respect to A.</p>
+<p>Furthermore consider the complete inheritance graph of a class AA.  For any
+base type AX, conceptually flatten the graph so that every inheritance path
+to AX becomes a direct occurrence in a list.  Then:</p>
+<ul>
+<li>every non-virtual occurrence of AX remains a distinct AX subobject;</li>
+<li>all occurrences of AX reached through virtual inheritance are merged
+into a single shared AX subobject.
+The resulting set exactly describes how many AX subobjects physically reside
+inside an object of type AA.</li>
+</ul>
+<p>In the first case in the example above, we had two <strong>A</strong> subobjects in <strong>AA</strong>:
+one through virtual inheritance and one through regular inheritance, but in the
+second case, since all inheritance paths leading to <strong>A</strong> were virtual with
+respect to <strong>A</strong>, they are merged into a single <strong>A</strong> subobject.</p>
+<p>Furthermore directly virtually inherited classes are initialized only in the most
+derived class:</p>
+<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#719e07"># include &lt;iostream&gt;
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#719e07">struct</span> <span style="color:#268bd2">A</span> {
+</span></span><span style="display:flex;"><span>	<span style="color:#dc322f">int</span> a;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	A () <span style="color:#719e07">:</span> a (<span style="color:#2aa198">0</span>) {
+</span></span><span style="display:flex;"><span>		std<span style="color:#719e07">::</span>cout <span style="color:#719e07">&lt;&lt;</span> <span style="color:#2aa198">&#34;A initialized with 0&#34;</span> <span style="color:#719e07">&lt;&lt;</span> std<span style="color:#719e07">::</span>endl;
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	A (<span style="color:#dc322f">int</span> param) <span style="color:#719e07">:</span> a (param) {
+</span></span><span style="display:flex;"><span>		std<span style="color:#719e07">::</span>cout <span style="color:#719e07">&lt;&lt;</span> <span style="color:#2aa198">&#34;A initialized with param=&#34;</span> <span style="color:#719e07">&lt;&lt;</span> param <span style="color:#719e07">&lt;&lt;</span> std<span style="color:#719e07">::</span>endl;
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>};
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#719e07">struct</span> <span style="color:#268bd2">B1</span> <span style="color:#719e07">:</span> A {
+</span></span><span style="display:flex;"><span>	<span style="color:#dc322f">int</span> b;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	B1 (<span style="color:#dc322f">int</span> param) <span style="color:#719e07">:</span> A (param), b (param) {}
+</span></span><span style="display:flex;"><span>};
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#719e07">struct</span> <span style="color:#268bd2">C1</span> <span style="color:#719e07">:</span> B1 {
+</span></span><span style="display:flex;"><span>	<span style="color:#dc322f">int</span> c;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	C1 (<span style="color:#dc322f">int</span> param) <span style="color:#719e07">:</span> B1 (param), c (param) {}
+</span></span><span style="display:flex;"><span>};
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#719e07">struct</span> <span style="color:#268bd2">B2</span> <span style="color:#719e07">:</span> <span style="color:#719e07">virtual</span> A {
+</span></span><span style="display:flex;"><span>	<span style="color:#dc322f">int</span> b;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	B2 (<span style="color:#dc322f">int</span> param) <span style="color:#719e07">:</span> A (param), b (param) {}
+</span></span><span style="display:flex;"><span>};
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#719e07">struct</span> <span style="color:#268bd2">C2</span> <span style="color:#719e07">:</span> B2 {
+</span></span><span style="display:flex;"><span>	<span style="color:#dc322f">int</span> c;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	C2 (<span style="color:#dc322f">int</span> param) <span style="color:#719e07">:</span> B2 (param), c (param) {}
+</span></span><span style="display:flex;"><span>};
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#dc322f">int</span> <span style="color:#268bd2">main</span> () {
+</span></span><span style="display:flex;"><span>	C1 c1 (<span style="color:#2aa198">42</span>);
+</span></span><span style="display:flex;"><span>	std<span style="color:#719e07">::</span>cout <span style="color:#719e07">&lt;&lt;</span> c1.c <span style="color:#719e07">&lt;&lt;</span> <span style="color:#2aa198">&#34; &#34;</span> <span style="color:#719e07">&lt;&lt;</span> c1.b <span style="color:#719e07">&lt;&lt;</span> <span style="color:#2aa198">&#34; &#34;</span> <span style="color:#719e07">&lt;&lt;</span> c1.a <span style="color:#719e07">&lt;&lt;</span> std<span style="color:#719e07">::</span>endl;
+</span></span><span style="display:flex;"><span>	C2 c2 (<span style="color:#2aa198">42</span>);
+</span></span><span style="display:flex;"><span>	std<span style="color:#719e07">::</span>cout <span style="color:#719e07">&lt;&lt;</span> c2.c <span style="color:#719e07">&lt;&lt;</span> <span style="color:#2aa198">&#34; &#34;</span> <span style="color:#719e07">&lt;&lt;</span> c2.b <span style="color:#719e07">&lt;&lt;</span> <span style="color:#2aa198">&#34; &#34;</span> <span style="color:#719e07">&lt;&lt;</span> c2.a <span style="color:#719e07">&lt;&lt;</span> std<span style="color:#719e07">::</span>endl;
+</span></span><span style="display:flex;"><span>    B1 b1 (<span style="color:#2aa198">42</span>);
+</span></span><span style="display:flex;"><span>	std<span style="color:#719e07">::</span>cout <span style="color:#719e07">&lt;&lt;</span> b1.b <span style="color:#719e07">&lt;&lt;</span> <span style="color:#2aa198">&#34; &#34;</span> <span style="color:#719e07">&lt;&lt;</span> b1.a <span style="color:#719e07">&lt;&lt;</span> std<span style="color:#719e07">::</span>endl;
+</span></span><span style="display:flex;"><span>    B2 b2 (<span style="color:#2aa198">42</span>);
+</span></span><span style="display:flex;"><span>	std<span style="color:#719e07">::</span>cout <span style="color:#719e07">&lt;&lt;</span> b2.b <span style="color:#719e07">&lt;&lt;</span> <span style="color:#2aa198">&#34; &#34;</span> <span style="color:#719e07">&lt;&lt;</span> b2.a <span style="color:#719e07">&lt;&lt;</span> std<span style="color:#719e07">::</span>endl;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>The output is:</p>
+<pre tabindex="0"><code>A initialized with param=42
+42 42 42
+A initialized with 0
+42 42 0
+A initialized with param=42
+42 42
+A initialized with param=42
+42 42
+</code></pre><p>In case of C1-B1, everything is obvious: C1&rsquo;s parametrized constructor takes
+an integer, passes it to B1&rsquo;s parametrized constructor and initializes its
+member integer c. Then B1&rsquo;s parametrized constructor passes the value to
+A&rsquo;s parametrized constructor and initializes its member integer b. Then
+A&rsquo;s parametrized constructor initializes its member integer a.</p>
+<p>In case of C2-B2, the only difference is that B2 inherits A virtually.  Since A
+is virtually inherited, it must be initialized in the most derived class:
+C2. C2 doesn&rsquo;t pass the value to A&rsquo;s constructor. Even though C2 calls B2&rsquo;s
+parametrized constructor, which at first glance seems to call A&rsquo;s parametrized
+constructor, it doesn&rsquo;t, so A&rsquo;s default constructor is called.</p>
+<p>In case of <strong>b2</strong>, <strong>B2</strong> is the most derived class so the call to A&rsquo;s
+parametrized constructor gets evaluated.</p>
+<p>So far we&rsquo;ve got the S2 class which allows to store two distinct members of
+different types, and the types and values are fixed in the class. Let&rsquo;s make
+types arbitrary and add value initializers:</p>
 <div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#719e07"># include &lt;iostream&gt;
 </span></span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#719e07">template</span> <span style="color:#719e07">&lt;</span><span style="color:#719e07">typename</span> T<span style="color:#719e07">&gt;</span>
@@ -1351,7 +1559,7 @@ base type.</li>
 <p>To support rvalue expressions too, we have to overload our Forward
 implementation:</p>
 <div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#719e07">template</span> <span style="color:#719e07">&lt;</span><span style="color:#719e07">typename</span> T<span style="color:#719e07">&gt;</span>
-</span></span><span style="display:flex;"><span>T <span style="color:#719e07">&amp;&amp;</span> Forward (T <span style="color:#719e07">&amp;%</span> t) {
+</span></span><span style="display:flex;"><span>T <span style="color:#719e07">&amp;&amp;</span> Forward (T <span style="color:#719e07">&amp;&amp;</span> t) {
 </span></span><span style="display:flex;"><span>	<span style="color:#719e07">return</span> <span style="color:#719e07">static_cast</span> <span style="color:#719e07">&lt;</span>T <span style="color:#719e07">&amp;&amp;&gt;</span> (t);
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>This would work if we didn&rsquo;t specify the template type parameter

@@ -14,8 +14,8 @@ become a book.  You can find the most up to date version with pdf builds
 [here](https://github.com/GasparVardanyan/TupleInCPP20).
 
 ## Downloads
-* [Regular PDF](https://github.com/GasparVardanyan/TupleInCPP20/releases/download/initial_release/tuple-in-cpp20.pdf)
-* [Solarized Dark PDF](https://github.com/GasparVardanyan/TupleInCPP20/releases/download/initial_release/tuple-in-cpp20.SolarizedDark.pdf)
-* [Solarized Light PDF](https://github.com/GasparVardanyan/TupleInCPP20/releases/download/initial_release/tuple-in-cpp20.SolarizedLight.pdf)
+* [Regular PDF](https://github.com/GasparVardanyan/TupleInCPP20/releases/latest/download/tuple-in-cpp20.pdf)
+* [Solarized Dark PDF](https://github.com/GasparVardanyan/TupleInCPP20/releases/latest/download/tuple-in-cpp20_SolarizedDark.pdf)
+* [Solarized Light PDF](https://github.com/GasparVardanyan/TupleInCPP20/releases/latest/download/tuple-in-cpp20_SolarizedLight.pdf)
 
 {{< include-md "external/TupleInCPP20/tuple-in-cpp20.md" >}}
