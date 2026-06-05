@@ -6,7 +6,500 @@
 	<description>Recent content on Gaspar Vardanyan</description>
 	<generator>Hugo -- gohugo.io</generator>
 	<language>en-us</language>
-	<lastBuildDate>Tue, 28 Apr 2026 17:26:31 +0400</lastBuildDate><atom:link href="https://gasparvardanyan.github.io/index.xml" rel="self" type="application/rss+xml" />
+	<lastBuildDate>Mon, 25 May 2026 00:10:51 +0400</lastBuildDate><atom:link href="https://gasparvardanyan.github.io/index.xml" rel="self" type="application/rss+xml" />
+	<item>
+	  <title>Tips for C/C&#43;&#43; Developers</title>
+	  <link>https://gasparvardanyan.github.io/blog/tips-for-cpp-developers/</link>
+	  <pubDate>Mon, 25 May 2026 00:10:51 +0400</pubDate>
+	  
+	  <guid>https://gasparvardanyan.github.io/blog/tips-for-cpp-developers/</guid>
+	  <description>&lt;h2 id=&#34;write-portable-code&#34;&gt;Write portable code&lt;/h2&gt;
+&lt;p&gt;Pick a standard and configure your compiler to strictly follow that standard.&lt;/p&gt;
+&lt;p&gt;For example, to enable a strict C++20 compliance in Clang/GCC use these flags:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;-std=c++20 -pedantic-errors -Werror=pedantic
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;In CMake projects you can do:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-cmake&#34; data-lang=&#34;cmake&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#b58900&#34;&gt;set&lt;/span&gt; (&lt;span style=&#34;color:#2aa198&#34;&gt;CMAKE_CXX_STANDARD&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;20&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#b58900&#34;&gt;set&lt;/span&gt; (&lt;span style=&#34;color:#2aa198&#34;&gt;CMAKE_CXX_STANDARD_REQUIRED&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;ON&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#b58900&#34;&gt;set&lt;/span&gt; (&lt;span style=&#34;color:#2aa198&#34;&gt;CMAKE_CXX_EXTENSIONS&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;OFF&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#b58900&#34;&gt;set&lt;/span&gt; (&lt;span style=&#34;color:#2aa198&#34;&gt;CMAKE_C_FLAGS&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;${CMAKE_C_FLAGS} -std=c18 -pedantic-errors -Werror=pedantic&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;multithread-your-tools&#34;&gt;Multithread your tools&lt;/h2&gt;
+&lt;p&gt;Make sure your language server - the thing that enables code autocompletion in
+your IDE - is configured to use multiple threads.&lt;/p&gt;
+&lt;p&gt;The most common C/C++ language server is clangd. It supports multithreading via
+the &lt;strong&gt;&amp;ndash;j=NUM_THREADS&lt;/strong&gt; command line flag. The &lt;strong&gt;nproc&lt;/strong&gt; CLI tool, which is a part
+of the GNU coreutils, prints out the number of threads your CPU supports.
+In NeoVim I set up clangd like this:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-lua&#34; data-lang=&#34;lua&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;local&lt;/span&gt; nproc &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; tonumber (vim.fn.system ({&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;nproc&amp;#34;&lt;/span&gt;}))
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;local&lt;/span&gt; jnproc &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#39;&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;0&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;~=&lt;/span&gt; nproc
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;then&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    jnproc &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt;  &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;--j=&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;..&lt;/span&gt; (nproc &lt;span style=&#34;color:#719e07&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;1&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;end&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;LspServers [&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;clangd&amp;#34;&lt;/span&gt;] &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    cmd &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;clangd&amp;#34;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;--background-index&amp;#34;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        jnproc,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;--header-insertion=iwyu&amp;#34;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#586e75&#34;&gt;-- &amp;#34;--clang-tidy&amp;#34;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    },
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;There are different popular opinions on how many threads your multithreaded tool
+must use; I choose one less than the all available threads.&lt;/p&gt;
+&lt;p&gt;In &amp;ldquo;modern&amp;rdquo; IDEs you&amp;rsquo;ll probably find some GUI configuration blocks which might
+support tuning the language server.&lt;/p&gt;
+&lt;p&gt;Make sure your project&amp;rsquo;s compilation is multithreaded. Check &lt;a href=&#34;https://stackoverflow.com/questions/10688549/how-do-i-configure-portable-parallel-builds-in-cmake#50883540&#34;&gt;this&lt;/a&gt;
+for enabling multithreading in CMake projects.
+In NeoVim I use &lt;a href=&#34;https://github.com/Civitasv/cmake-tools.nvim&#34;&gt;cmake-tools.nvim&lt;/a&gt;
+with this config:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-lua&#34; data-lang=&#34;lua&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;{
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;Civitasv/cmake-tools.nvim&amp;#34;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	config &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#268bd2&#34;&gt;function&lt;/span&gt; ()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		&lt;span style=&#34;color:#268bd2&#34;&gt;local&lt;/span&gt; nproc &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; require (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;modular.utils&amp;#34;&lt;/span&gt;).nproc
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		&lt;span style=&#34;color:#268bd2&#34;&gt;local&lt;/span&gt; cmake_build_options &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; {}
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		&lt;span style=&#34;color:#268bd2&#34;&gt;local&lt;/span&gt; cmake_generate_options &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; {}
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		&lt;span style=&#34;color:#268bd2&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;0&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;~=&lt;/span&gt; nproc
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		&lt;span style=&#34;color:#268bd2&#34;&gt;then&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            &lt;span style=&#34;color:#586e75&#34;&gt;-- multithreading make/ninja&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			vim.list_extend (cmake_build_options, { &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;-j&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;..&lt;/span&gt; (nproc &lt;span style=&#34;color:#719e07&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;1&lt;/span&gt;) })
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		&lt;span style=&#34;color:#268bd2&#34;&gt;end&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		&lt;span style=&#34;color:#268bd2&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;1&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;==&lt;/span&gt; vim.fn.executable (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;clang&amp;#34;&lt;/span&gt;) &lt;span style=&#34;color:#719e07&#34;&gt;and&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;1&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;==&lt;/span&gt; vim.fn.executable (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;clang++&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		&lt;span style=&#34;color:#268bd2&#34;&gt;then&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			vim.fn.setenv (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;CC&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;/usr/bin/clang&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			vim.fn.setenv (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;CXX&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;/usr/bin/clang++&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		&lt;span style=&#34;color:#268bd2&#34;&gt;end&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#586e75&#34;&gt;-- explained below&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		&lt;span style=&#34;color:#268bd2&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;1&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;==&lt;/span&gt; vim.fn.executable (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;ccache&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		&lt;span style=&#34;color:#268bd2&#34;&gt;then&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			vim.fn.setenv (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;CMAKE_C_COMPILER_LAUNCHER&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;ccache&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			vim.fn.setenv (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;CMAKE_CXX_COMPILER_LAUNCHER&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;ccache&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		&lt;span style=&#34;color:#268bd2&#34;&gt;end&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		&lt;span style=&#34;color:#268bd2&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;1&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;==&lt;/span&gt; vim.fn.executable (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;ninja&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		&lt;span style=&#34;color:#268bd2&#34;&gt;then&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            &lt;span style=&#34;color:#586e75&#34;&gt;-- ninja is faster than make&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			vim.list_extend (cmake_generate_options, { &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;-G Ninja&amp;#34;&lt;/span&gt; })
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		&lt;span style=&#34;color:#268bd2&#34;&gt;end&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		require (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;cmake-tools&amp;#34;&lt;/span&gt;).setup {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			cmake_build_options &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; cmake_build_options,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			cmake_generate_options &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; cmake_generate_options,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		}
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&lt;span style=&#34;color:#268bd2&#34;&gt;end&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;As you can see I choose ninja over make whenever it&amp;rsquo;s available in the system.
+Ninja is faster than make. I also prefer clang over gcc to have LSP-compatible
+errors/warnings.&lt;/p&gt;
+&lt;h2 id=&#34;use-compiler-cache-to-speed-up-recompilation&#34;&gt;Use compiler cache to speed up recompilation&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;https://ccache.dev/&#34;&gt;ccache&lt;/a&gt; is the most popular compiler cache management
+tool.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;If you ever run make clean; make, you can probably benefit from ccache. It
+is common for developers to do a clean build of a project for a variety of
+reasons, and this discards the results of your previous compilations. By
+using ccache, recompilation goes much faster.
+Another reason to use ccache is that the same cache is used for builds&lt;/p&gt;
+&lt;p&gt;in different directories. If you have several versions or branches of a
+project stored in different directories, many of the object files in a build
+directory can often be taken from the cache even if they were compiled for
+another version or branch.&lt;/p&gt;
+&lt;p&gt;A third scenario is using ccache to speed up clean builds performed by
+servers or build farms that regularly verify that the code builds.&lt;/p&gt;
+&lt;p&gt;You can also share the cache between users, which can be very useful on
+shared compilation servers.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;CMake supports ccache via environment variables &lt;strong&gt;CMAKE_C_COMPILER_LAUNCHER&lt;/strong&gt;
+and &lt;strong&gt;CMAKE_CXX_COMPILER_LAUNCHER&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;In NeoVim I set up ccache to work with CMake like this:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-lua&#34; data-lang=&#34;lua&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;1&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;==&lt;/span&gt; vim.fn.executable (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;ccache&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;then&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    vim.fn.setenv (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;CMAKE_C_COMPILER_LAUNCHER&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;ccache&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    vim.fn.setenv (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;CMAKE_CXX_COMPILER_LAUNCHER&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;ccache&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;end&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;iwyu-include-what-you-use&#34;&gt;IWYU: Include what you use&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;https://include-what-you-use.org/&#34;&gt;This&lt;/a&gt; tool helps to avoid unnecessarily
+included headers and include the necessary ones. For example if you include
+A.h which includes B.h for its internal stuff, you can use symbols - variables,
+functions, structs, etc - from B.h without actually including it. Then in the
+future if A.h removes the include directive for B.h because of some
+internal changes, your code wouldn&amp;rsquo;t compile. IWYU checks what symbols do you
+use in your code and includes all necessary headers directly and removes all
+unused headers.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&amp;ldquo;Include what you use&amp;rdquo; means this: for every symbol (type, function variable,
+or macro) that you use in foo.cc, either foo.cc or foo.h should #include a .h
+file that exports the declaration of that symbol. The include-what-you-use
+tool is a program that can be built with the clang libraries in order to
+analyze #includes of source files to find include-what-you-use violations,
+and suggest fixes for them.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;The main goal of include-what-you-use is to remove superfluous #includes. It
+does this both by figuring out what #includes are not actually needed
+for this file (for both .cc and .h files), and replacing #includes with
+forward-declares when possible.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Don&amp;rsquo;t forget about multithreading! IWYU supports multithreading with the
+&lt;strong&gt;-j NUM_THREADS&lt;/strong&gt; CLI flag.&lt;/p&gt;
+&lt;p&gt;In NeoVim I set up IWYU like this:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-lua&#34; data-lang=&#34;lua&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;local&lt;/span&gt; groups &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; require (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;modular.autogroups&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;1&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;==&lt;/span&gt; vim.fn.executable (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;iwyu-tool&amp;#34;&lt;/span&gt;) &lt;span style=&#34;color:#719e07&#34;&gt;and&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;1&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;==&lt;/span&gt; vim.fn.executable (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;iwyu-fix-includes&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;then&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&lt;span style=&#34;color:#268bd2&#34;&gt;local&lt;/span&gt; nproc &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; require (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;modular.utils&amp;#34;&lt;/span&gt;).nproc
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&lt;span style=&#34;color:#268bd2&#34;&gt;local&lt;/span&gt; iwyu_current
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&lt;span style=&#34;color:#268bd2&#34;&gt;local&lt;/span&gt; iwyu_root
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&lt;span style=&#34;color:#268bd2&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;0&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;~=&lt;/span&gt; nproc
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&lt;span style=&#34;color:#268bd2&#34;&gt;then&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		iwyu_current &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;w | !iwyu-tool -p . -j &amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;..&lt;/span&gt; (nproc &lt;span style=&#34;color:#719e07&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;1&lt;/span&gt;) &lt;span style=&#34;color:#719e07&#34;&gt;..&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34; % | iwyu-fix-includes&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		iwyu_root &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;w | !iwyu-tool -p . -j &amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;..&lt;/span&gt; (nproc &lt;span style=&#34;color:#719e07&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;1&lt;/span&gt;) &lt;span style=&#34;color:#719e07&#34;&gt;..&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34; | iwyu-fix-includes&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&lt;span style=&#34;color:#268bd2&#34;&gt;else&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		iwyu_current &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;w | !iwyu-tool -p . % | iwyu-fix-includes&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		iwyu_root &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;w | !iwyu-tool -p . | iwyu-fix-includes&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&lt;span style=&#34;color:#268bd2&#34;&gt;end&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	vim.api.nvim_create_autocmd (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;FileType&amp;#34;&lt;/span&gt;, {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		group &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; vim.api.nvim_create_augroup (groups.ClangIWYU, { clear &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#cb4b16&#34;&gt;true&lt;/span&gt; }),
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		pattern &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; { &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;cpp&amp;#34;&lt;/span&gt; },
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		callback &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#268bd2&#34;&gt;function&lt;/span&gt; (args)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			&lt;span style=&#34;color:#268bd2&#34;&gt;local&lt;/span&gt; bufnr &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; args.buf
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;				vim.api.nvim_buf_create_user_command (bufnr, &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;ClangIWYUCurrent&amp;#34;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;					&lt;span style=&#34;color:#268bd2&#34;&gt;function&lt;/span&gt; () vim.cmd (iwyu_current) &lt;span style=&#34;color:#268bd2&#34;&gt;end&lt;/span&gt;, { nargs &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;0&lt;/span&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;				)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;				vim.api.nvim_buf_create_user_command (bufnr, &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;ClangIWYURoot&amp;#34;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;					&lt;span style=&#34;color:#268bd2&#34;&gt;function&lt;/span&gt; () vim.cmd (iwyu_root) &lt;span style=&#34;color:#268bd2&#34;&gt;end&lt;/span&gt;, { nargs &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;0&lt;/span&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;				)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		&lt;span style=&#34;color:#268bd2&#34;&gt;end&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	})
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;end&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#586e75&#34;&gt;-- ...&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;local&lt;/span&gt; groups &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; require (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;modular.autogroups&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;local&lt;/span&gt; map &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; vim.keymap.set
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;1&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;==&lt;/span&gt; vim.fn.executable (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;iwyu-tool&amp;#34;&lt;/span&gt;) &lt;span style=&#34;color:#719e07&#34;&gt;and&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;1&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;==&lt;/span&gt; vim.fn.executable (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;iwyu-fix-includes&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;then&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&lt;span style=&#34;color:#268bd2&#34;&gt;local&lt;/span&gt; reg_mapping_group &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; require (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;modular.utils&amp;#34;&lt;/span&gt;).reg_mapping_group
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	reg_mapping_group (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;&amp;lt;leader&amp;gt;Ch&amp;#34;&lt;/span&gt;,  &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;headers&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	vim.api.nvim_create_autocmd (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;FileType&amp;#34;&lt;/span&gt;, {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		group &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; vim.api.nvim_create_augroup (groups.ClangIWYUMappings, { clear &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#cb4b16&#34;&gt;true&lt;/span&gt; }),
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		pattern &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; { &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;cpp&amp;#34;&lt;/span&gt; },
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		callback &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#268bd2&#34;&gt;function&lt;/span&gt; (args)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			&lt;span style=&#34;color:#268bd2&#34;&gt;local&lt;/span&gt; bufnr &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; args.buf
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			map (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;n&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;&amp;lt;leader&amp;gt;Chc&amp;#34;&lt;/span&gt;, vim.cmd.ClangIWYUCurrent, { buffer &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; bufnr, desc &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;iwyu current file&amp;#34;&lt;/span&gt; })
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;			map (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;n&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;&amp;lt;leader&amp;gt;Chr&amp;#34;&lt;/span&gt;, vim.cmd.ClangIWYURoot, { buffer &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; bufnr, desc &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;iwyu root&amp;#34;&lt;/span&gt; })
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		&lt;span style=&#34;color:#268bd2&#34;&gt;end&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	})
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;end&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;There&amp;rsquo;s no NeoVim IWYU plugin available but it doesn&amp;rsquo;t stop
+NeoVim users from integrating it in their workflow. In &amp;ldquo;modern&amp;rdquo; IDEs
+you might be forced to use IWYU manually from the terminal. In
+this case, or in general, consider using &lt;a href=&#34;https://www.slingacademy.com/article/git-pre-commit-hook-a-practical-guide-with-examples/&#34;&gt;git pre-commit
+hooks&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Clangd also supports IWYU-like functionality. To enable it, edit the
+&lt;strong&gt;~/.config/clangd/config.yaml&lt;/strong&gt; file and add this:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;Diagnostics&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#268bd2&#34;&gt;UnusedIncludes&lt;/span&gt;: Strict
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#268bd2&#34;&gt;MissingIncludes&lt;/span&gt;: Strict
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;This will generate warnings and enable &lt;strong&gt;code actions&lt;/strong&gt; (automated small code
+editing actions) to remove the unused includes and include the missing headers.&lt;/p&gt;
+&lt;h2 id=&#34;utilize-the-full-power-of-your-device&#34;&gt;Utilize the full power of your device&lt;/h2&gt;
+&lt;p&gt;You probably already know about the &amp;ldquo;power profiles&amp;rdquo; of your device. You
+can set it to &amp;ldquo;Performance&amp;rdquo;, &amp;ldquo;Balanced&amp;rdquo;, &amp;ldquo;Power&amp;rdquo; and other modes. This will
+change the performance of your system. It&amp;rsquo;s something motherboard-related
+and affects both CPU and GPU. Your system can be tuned further. For
+example, in Linux Intel CPUs give a configuration interface through the
+&lt;a href=&#34;https://docs.kernel.org/admin-guide/pm/intel_pstate.html&#34;&gt;intel pstate&lt;/a&gt;
+driver. This driver enables configuration options for turbo
+boost, hardware-managed performance states, CPU core frequency
+limitations and exposes various global and per-core settings via
+&lt;a href=&#34;https://docs.kernel.org/admin-guide/pm/cpufreq.html&#34;&gt;cpufreq&lt;/a&gt;.  Intel RAPL
+(Running Average Power Limit) exposes CPU energy configuration options through
+&lt;a href=&#34;https://www.kernel.org/doc/html/next/power/powercap/powercap.html&#34;&gt;powercap&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;When you compile your C/C++ projects, these
+configurations matter! Nvidia GPUs can be tuned through the
+&lt;a href=&#34;https://man.archlinux.org/man/nvidia-smi.1&#34;&gt;nvidia-smi&lt;/a&gt; CLI tool. Consider tweaking
+it if you use CUDA. By tuning the &lt;a href=&#34;https://man.archlinux.org/man/nvidia-smi.1#Performance_State&#34;&gt;performance state&lt;/a&gt;
+and other settings, you can speed-up CUDA applications.&lt;/p&gt;
+&lt;p&gt;On Linux there are user-friendly tools such as &lt;a href=&#34;https://linrunner.de/tlp/index.html&#34;&gt;TLP&lt;/a&gt;
+available to configure these options.&lt;/p&gt;
+&lt;p&gt;Modern CPUs often feature different types of cores. Some are Performance
+cores (P-cores), while others are Efficiency cores (E-cores). These cores
+differ in their operating frequencies and, consequently, in the frequency
+ranges available for configuration.&lt;/p&gt;
+&lt;p&gt;One limitation of TLP is that it requires exact frequency values to be
+specified. However, the valid frequency ranges vary between core types and,
+naturally, between CPU models.&lt;/p&gt;
+&lt;p&gt;To simplify this, I developed
+&lt;a href=&#34;https://github.com/GasparVardanyan/DeviceMaster&#34;&gt;DeviceMaster&lt;/a&gt;, which allows
+frequency limits to be configured using percentages rather than absolute
+values. It also provides several additional features that make CPU power
+and performance tuning easier to manage.&lt;/p&gt;
+&lt;p&gt;I configure my device like
+&lt;a href=&#34;https://github.com/GasparVardanyan/DeviceMaster/tree/master#example-usage&#34;&gt;this&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Another important thing to configure properly is the Extensible Scheduler Class
+of the Linux Kernel. Roughly speaking, it decides which cores have to be used for
+which tasks. Remember that CPUs have P cores and E cores, so this is important
+for compilation speed and overall system performance. It can be configured with
+the &lt;a href=&#34;https://wiki.cachyos.org/configuration/sched-ext/&#34;&gt;sched-ext&lt;/a&gt; CLI tool.&lt;/p&gt;
+&lt;p&gt;I configure it like this in &lt;strong&gt;/etc/scx_loader.toml&lt;/strong&gt;:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-toml&#34; data-lang=&#34;toml&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;default_sched = &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;scx_lavd&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;default_mode = &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;Auto&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;[scheds.scx_lavd]
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;auto_mode = [&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;--autopower&amp;#34;&lt;/span&gt;]
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;use-linters&#34;&gt;Use linters&lt;/h2&gt;
+&lt;p&gt;Linters help to quickly notice bugs, modernize your code and learn good coding
+practices. For example, when your function takes a forwarding reference and you
+forget to std::forward it like this:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-cpp&#34; data-lang=&#34;cpp&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;template&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;typename&lt;/span&gt; T&lt;span style=&#34;color:#719e07&#34;&gt;&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#dc322f&#34;&gt;void&lt;/span&gt; f (T &lt;span style=&#34;color:#719e07&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; t) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	someFunc (t);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;you wouldn&amp;rsquo;t have compilation errors or warnings. This code would work fine in
+many situations and could be hard to debug when something fails because
+of it. However, clang-tidy would give a diagnostic message like this:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;forwarding reference parameter &amp;#39;t&amp;#39; is never forwarded inside the function body
+[cppcoreguidelines-missing-std-forward]
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;In NeoVim I set up clang-tidy and cppcheck like this:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-lua&#34; data-lang=&#34;lua&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;local&lt;/span&gt; clang_config &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; require (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;modular.config.clang&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;local&lt;/span&gt; clang_standard &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#268bd2&#34;&gt;function&lt;/span&gt; ()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#268bd2&#34;&gt;if&lt;/span&gt; vim.bo.filetype &lt;span style=&#34;color:#719e07&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;cpp&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#268bd2&#34;&gt;then&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#268bd2&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;--extra-arg=-std=&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;..&lt;/span&gt; clang_config.stdcpp
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#268bd2&#34;&gt;elseif&lt;/span&gt; vim.bo.filetype &lt;span style=&#34;color:#719e07&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;c&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#268bd2&#34;&gt;then&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#268bd2&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;--extra-arg=-std=&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;..&lt;/span&gt; clang_config.stdc
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#268bd2&#34;&gt;else&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#268bd2&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#268bd2&#34;&gt;end&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;end&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;local&lt;/span&gt; cppcheck_standard &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#268bd2&#34;&gt;function&lt;/span&gt; ()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#268bd2&#34;&gt;if&lt;/span&gt; vim.bo.filetype &lt;span style=&#34;color:#719e07&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;cpp&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#268bd2&#34;&gt;then&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#268bd2&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;--std=&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;..&lt;/span&gt; clang_config.stdcpp
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#268bd2&#34;&gt;elseif&lt;/span&gt; vim.bo.filetype &lt;span style=&#34;color:#719e07&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;c&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#268bd2&#34;&gt;then&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#268bd2&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;--std=&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;..&lt;/span&gt; clang_config.stdc
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#268bd2&#34;&gt;else&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#268bd2&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#268bd2&#34;&gt;end&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;end&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;local&lt;/span&gt; nproc &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; require (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;modular.utils&amp;#34;&lt;/span&gt;).nproc
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;local&lt;/span&gt; cppcheck_jnproc &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#39;&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;0&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;~=&lt;/span&gt; nproc
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;then&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    cppcheck_jnproc &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt;  &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;-j &amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;..&lt;/span&gt; (nproc &lt;span style=&#34;color:#719e07&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;1&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;end&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;local&lt;/span&gt; clang_tidy &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; require (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;lint.linters.clangtidy&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;local&lt;/span&gt; cppcheck &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; require (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;lint.linters.cppcheck&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#586e75&#34;&gt;-- https://clang.llvm.org/extra/clang-tidy/&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;vim.list_extend (clang_tidy.args, {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    clang_standard,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;--checks=*&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#586e75&#34;&gt;-- abseil, altera, android, boost, bugprone,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#586e75&#34;&gt;-- cert, clang, concurrency, cppcoreguidelines, darwin,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#586e75&#34;&gt;-- fuchsia, google, hicpp, linuxkernel, llvm, llvmlibc,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#586e75&#34;&gt;-- misc, modernize, mpi, objc, openmp, performance,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#586e75&#34;&gt;-- portability, readability, zircon&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#719e07&#34;&gt;..&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;,-darwin-*&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#719e07&#34;&gt;..&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;,-linuxkernel-*&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#719e07&#34;&gt;..&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;,-llvmlibc-*&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#719e07&#34;&gt;..&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;,-objc-*&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#719e07&#34;&gt;..&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;,-altera-unroll-loops&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#719e07&#34;&gt;..&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;,-bugprone-easily-swappable-parameters&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#719e07&#34;&gt;..&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;,-fuchsia-default-arguments-calls&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#719e07&#34;&gt;..&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;,-fuchsia-default-arguments-declarations&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#719e07&#34;&gt;..&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;,-fuchsia-overloaded-operator&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#719e07&#34;&gt;..&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;,-fuchsia-trailing-return&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#719e07&#34;&gt;..&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;,-google-explicit-constructor&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#719e07&#34;&gt;..&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;,-hicpp-explicit-conversions&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#719e07&#34;&gt;..&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;,-llvm-else-after-return&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#719e07&#34;&gt;..&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;,-llvm-header-guard&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#719e07&#34;&gt;..&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;,-misc-non-private-member-variables-in-classes&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#719e07&#34;&gt;..&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;,-misc-use-anonymous-namespace&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#719e07&#34;&gt;..&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;,-modernize-use-trailing-return-type&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#719e07&#34;&gt;..&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;,-readability-else-after-return&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#719e07&#34;&gt;..&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;,-readability-function-cognitive-complexity&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#719e07&#34;&gt;..&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;,-readability-identifier-length&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#719e07&#34;&gt;..&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;,-readability-isolate-declaration&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#719e07&#34;&gt;..&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;,-readability-magic-numbers&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#719e07&#34;&gt;..&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;,-readability-redundant-access-specifiers&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#719e07&#34;&gt;..&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;,-readability-redundant-inline-specifier&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#719e07&#34;&gt;..&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;,-readability-simplify-boolean-expr&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#586e75&#34;&gt;-- .. &amp;#34;,-cppcoreguidelines-avoid-do-while&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#586e75&#34;&gt;-- .. &amp;#34;,-cppcoreguidelines-avoid-magic-numbers&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#586e75&#34;&gt;-- .. &amp;#34;,-cppcoreguidelines-non-private-member-variables-in-classes&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#586e75&#34;&gt;-- .. &amp;#34;,-cppcoreguidelines-owning-memory&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#586e75&#34;&gt;-- .. &amp;#34;,-cppcoreguidelines-rvalue-reference-param-not-moved&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#586e75&#34;&gt;-- .. &amp;#34;,-modernize-use-nodiscard&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;})
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;vim.list_extend (cppcheck.args, {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    cppcheck_standard,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    cppcheck_jnproc,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;--check-level=exhaustive&amp;#34;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;--enable=all&amp;#34;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;--suppress=missingIncludeSystem&amp;#34;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;})
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;clang-tidy works with &lt;a href=&#34;https://clang.llvm.org/extra/clang-tidy/#running-clang-tidy-on-cuda-files&#34;&gt;CUDA
+too&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;For Qt applications, use &lt;a href=&#34;https://github.com/KDE/clazy&#34;&gt;clazy&lt;/a&gt;. Unfortunately
+clazy doesn&amp;rsquo;t support enabling all diagnostics and disabling selected ones.
+In NeoVim I set up clazy like this:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-lua&#34; data-lang=&#34;lua&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;local&lt;/span&gt; clazy &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; require (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;lint.linters.clazy&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;vim.list_extend (clazy.args, {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    clang_standard,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;-checks=&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#586e75&#34;&gt;-- why * doesn&amp;#39;t work here?&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#719e07&#34;&gt;..&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;level0&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#719e07&#34;&gt;..&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;,level1&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#719e07&#34;&gt;..&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;,level2&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#719e07&#34;&gt;..&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;,assert-with-side-effects&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#719e07&#34;&gt;..&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;,compare-member-check&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#719e07&#34;&gt;..&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;,container-inside-loop&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#719e07&#34;&gt;..&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;,detaching-member&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#719e07&#34;&gt;..&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;,heap-allocated-small-trivial-type&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#719e07&#34;&gt;..&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;,ifndef-define-typo&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#719e07&#34;&gt;..&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;,isempty-vs-count&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#719e07&#34;&gt;..&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;,jni-signatures&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#719e07&#34;&gt;..&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;,qbytearray-conversion-to-c-style&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#719e07&#34;&gt;..&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;,qhash-with-char-pointer-key&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#719e07&#34;&gt;..&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;,qproperty-type-mismatch&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#719e07&#34;&gt;..&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;,qrequiredresult-candidates&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#719e07&#34;&gt;..&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;,qstring-ref&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#719e07&#34;&gt;..&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;,qstring-varargs&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#719e07&#34;&gt;..&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;,qt-keyword-emit&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#719e07&#34;&gt;..&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;,qt-keywords&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#719e07&#34;&gt;..&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;,qvariant-template-instantiation&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#719e07&#34;&gt;..&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;,raw-environment-function&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#719e07&#34;&gt;..&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;,reserve-candidates&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#719e07&#34;&gt;..&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;,sanitize-inline-keyword&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#719e07&#34;&gt;..&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;,signal-with-return-value&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#719e07&#34;&gt;..&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;,thread-with-slots&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#719e07&#34;&gt;..&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;,tr-non-literal&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#719e07&#34;&gt;..&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;,unexpected-flag-enumerator-value&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#719e07&#34;&gt;..&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;,unneeded-cast&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#719e07&#34;&gt;..&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;,unused-result-check&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#719e07&#34;&gt;..&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;,use-arrow-operator-instead-of-data&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#719e07&#34;&gt;..&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;,use-chrono-in-qtimer&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#719e07&#34;&gt;..&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;,used-qunused-variable&amp;#34;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;})
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;use-profilers&#34;&gt;Use profilers&lt;/h2&gt;
+&lt;p&gt;Linux has a built in performance profiler called
+&lt;a href=&#34;https://perfwiki.github.io/main/&#34;&gt;perf&lt;/a&gt;.  It helps you analyze
+your application&amp;rsquo;s performance and pinpoint which functions consume
+the most CPU time. Other operating systems likely offer similar
+tools. If you&amp;rsquo;re using NeoVim, you&amp;rsquo;re in luck - there&amp;rsquo;s an excellent
+&lt;a href=&#34;https://github.com/t-troebst/perfanno.nvim&#34;&gt;extension&lt;/a&gt; that integrates perf
+directly into NeoVim.&lt;/p&gt;
+&lt;h2 id=&#34;conditional-breakpoints&#34;&gt;Conditional breakpoints&lt;/h2&gt;
+&lt;p&gt;This is worth noting here because if you use a &amp;ldquo;modern&amp;rdquo; IDE, there&amp;rsquo;s a good
+chance you&amp;rsquo;re not familiar with conditional breakpoints. For example, when
+you need to stop inside a loop only when the loop counter reaches a specific
+value, you might write an if statement and place a breakpoint inside it:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-cpp&#34; data-lang=&#34;cpp&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;for&lt;/span&gt; (std&lt;span style=&#34;color:#719e07&#34;&gt;::&lt;/span&gt;size_t i &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;0&lt;/span&gt;; i &lt;span style=&#34;color:#719e07&#34;&gt;&amp;lt;&lt;/span&gt; COUNT; &lt;span style=&#34;color:#719e07&#34;&gt;++&lt;/span&gt;i) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#719e07&#34;&gt;if&lt;/span&gt; (i &lt;span style=&#34;color:#719e07&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;1000&lt;/span&gt;) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#dc322f&#34;&gt;int&lt;/span&gt; xxx; &lt;span style=&#34;color:#586e75&#34;&gt;// breakpoint on this line
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;In &amp;ldquo;modern&amp;rdquo; IDEs the conditional breakpoint feature is &amp;ldquo;hidden&amp;rdquo; behind the
+GUI blocks. With NeoVim, debugging is not a built-in feature. You have to set
+up the debugger yourself, configure key mappings, and explore the available
+functionality. In the process, you often discover features that you might
+never have encountered in a traditional IDE, including powerful debugging
+capabilities such as conditional breakpoints.&lt;/p&gt;
+&lt;h2 id=&#34;documentation-tools&#34;&gt;Documentation tools&lt;/h2&gt;
+&lt;p&gt;You can browse &lt;a href=&#34;cppreference.com&#34;&gt;cppreference.com&lt;/a&gt; and
+&lt;a href=&#34;cplusplus.com&#34;&gt;cplusplus.com&lt;/a&gt; from your terminal like the man pages
+with &lt;a href=&#34;https://github.com/aitjcize/cppman&#34;&gt;cppman&lt;/a&gt;. It also supports caching both
+sites and browsing in offline mode. There&amp;rsquo;s also a NeoVim
+&lt;a href=&#34;https://github.com/madskjeldgaard/cppman.nvim&#34;&gt;extension&lt;/a&gt; to integrate
+cppman.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://zealdocs.org/&#34;&gt;Zeal&lt;/a&gt; is an offline GUI documentation browser. It
+supports sources like cppreference, Qt, CUDA, OpenGL, etc. There&amp;rsquo;s also a Vim
+&lt;a href=&#34;https://github.com/nilp0inter/zeavim.vim&#34;&gt;extension&lt;/a&gt; to access Zeal docs like
+you access Qt docs from QtCreator.&lt;/p&gt;
+&lt;p&gt;I manage zeavim mappings in NeoVim like this:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-lua&#34; data-lang=&#34;lua&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;local&lt;/span&gt; map &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; vim.keymap.set
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;local&lt;/span&gt; &lt;span style=&#34;color:#268bd2&#34;&gt;function&lt;/span&gt; &lt;span style=&#34;color:#268bd2&#34;&gt;zeal_search&lt;/span&gt; (docset, query)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#268bd2&#34;&gt;local&lt;/span&gt; old_docset &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; vim.b.manualDocset
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    vim.fn [&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;zeavim#DocsetInBuffer&amp;#34;&lt;/span&gt;] (docset)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    vim.fn [&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;zeavim#SearchFor&amp;#34;&lt;/span&gt;] (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;&amp;#34;&lt;/span&gt;, query)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	vim.print (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;Searching for &amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;..&lt;/span&gt; query)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#268bd2&#34;&gt;if&lt;/span&gt; old_docset &lt;span style=&#34;color:#719e07&#34;&gt;~=&lt;/span&gt; &lt;span style=&#34;color:#cb4b16&#34;&gt;nil&lt;/span&gt; &lt;span style=&#34;color:#268bd2&#34;&gt;then&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        vim.b.manualDocset &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; old_docset
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#268bd2&#34;&gt;else&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        vim.b.manualDocset &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#cb4b16&#34;&gt;nil&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#268bd2&#34;&gt;end&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;end&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;local&lt;/span&gt; &lt;span style=&#34;color:#268bd2&#34;&gt;function&lt;/span&gt; &lt;span style=&#34;color:#268bd2&#34;&gt;zeal_search_input&lt;/span&gt; (docset)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&lt;span style=&#34;color:#268bd2&#34;&gt;local&lt;/span&gt; query &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; vim.fn.input(&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;Search for: &amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#268bd2&#34;&gt;if&lt;/span&gt; docset &lt;span style=&#34;color:#719e07&#34;&gt;~=&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;and&lt;/span&gt; query &lt;span style=&#34;color:#719e07&#34;&gt;~=&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#268bd2&#34;&gt;then&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		zeal_search (docset, query)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#268bd2&#34;&gt;end&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;end&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;map (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;n&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;&amp;lt;leader&amp;gt;zc&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#268bd2&#34;&gt;function&lt;/span&gt; ()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	zeal_search (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;c&amp;#34;&lt;/span&gt;, vim.fn.expand (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;&amp;lt;cWORD&amp;gt;&amp;#34;&lt;/span&gt;))
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;end&lt;/span&gt;, { desc &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;C&amp;#34;&lt;/span&gt; })
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;map (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;n&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;&amp;lt;leader&amp;gt;zp&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#268bd2&#34;&gt;function&lt;/span&gt; ()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	zeal_search (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;cpp&amp;#34;&lt;/span&gt;, vim.fn.expand (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;&amp;lt;cWORD&amp;gt;&amp;#34;&lt;/span&gt;))
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;end&lt;/span&gt;, { desc &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;C++&amp;#34;&lt;/span&gt; })
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;map (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;n&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;&amp;lt;leader&amp;gt;zq&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#268bd2&#34;&gt;function&lt;/span&gt; ()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	zeal_search (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;qt6&amp;#34;&lt;/span&gt;, vim.fn.expand (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;&amp;lt;cWORD&amp;gt;&amp;#34;&lt;/span&gt;))
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;end&lt;/span&gt;, { desc &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;Qt6&amp;#34;&lt;/span&gt; })
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;map (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;n&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;&amp;lt;leader&amp;gt;zC&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#268bd2&#34;&gt;function&lt;/span&gt; ()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	zeal_search_input (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;c&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;end&lt;/span&gt;, { desc &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;C - input&amp;#34;&lt;/span&gt; })
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;map (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;n&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;&amp;lt;leader&amp;gt;zP&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#268bd2&#34;&gt;function&lt;/span&gt; ()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	zeal_search_input (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;cpp&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;end&lt;/span&gt;, { desc &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;C++ - input&amp;#34;&lt;/span&gt; })
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;map (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;n&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;&amp;lt;leader&amp;gt;zQ&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#268bd2&#34;&gt;function&lt;/span&gt; ()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	zeal_search_input (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;qt6&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;end&lt;/span&gt;, { desc &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;Qt6 - input&amp;#34;&lt;/span&gt; })
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;use-powerful-tools-and-master-your-tools&#34;&gt;Use powerful tools and master your tools&lt;/h2&gt;
+&lt;p&gt;Using Windows wouldn&amp;rsquo;t teach you anything. Instead, you&amp;rsquo;ll have to do a lot of
+things manually, set up your tools and libraries manually every time you do a
+fresh install. It would make your device feel slow.&lt;/p&gt;
+&lt;p&gt;Using a preconfigured Linux distribution wouldn&amp;rsquo;t teach you as much as DIY ones.
+Instead for example Ubuntu would force you to use heave snaps instead of regular
+deb packages and rusted coreutils as GNU coreutils replacement which don&amp;rsquo;t pass
+all of the GNU coreutils tests. Ubuntu will force its politics on you too!
+That distribution isn&amp;rsquo;t for conservatives ))&lt;/p&gt;
+&lt;p&gt;Using &amp;ldquo;modern&amp;rdquo; IDEs wouldn&amp;rsquo;t teach you anything; you wouldn&amp;rsquo;t know what
+happens under the hood when you press that green triangle button, for example.&lt;/p&gt;
+&lt;p&gt;DIY Linux distros such as Arch and Gentoo or good IDEs such as Vim and NeoVim
+can make things harder for you if you&amp;rsquo;re new to programming. You&amp;rsquo;ll had to
+learn programming plus your OS plus your programming tools, all at once. First
+learn programming and only then switch to powerful tools. For beginners,
+CachyOS is a great Linux distribution. VSCode is bloated but flexible and good
+enough IDE.&lt;/p&gt;
+</description>
+	</item>
+	
 	<item>
 	  <title>Implementing a tuple in C&#43;&#43;20. Deep dive.</title>
 	  <link>https://gasparvardanyan.github.io/blog/tuple-in-cpp20/</link>
@@ -3353,70 +3846,70 @@ fstab configuration, system/dotfiles configuration and some systemd services ena
 &lt;h3 id=&#34;swap---btrfs-supports-swap&#34;&gt;&lt;strong&gt;/swap&lt;/strong&gt; - &lt;a href=&#34;https://wiki.archlinux.org/title/Btrfs#Swap_file&#34;&gt;Btrfs supports swap&lt;/a&gt;&lt;/h3&gt;
 &lt;h2 id=&#34;mountpoints&#34;&gt;Mountpoints&lt;/h2&gt;
 &lt;table&gt;
-  &lt;thead&gt;
-      &lt;tr&gt;
-          &lt;th&gt;subvolume&lt;/th&gt;
-          &lt;th&gt;mountpoint&lt;/th&gt;
-      &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-      &lt;tr&gt;
-          &lt;td&gt;&lt;/td&gt;
-          &lt;td&gt;&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-          &lt;td&gt;/systems/archlinux-current&lt;/td&gt;
-          &lt;td&gt;/&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-          &lt;td&gt;/data/home&lt;/td&gt;
-          &lt;td&gt;/home/&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-          &lt;td&gt;/swap&lt;/td&gt;
-          &lt;td&gt;/swap/&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-          &lt;td&gt;&lt;/td&gt;
-          &lt;td&gt;&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-          &lt;td&gt;/data/media&lt;/td&gt;
-          &lt;td&gt;/media/&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-          &lt;td&gt;/data/books&lt;/td&gt;
-          &lt;td&gt;/media/books/&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-          &lt;td&gt;/data/movies&lt;/td&gt;
-          &lt;td&gt;/media/movies/&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-          &lt;td&gt;/data/music&lt;/td&gt;
-          &lt;td&gt;/media/music/&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-          &lt;td&gt;&lt;/td&gt;
-          &lt;td&gt;&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-          &lt;td&gt;/&lt;/td&gt;
-          &lt;td&gt;/rootfs/&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-          &lt;td&gt;/data/desktop&lt;/td&gt;
-          &lt;td&gt;/desktop/&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-          &lt;td&gt;/data/solarized&lt;/td&gt;
-          &lt;td&gt;/desktop/solarized/&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-          &lt;td&gt;/data/src&lt;/td&gt;
-          &lt;td&gt;/src/&lt;/td&gt;
-      &lt;/tr&gt;
-  &lt;/tbody&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;subvolume&lt;/th&gt;
+					&lt;th&gt;mountpoint&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;/td&gt;
+					&lt;td&gt;&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;/systems/archlinux-current&lt;/td&gt;
+					&lt;td&gt;/&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;/data/home&lt;/td&gt;
+					&lt;td&gt;/home/&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;/swap&lt;/td&gt;
+					&lt;td&gt;/swap/&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;/td&gt;
+					&lt;td&gt;&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;/data/media&lt;/td&gt;
+					&lt;td&gt;/media/&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;/data/books&lt;/td&gt;
+					&lt;td&gt;/media/books/&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;/data/movies&lt;/td&gt;
+					&lt;td&gt;/media/movies/&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;/data/music&lt;/td&gt;
+					&lt;td&gt;/media/music/&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;&lt;/td&gt;
+					&lt;td&gt;&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;/&lt;/td&gt;
+					&lt;td&gt;/rootfs/&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;/data/desktop&lt;/td&gt;
+					&lt;td&gt;/desktop/&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;/data/solarized&lt;/td&gt;
+					&lt;td&gt;/desktop/solarized/&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;/data/src&lt;/td&gt;
+					&lt;td&gt;/src/&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
 &lt;/table&gt;
 &lt;hr&gt;
 </description>
@@ -4538,7 +5031,7 @@ control cmus or an opened youtube mix inside mpv.&lt;/p&gt;
 	
 		
 			&lt;a data-fancybox=&#34;gallery&#34; data-src=&#34;https://gitlab.com/GasparVardanyan/themes/-/raw/master/solarized-dark-wallpapers/cat_pacman2.png&#34;&gt;
-				&lt;img style=&#34;display: inline-block&#34; src=&#34;data:image;base64,iVBORw0KGgoAAAANSUhEUgAAAJYAAABzCAIAAAD16myEAAAJUElEQVR4nOyca2xT1x3Az72&amp;#43;147jZxLHedgxJOQBITys0bCSUk1RtZau21q1W9k0MQkJplWdtHVSpU6q&amp;#43;qFSNXXakNYPSFRComyUPVqoqgGlNGyjKYGCQJCQEFLHxiT4kfgRX8exfR9TbMdxY&amp;#43;cmASfjT/&amp;#43;/Tyf3nHvuufd373n8jxWGrG8nCGTo/3cDkPsFFYIHFYIHFYIHFYIHFYIHFYIHFYIHFYIHFYIHFYIHFYIHFYIHFYIHFYIHFYIHFYIHFYIHFYIHFYIHFYIHFYIHFYIHFYIHFYIHFYIHFYIHFYIHFYIHFYIHFYIHFYIHFYIHFYIHFYIHFYIHFYIHFYIHFYIHFYIHFYIHFYIHFYIHFYIHFYIHFYKHWY5KD//oSrk6KV9mwK/97cnW5bh6QYZUcZlcn0RtSygXWdXT22932D0yBQ5/3DwwbFxMVeuUifdqR2UKnIlqXvNXyldSZIWbqid0Kl6pkBYsqVPxj60KjE6UOIKlxW3DHB6lxQUfp4qSdtCij5DLoly3VG6I15qjJuOUfG2raiMMI94cNiZ5udqe0EQtDC9fVRXDP6GJOhJKR5KdrwxV3H8p&amp;#43;8cdN9ZWcosvf/xG9buXbEVsQD7/YJN2WlxMyS6R3jv/kyKEPNLme7bTucjrvn1wc5iT&amp;#43;7K/XL3Yqg6EjO&amp;#43;G5n0Pi/YVfrsuuKEqYtbK9Vf5tFVF9my5fc5VPuDXFqslWewtjfWWqggt9lPTvQIbjzde6ElneRvWBKzWbEkmnmi6cL6Jkn7H8BdF&amp;#43;kzet2jUx7dt8loqa0uYR3OPT/HvpxMKysYqOnKzOrd&amp;#43;McHxn12w5Dfsp/qJKoZ3bf5&amp;#43;7sGykT6935FO31n/XYFVZbPWuVy/cTn/xWkH83r7LYqKoincUBV5tlVuhChIY0W0sSLqnihZDoUtq60dm9ZHCYmm/izhIlmFAavVaf9WtqQqGm26cL6OknYrhOkRKE&amp;#43;hvjTZYfcoFWuVzFO5x7MKabp6TlZ72ydhLlJQ4VNabp0y0dP8eO5B5WQ4q9DXsDWh1mez6pOntwevXY&amp;#43;r8hW20oYiKNxmC764YdSkSSzpLGewdN8X9ZkWR1X334xcfkCLuxk&amp;#43;SIscIX89&amp;#43;dmIf/zVXT/OL/Zh1&amp;#43;dDd0Z/&amp;#43;cIzqq&amp;#43;f265M/IFnumdEvrSzT8kK99CMUjX/0s4&amp;#43;75j6gzMN6SMvlwXb1bF6doG5XkFeLgvuMoR/7a0KCApCSDOtf1O1qYJSFUGhviTZWBFd6llTPD00rrn/qxfEREltlNRLSRwh3vGQ2&amp;#43;MvWMwfDLs9fkEQCU3lnmsiRJ9TzGJe8t2lUdCSxRwVxNnKLQy/Trm0dz33XAshLJWZKqqJopU2LNeiQoaf/3Pz2ORip&amp;#43;/3ydFP/n30xLmCWce6ug9&amp;#43;2nNv1X7Y1X320tVXfvZ8fW31nKwT3RdPdn/5i&amp;#43;e/17Zm9WKqcnv8b7/3945N63c&amp;#43;&amp;#43;Z05WaEI9/r&amp;#43;Q/aWxt0/fFK&amp;#43;kpVTOODXjk0q48ICwQR7S2M6EYpww6OZwbV5lVVTUkIISfJ871eZiVy1qbymojyd7v3KmeTnTtDrqsx2XVnBq1jMJru&amp;#43;Ip1mGYaI99JPPiCsnMJjN6o/d5UvWCz70l25OTT8UUbhM9u3pl/5UITr3Z9RaG9Z83RHZkX0&amp;#43;v5DocjcxUzH5lZb28aCV2lvazHnTGdI9B67ygeBle5IVxKzw6HiZt2widlBqNLlYuKzfzLJRY1PguSM88ca6tyUwlOqPhPnZ8dyQRyJ88dsNaOdW0cMurNx3ihJMfnarH2nddzkHmPIFh&amp;#43;09iV0465sVs3gf/UCtccYqhEc1r7Tep9Dpp6HWuGwwzxc&amp;#43;OZNLqfJtdiVdRZBdAqis6GONNQRQkbiOT23KI3E&amp;#43;RFbLbHVzs2aD2vfp1ZC1hsJmQqRvlu5WTU3/zO94jISwodIn5y/FVW4y37nuVbPm2ebQlNyEZA//eWDdCIam41jvX/qbIlyehLEC7OD1vlr/QPD7nSam1zglX&amp;#43;IWTmFFv20EoZeIHyancLkcncskH8wFOHyx79vICvdkR564Wo6scI7FQ8xRVDo51QX7xhthli1bgkBUq2Sb7eG0mlnsNQXXa7F4mWRDhPSORPp9klUr5RZa2&amp;#43;kJFNqpRwnpFukTZS0kZLrJEIRpWes1FweKzdk7jS7qaTTJLMRgDteDTfJNtZNMIxceP3cZKmWFu0lmfHCkWRHZoLsW9UxZaolY4KiP65axSZt8wd0iqDw8qjh8qhhz5bbS4qRWg1Tb3QOptPv9Kw&amp;#43;NWi&amp;#43;/5YU5PeC4opIZ/cLL0vUr2ae1AE22Zl6UmGJ2ptkO2nxgGzo65bLeLxrde5&amp;#43;4eGPm9OJtqbAT3YMpdNnL1oGho2v7r5q0MpNdF/xmXP3Cz&amp;#43;K6I5MZIJCJ&amp;#43;vcplS09upUyWv&amp;#43;yj3G0F5jaL56itaRXvfqCCGP148vuNmby9C4ptercy7PlmG3SN&amp;#43;UKF/qmzsoKDSEvKgosIT/m6Dwpsq4JeqgoGijpPa8zalIlL02WHHbo50erUem73Rj87hOM/dOb3u07rvaQFhFCLnUW6nXJh9p8&amp;#43;Vf8VRUk45zBkT6yIS&amp;#43;kU22q&amp;#43;dOxyZF&amp;#43;vjM1sT1uOrIhP4xdSz/W7whhoumsMdd1uMuW1vJLUlhr1e3fPuFJ0X6aOpJEULe4plqSiqo8B1B4UkpvCVRb/HMboWQrzAYUZ04l2lnv6Os31FWV8PlK7zlMnTNbE10XbToNIUVHgkb&amp;#43;lNuvDyzL1D&amp;#43;nC6SrzAi0vsCmUhIT0zdE1ObK/35Ci8J40Xe8l1ljKlZ4Y3OQb1qgZWRK6T&amp;#43;8/n6QIz1cUXeppheEVKShZLcEjUmzYaYWULaaDEkUcMzBxsoyUBJvSKdzDt3WKJCM8Vs1Vw8qfCOq3MvUVURU7FC&amp;#43;rskhJSW8CbjVJhT5m7zpsPcuefa2KSBFocSylhOw8oVgoXh7/LM2MwLt06ZkAgZ&amp;#43;PrWUvrcgYQymTq3lGKaKJ1fmiqywjQP4G9nHmKWRSGykuCPEMGDCsGDCsGDCsGDCsGDCsGDCsGDCsGDCsGDCsGDCsGDCsGDCsGDCsGDCsGDCsGDCsGDCsGDCsGDCsGDCsGDCsGDCsGDCsGDCsGDCsGDCsGDCsGDCsGDCsGDCsGDCsGDCsGDCsGDCsGDCsGDCsGDCsGDCsGDCsGDCsGDCsGDCsGDCsGDCsGDCsHzvwAAAP//5p9R2&amp;#43;KG1rIAAAAASUVORK5CYII=&#34; /&gt;
+				&lt;img style=&#34;display: inline-block&#34; src=&#34;data:image;base64,iVBORw0KGgoAAAANSUhEUgAAAJYAAABzEAIAAAClerDHAAAQjElEQVR4nOzce1yUZdoH8GvODOfzcUBEVILRwBIQynaxUlHyNSxJXBU8vKumbrmZuWIHyYTWSqhXs9RNUdEkJQyPYaIIQiukoKg4zHCSkzMDDMOc5/3A47YzIkTAdBNd3z&amp;#43;ej5/7ue/rvmX4zTzzHGACBAQEBwNCiBA66QUg9EeHIUSIMAwhQoRhCBEiDEOIEGEYQoQIwxAiRBiGECHCMIQIEYYhRIgwDCFChGEIESIMQ4gQYRhChAjDECJEGIYQIcIwhAgRhiFEiDAMIUKEYQgRIgxDiBBhGEKECMMQIkQYhhAhwjCECBGGIUSIMAwhQoRhCBEiDEOIEGEYQoQIwxAiRBiGECHCMIQIEYYhRIgwDCFChGEIESIMQ4gQYRhChAjDECJEGIYQIcIwhAgRhiFEiDAMIUKEYQgRIgxDiBBhGEKECGOSXkBf7U96SVwcbM/n/k396UDqlO9tMrO0XHv05C5//8Fb3VBRUcHhKJX9G9vYqJ8JJ8LCVBmc6MFdVeS4p&amp;#43;dVVYXHBDnW1/evwv6krKzRbeWtlZV2UwZrVX657FXK1P1c96x7Uf2rcM6&amp;#43;fYb5d2&amp;#43;NavrMeeVAVjKkPwkf57m&amp;#43;2dr6VMqIN8Ritg1jtC5o4DWt1nG0Gg1Vc&amp;#43;RBuw1y&amp;#43;WCslKRJU2jXdOOn76XHaNMHUsfsL/AUXKLqPJFES9PNH0g1u39bn1Zc5r/nWywWOxTYzlcoBlJthJ/7Jdk8qhqzlemi0w2k2hSx&amp;#43;XftM0JiuNsVawZSx&amp;#43;UAM0W7mqo2soMVqzrQvzo0gICA4OCBLMV0ts2ZvuzGDb84J4VMZor6xybfsHF1/dLqx1QvL1PU/218XcB6U5UU5Ej/RP&amp;#43;3waqZk6OrofOWLVM7sZr6V2HiX/n8xtn/4xkRIXxrsFZFSZq952ZgYKu/7Cyb3b8KRUXe3kLh4K5ql7tUamv7hUfn9teOHXKHo6FOnt6S5/gCl6i23c4llnuVs6AVXoR&amp;#43;vsf0bpzAJap195K2J6Fq8aXVog/t7amDVVPMNbiCgsYm&amp;#43;F71LnKPdqlse4WxWpdSXkKr139G7WV&amp;#43;oByhlPgGXlEWbDQc1Rjns2RUtLiel8iL6F6Taa8sVqX5HrgyPT9/dDGNry/dkMUs0QQWrtc9Sz93rkxXRg/ofVW2G632KWeFZQaeakj1&amp;#43;Mpphfstsxks70lFPfVXBKmTD000bGHsoid4ilkTGcqn7vY0asqIkL9e3tVyURaiyc55&amp;#43;soVD4/eV0WZl2o9teU09dkluhToErWsp552sbXzyiTWoqZjgg8N22tqAgKeu6wVsn40&amp;#43;6H7qMfmiOqFi14LFYlEcSfel7lb1t2ZorJit/W&amp;#43;qiej6Gccbg65EFLxm53r39L1/cFE8aP41jikyWf41jiAHGpeaMk3W1O&amp;#43;t&amp;#43;nPlsdMN&amp;#43;NgGTvPewfvQPiOx5UBOe2TIRT4lZ3bB7&amp;#43;4ZpayPW3TfeGKssBoFBW/ytVBHzzxiF9xzpz21PZ83/YrkA&amp;#43;ea2lSvW08MLy1QtgK5&amp;#43;DZc1E6N/q93ldlFWhRrz4Qzu387sfeyxD6TWU/w0iZdqOn/opWteKQUQvdiRbo2sp&amp;#43;hhHb86jg1/gVpz5pcZbxZZwcuHLFo7D3VVGmr7N4tf1Tv1zOLdXpgoIxL09&amp;#43;tqee7Fo5t&amp;#43;UTa2gCgVF742afpNCfVHHcfdas7qNG/qguU1Q&amp;#43;nSopu3762ijFZ5yVd0A1g/1d76vyL2eMt7EfEiEMG&amp;#43;M1QXxobui4mXVqxy8sElQqGAuLYbwp5hJ&amp;#43;Kwnj7v9Yenmaz1nD9sYJssfZr3T9c4iG8IUP6O9o34l/jDFCK5JspZ/QXZDFAkBI2rjsyO/96y41tdy/t85mYd7Lkr5Uy5ifc&amp;#43;TSrbufVW&amp;#43;vC13e8tLTUYs5AIvBvXvPWV3zBh9nheoKkoO1f2aev&amp;#43;yu86YbHc6t&amp;#43;CkmpnQfW8LK1u2AWzAeeozQYDH/hntDc2SFIiamNLdhSvMC8/0ZzecijV/TVzPtfCSCkBiz7R1rvL9g&amp;#43;6orOtNo6pUBrMq095EIFnFtKlqi1jg1&amp;#43;rmUi6u0oxl3qL2j0&amp;#43;lyq08Sr3KEgRscSkHNaRgSIbRO4mzTHPFlO&amp;#43;yVd35/WGzKuRT3NVcZyyuO3ve2MD47ehjWwsumnHmgHPfR/gWL&amp;#43;Fn0e3q30q9pFfqvZcchFfIbLMSp0sjqjQ0ZTSMhFdZBn87UNc&amp;#43;VrGiRV59pmNWUqB2nXaDdDa/TgZbQvadD17wOQPuXHmxOa9frO9&amp;#43;k0iHGsI/HCWdnuR8AOA/e/7d3jKP0ifpGD3AGuZ82TzeebgljgQdGr6kHnzldfdIvl7NKNeO3id9/59WchFzmKgDmbTip/whiYTU8CKH5CtjEXOJ/gb7DpvNnGAYRQyKEprNw41GvwMDmYnlif7/ED03pb5y6/8M/09OzAy&amp;#43;WdDWM7Muob5g5QXkv7ll1NrnA29QrfGjewEvR55f/OO&amp;#43;niNcL5o&amp;#43;K/ufIIvdo18reR2UH5&amp;#43;UVRp4MycsrmvG/UdHNM4L4z49K9g4brFVVb6yf1ZSY3LIv/IhduNnj8QGKmA&amp;#43;nOv5pbe&amp;#43;jpLvabsjsEq7vOPFVIvXNPD5&amp;#43;lnLq7oGsZBiGkDq50lws38xmK6O1jnQ6FAOjv9WoH7Rhi6TrZRBOrMuoN/rVHzPFK5t3y0LMzTdrp1pUSZovNeyy5&amp;#43;/eE/INe7rudMixv&amp;#43;f2ueN5e6NvWaXP360T8tVJmt2aX3jL8Ex0zXTaGHTLKsHe56FdvVwl9JjjLHWoDTphneDINWxnrWVOYKoAdPu0vU&amp;#43;LTGIYhpC68HDpqMjF3h6SB1qt&amp;#43;/tc8Y5bBysm7IFMTr3RgfPM9yevCskyfI&amp;#43;Xrm17QmaXADtOCBMNewYF&amp;#43;SWMuhoZHx4enG3YnnB9R/5XiVJoA9kvhDCcExgfoPCK56eO/xXvwSHp/Eq/K86rg5RPGI&amp;#43;SQD60A7RDe9&amp;#43;LoUEzDEP4R&amp;#43;CsEaQIjpilyaa113Tfy3RQuahWQgpsgFGG7Y6xIkvhRGaacpoqrfsoxgvqbNU7Xf98Z&amp;#43;Ar1AbqlwqPKpWa5ccSfNSeNVVsWi4jpKHWfCHX/uwI5VKNxtL6EaPSdYdrbZXHNd8ce9xL4PZ5rXlEbsjiulqbQ1brzicolZo8W099KHzUwQKAj/q7Nh6vrOxMmJVAppErlipsbaVSr/cVC29v5PHKklWTrDbdZ4q0sOnhUW4zb4&amp;#43;58KS1TnuOxlh6yvaSVOr2uWa2gMvjlSWcCbO2blxx1xOgb9/IjWEIf5ectZUpgq&amp;#43;dD1SmCHrqMqp7k&amp;#43;N8kaUo2HG&amp;#43;aLroUSPUAJA/WCvUBumWCjO0Sp1GmOEDnjUAPhc9QwBgAUDtCKVSo3nUKN1h/ZE6WyVo4Dh4Cdx3Qee2cxQPLtRGKZVdg0L7Hz9KZwjPhvMEUAYQALa2oIQ45ULp3wHK4A50jx/FLerWmNyJALACwLeu65J8lPZFKbdzlCC8f/GjDMMQLggNEtfUzJ7jv6y&amp;#43;/r1F53NH/6NlpqKc1c8LD9tC0&amp;#43;5m/N2wpT2y41OFBeyBtcbnAg&amp;#43;dOTX3PIsznX2L/aC/NlXrrn2le8383dckN8NuLq28Wy01bG&amp;#43;zl1&amp;#43;UF8AucIBHjELD1TAMoUeTtVqhgLjOd3bWRvoc/WEASIR&amp;#43;nh3tfgIGADIe1fPepuYt4jVd76OG/Qu696TOsFHbh3Zh/P6AhmEIDX2VOKeqpIQ6CKIM76co0O/RkHiKonFCewbn3cKEmkzbKfWX21ZyBu1aUHeWnuxIzeLgzbxZku8Nt05XLaKVb5tuXtP595u6&amp;#43;bQ06pbr7nupB5SovYbb5hH6BbDPsKdqkb4Qgqm91/bqttA2DGRVUlXbD&amp;#43;x3y1srK22niCe0TH3Ua0rtNdzWzmxsNC/v3rNG3lBsEU/10WzTvEgrHsjaLt6V/4W7v9hFEcnJ7r5XwFUdYMVSfQy3qmo9l9Zh2LN5r7aQEUztrVqtHs&amp;#43;81r/1DIlPwqsj6j61GX8V6sCmbcmFJ9Oqqmbn&amp;#43;kM/Hz37Bbxnbb5RbH8bImzubDdsTxXlx3l/cAruZPxmN30Mkq0XNOOY14sz9E70pooKzkMXCjsjSk9bdVGTYfw8xC5gbVFviIig8f7zVJA0Gd6DTcvC1E6s6IgI&amp;#43;se613bF0UHt1L9V3dkjcrQZf7w6J2vkd5HZT1s9eJ7QqM/&amp;#43;pKysMUa3OPMtfIvFM19hRO6tMOp5PrWwxn17eWvlRbsp647FV5SE2NywfE7Vv6XB6zGNm10Sfn6eEIxvic08L3vPctPBVa2nbaYatp9c4dlY/YxjHCNY&amp;#43;&amp;#43;Bu1ZK1inc5b781qmmz88qltba2UumyOltb6a9ez5D4JDRU6tOQZbWYutYntu74hhVrurkqePfnm39HzSX8VjrJfL/p5hpceR46b7pwz02tkOHdGAgv0L6l2qmWw&amp;#43;e1k&amp;#43;i/4jwn1T89XRvIoO6/gaptelualKpWuF73LO1cX&amp;#43;q0lbS7smLz0oubXV0rllZts3mDaq80qz1ntZhqp/r0pVrVnPp1lpbUKPETLVPNHnyWFv2pdJHTyqKdpaVOv&amp;#43;Jk26lk2acWr3ZGy/pBtMTV2tGMO1RLYXrHGrPtfakjl&amp;#43;pW0P6PGnVpT8c/zN&amp;#43;n2q&amp;#43;fVFZwfKn2qmL1ZGZuX6rd8NNdaxEPiU9CQwVN1UK7swVW1al2Xo/NcVomy7SP4yrUJpnruk9DlvXin58nNDPJJCZxMk57mD43PV33c2woW6I0bsx7rsmwVb9&amp;#43;LjCe6dtnRapEs5W5vj4FQmkPTiNVBOlLafwt0Fkt/jFGmTYgGOigceu9jiSxbQEnM3vsRZ6XP1yHg/9pv1kkaLQ7exMEB&amp;#43;28PI&amp;#43;61cgyrY5aJP/Sa3qnQRRtY5Nz/cpB44eVztsVvumRZzXPwkL1ykTg8/v2wOOBrniUT1aN5ZygWhpjtauZKR&amp;#43;DeKw9zJ5pNaNNHwzc53/p2WPZSh2Trvn4tnis/S3Dk24FSzocuc0F0Ll1PuBkpWnzErPgkddhDPyYpX3&amp;#43;/mNDLoSGUhzzG72LuEdZ6brotydE2Ny2tvbhzNU84nxj34l2SjO5C1Mc8xtGFonPyKlP2lTIHLxVm0rWIW0KfXVxqE7A8qn6SF9Ck0J65zFR9573G2EJ7cuXQlVJrC8laRBL2wLTAMDcsA91ELtjA6zXb72/CJbQlnQ183uft3Kavp12vesGbiM7xx7h&amp;#43;furwtUT6Bmdv9&amp;#43;wsKf/xfHw7yd4F7F3sni6R/wRjbvxNQutrXcWHJnv79/iKLvZ8x2/7Xs6lrNCd5444tzzvDvmSObaHT7o1nraRiPKU9NY&amp;#43;p6qXfhcTjPXV1xWMdmaezc1tUyP7j&amp;#43;N12IaNjsnwE0oBCe43VOlh&amp;#43;eV5GgnMYyOSu4s0bm2lsx/pmN5XmCTk75B8eaQfrLeEP6NGTRc/W5CiNBwNeROzCD0R4MhRIgwDCFChGEIESIMQ4gQYRhChAjDECJEGIYQIcIwhAgRhiFEiDAMIUKEYQgRIgxDiBBhGEKECMMQIkQYhhAhwjCECBGGIUSIMAwhQoRhCBEiDEOIEGEYQoQIwxAiRBiGECHCMIQIEYYhRIgwDCFChGEIESIMQ4gQYRhChAjDECJEGIYQIcIwhAgRhiFEiDAMIUKEYQgRIgxDiBBhGEKECMMQIkQYhhAhwjCECBGGIUSIMAwhQoRhCBEiDEOIEGEYQoQI&amp;#43;/8AAAD//wuFe4rk&amp;#43;OIwAAAAAElFTkSuQmCC&#34; /&gt;
 			&lt;/a&gt;
 
 	

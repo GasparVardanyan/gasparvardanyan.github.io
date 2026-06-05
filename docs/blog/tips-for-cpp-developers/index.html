@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width">
+		
+
+		<title>Tips for C/C&#43;&#43; Developers</title>
+
+		
+		<link rel="stylesheet" href="/css/colors-dark.min.9ce07affbfe84fc8345761dc792a8a8743f97e40fde853efc81b2829b99b46be.css">
+
+		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/Iosevka.css" />
+
+<style>
+body {
+	 
+	 
+	font-family: 'Iosevka Web', monospace;
+}
+
+.copyright {
+	text-align: right;
+}
+
+table, th, td {
+	border: 1px solid;
+	border-collapse: collapse;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+iframe {
+	border: 4px solid #073642;
+	border-radius: 12px;
+}
+</style>
+
+	</head>
+	<body>
+		<header id="header">
+			<h1><a href="https://gasparvardanyan.github.io/">Gaspar Vardanyan</a></h1>
+			<p>C&#43;&#43; Software Engineer and Instructor</p>
+		</header>
+
+		<div id="page">
+			<div id="sidebar">
+				<nav>
+	
+		<ul class="nav">
+			
+				<li><a href="/blog/"><span>Blog</span></a></li>
+			
+				<li><a href="/coding/"><span>Coding</span></a></li>
+			
+				<li><a href="https://github.com/GasparVardanyan/gasparvardanyan.github.io/discussions"><span>Discussions</span></a></li>
+			
+				<li><a href="/index.xml"><span>Feed</span></a></li>
+			
+				<li><a href="/wallpapers/"><span>Wallpapers</span></a></li>
+			
+		</ul>
+	
+		<ul class="nav">
+			
+				<li><a href="mailto:gaspar_pm@proton.me"><span>Email</span></a></li>
+			
+				<li><a href="https://github.com/GasparVardanyan"><span>GitHub</span></a></li>
+			
+				<li><a href="https://gitlab.com/GasparVardanyan"><span>GitLab</span></a></li>
+			
+				<li><a href="https://mov.im/?contact/gaspar%40jabber.am"><span>Jabber</span></a></li>
+			
+				<li><a href="https://www.linkedin.com/in/gasparvardanyan/"><span>LinkedIn</span></a></li>
+			
+				<li><a href="https://matrix.to/#/@gaspar_m:matrix.org"><span>Matrix</span></a></li>
+			
+				<li><a href="https://t.me/Gaspar123456789"><span>Telegram</span></a></li>
+			
+		</ul>
+	
+</nav>
+
+			</div>
+
+			<div id="content">
+				
+
+				
+	<article class="post">
+		<h1><a href="https://gasparvardanyan.github.io/blog/tips-for-cpp-developers/">Tips for C/C&#43;&#43; Developers</a> </h1>
+
+		<div class="post-content"><h2 id="write-portable-code">Write portable code</h2>
+<p>Pick a standard and configure your compiler to strictly follow that standard.</p>
+<p>For example, to enable a strict C++20 compliance in Clang/GCC use these flags:</p>
+<pre tabindex="0"><code>-std=c++20 -pedantic-errors -Werror=pedantic
+</code></pre><p>In CMake projects you can do:</p>
+<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-cmake" data-lang="cmake"><span style="display:flex;"><span><span style="color:#b58900">set</span> (<span style="color:#2aa198">CMAKE_CXX_STANDARD</span> <span style="color:#2aa198">20</span>)
+</span></span><span style="display:flex;"><span><span style="color:#b58900">set</span> (<span style="color:#2aa198">CMAKE_CXX_STANDARD_REQUIRED</span> <span style="color:#2aa198">ON</span>)
+</span></span><span style="display:flex;"><span><span style="color:#b58900">set</span> (<span style="color:#2aa198">CMAKE_CXX_EXTENSIONS</span> <span style="color:#2aa198">OFF</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#b58900">set</span> (<span style="color:#2aa198">CMAKE_C_FLAGS</span> <span style="color:#2aa198">&#34;${CMAKE_C_FLAGS} -std=c18 -pedantic-errors -Werror=pedantic&#34;</span>)
+</span></span></code></pre></div><h2 id="multithread-your-tools">Multithread your tools</h2>
+<p>Make sure your language server - the thing that enables code autocompletion in
+your IDE - is configured to use multiple threads.</p>
+<p>The most common C/C++ language server is clangd. It supports multithreading via
+the <strong>&ndash;j=NUM_THREADS</strong> command line flag. The <strong>nproc</strong> CLI tool, which is a part
+of the GNU coreutils, prints out the number of threads your CPU supports.
+In NeoVim I set up clangd like this:</p>
+<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-lua" data-lang="lua"><span style="display:flex;"><span><span style="color:#268bd2">local</span> nproc <span style="color:#719e07">=</span> tonumber (vim.fn.system ({<span style="color:#2aa198">&#34;nproc&#34;</span>}))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#268bd2">local</span> jnproc <span style="color:#719e07">=</span> <span style="color:#2aa198">&#39;&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#268bd2">if</span> <span style="color:#2aa198">0</span> <span style="color:#719e07">~=</span> nproc
+</span></span><span style="display:flex;"><span><span style="color:#268bd2">then</span>
+</span></span><span style="display:flex;"><span>    jnproc <span style="color:#719e07">=</span>  <span style="color:#2aa198">&#34;--j=&#34;</span> <span style="color:#719e07">..</span> (nproc <span style="color:#719e07">-</span> <span style="color:#2aa198">1</span>)
+</span></span><span style="display:flex;"><span><span style="color:#268bd2">end</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>LspServers [<span style="color:#2aa198">&#34;clangd&#34;</span>] <span style="color:#719e07">=</span> {
+</span></span><span style="display:flex;"><span>    cmd <span style="color:#719e07">=</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#2aa198">&#34;clangd&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#2aa198">&#34;--background-index&#34;</span>,
+</span></span><span style="display:flex;"><span>        jnproc,
+</span></span><span style="display:flex;"><span>        <span style="color:#2aa198">&#34;--header-insertion=iwyu&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#586e75">-- &#34;--clang-tidy&#34;,</span>
+</span></span><span style="display:flex;"><span>    },
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>There are different popular opinions on how many threads your multithreaded tool
+must use; I choose one less than the all available threads.</p>
+<p>In &ldquo;modern&rdquo; IDEs you&rsquo;ll probably find some GUI configuration blocks which might
+support tuning the language server.</p>
+<p>Make sure your project&rsquo;s compilation is multithreaded. Check <a href="https://stackoverflow.com/questions/10688549/how-do-i-configure-portable-parallel-builds-in-cmake#50883540">this</a>
+for enabling multithreading in CMake projects.
+In NeoVim I use <a href="https://github.com/Civitasv/cmake-tools.nvim">cmake-tools.nvim</a>
+with this config:</p>
+<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-lua" data-lang="lua"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>	<span style="color:#2aa198">&#34;Civitasv/cmake-tools.nvim&#34;</span>,
+</span></span><span style="display:flex;"><span>	config <span style="color:#719e07">=</span> <span style="color:#268bd2">function</span> ()
+</span></span><span style="display:flex;"><span>		<span style="color:#268bd2">local</span> nproc <span style="color:#719e07">=</span> require (<span style="color:#2aa198">&#34;modular.utils&#34;</span>).nproc
+</span></span><span style="display:flex;"><span>		<span style="color:#268bd2">local</span> cmake_build_options <span style="color:#719e07">=</span> {}
+</span></span><span style="display:flex;"><span>		<span style="color:#268bd2">local</span> cmake_generate_options <span style="color:#719e07">=</span> {}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#268bd2">if</span> <span style="color:#2aa198">0</span> <span style="color:#719e07">~=</span> nproc
+</span></span><span style="display:flex;"><span>		<span style="color:#268bd2">then</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#586e75">-- multithreading make/ninja</span>
+</span></span><span style="display:flex;"><span>			vim.list_extend (cmake_build_options, { <span style="color:#2aa198">&#34;-j&#34;</span> <span style="color:#719e07">..</span> (nproc <span style="color:#719e07">-</span> <span style="color:#2aa198">1</span>) })
+</span></span><span style="display:flex;"><span>		<span style="color:#268bd2">end</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#268bd2">if</span> <span style="color:#2aa198">1</span> <span style="color:#719e07">==</span> vim.fn.executable (<span style="color:#2aa198">&#34;clang&#34;</span>) <span style="color:#719e07">and</span> <span style="color:#2aa198">1</span> <span style="color:#719e07">==</span> vim.fn.executable (<span style="color:#2aa198">&#34;clang++&#34;</span>)
+</span></span><span style="display:flex;"><span>		<span style="color:#268bd2">then</span>
+</span></span><span style="display:flex;"><span>			vim.fn.setenv (<span style="color:#2aa198">&#34;CC&#34;</span>, <span style="color:#2aa198">&#34;/usr/bin/clang&#34;</span>)
+</span></span><span style="display:flex;"><span>			vim.fn.setenv (<span style="color:#2aa198">&#34;CXX&#34;</span>, <span style="color:#2aa198">&#34;/usr/bin/clang++&#34;</span>)
+</span></span><span style="display:flex;"><span>		<span style="color:#268bd2">end</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#586e75">-- explained below</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#268bd2">if</span> <span style="color:#2aa198">1</span> <span style="color:#719e07">==</span> vim.fn.executable (<span style="color:#2aa198">&#34;ccache&#34;</span>)
+</span></span><span style="display:flex;"><span>		<span style="color:#268bd2">then</span>
+</span></span><span style="display:flex;"><span>			vim.fn.setenv (<span style="color:#2aa198">&#34;CMAKE_C_COMPILER_LAUNCHER&#34;</span>, <span style="color:#2aa198">&#34;ccache&#34;</span>)
+</span></span><span style="display:flex;"><span>			vim.fn.setenv (<span style="color:#2aa198">&#34;CMAKE_CXX_COMPILER_LAUNCHER&#34;</span>, <span style="color:#2aa198">&#34;ccache&#34;</span>)
+</span></span><span style="display:flex;"><span>		<span style="color:#268bd2">end</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#268bd2">if</span> <span style="color:#2aa198">1</span> <span style="color:#719e07">==</span> vim.fn.executable (<span style="color:#2aa198">&#34;ninja&#34;</span>)
+</span></span><span style="display:flex;"><span>		<span style="color:#268bd2">then</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#586e75">-- ninja is faster than make</span>
+</span></span><span style="display:flex;"><span>			vim.list_extend (cmake_generate_options, { <span style="color:#2aa198">&#34;-G Ninja&#34;</span> })
+</span></span><span style="display:flex;"><span>		<span style="color:#268bd2">end</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		require (<span style="color:#2aa198">&#34;cmake-tools&#34;</span>).setup {
+</span></span><span style="display:flex;"><span>			cmake_build_options <span style="color:#719e07">=</span> cmake_build_options,
+</span></span><span style="display:flex;"><span>			cmake_generate_options <span style="color:#719e07">=</span> cmake_generate_options,
+</span></span><span style="display:flex;"><span>		}
+</span></span><span style="display:flex;"><span>	<span style="color:#268bd2">end</span>,
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>As you can see I choose ninja over make whenever it&rsquo;s available in the system.
+Ninja is faster than make. I also prefer clang over gcc to have LSP-compatible
+errors/warnings.</p>
+<h2 id="use-compiler-cache-to-speed-up-recompilation">Use compiler cache to speed up recompilation</h2>
+<p><a href="https://ccache.dev/">ccache</a> is the most popular compiler cache management
+tool.</p>
+<blockquote>
+<p>If you ever run make clean; make, you can probably benefit from ccache. It
+is common for developers to do a clean build of a project for a variety of
+reasons, and this discards the results of your previous compilations. By
+using ccache, recompilation goes much faster.
+Another reason to use ccache is that the same cache is used for builds</p>
+<p>in different directories. If you have several versions or branches of a
+project stored in different directories, many of the object files in a build
+directory can often be taken from the cache even if they were compiled for
+another version or branch.</p>
+<p>A third scenario is using ccache to speed up clean builds performed by
+servers or build farms that regularly verify that the code builds.</p>
+<p>You can also share the cache between users, which can be very useful on
+shared compilation servers.</p>
+</blockquote>
+<p>CMake supports ccache via environment variables <strong>CMAKE_C_COMPILER_LAUNCHER</strong>
+and <strong>CMAKE_CXX_COMPILER_LAUNCHER</strong>.</p>
+<p>In NeoVim I set up ccache to work with CMake like this:</p>
+<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-lua" data-lang="lua"><span style="display:flex;"><span><span style="color:#268bd2">if</span> <span style="color:#2aa198">1</span> <span style="color:#719e07">==</span> vim.fn.executable (<span style="color:#2aa198">&#34;ccache&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#268bd2">then</span>
+</span></span><span style="display:flex;"><span>    vim.fn.setenv (<span style="color:#2aa198">&#34;CMAKE_C_COMPILER_LAUNCHER&#34;</span>, <span style="color:#2aa198">&#34;ccache&#34;</span>)
+</span></span><span style="display:flex;"><span>    vim.fn.setenv (<span style="color:#2aa198">&#34;CMAKE_CXX_COMPILER_LAUNCHER&#34;</span>, <span style="color:#2aa198">&#34;ccache&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#268bd2">end</span>
+</span></span></code></pre></div><h2 id="iwyu-include-what-you-use">IWYU: Include what you use</h2>
+<p><a href="https://include-what-you-use.org/">This</a> tool helps to avoid unnecessarily
+included headers and include the necessary ones. For example if you include
+A.h which includes B.h for its internal stuff, you can use symbols - variables,
+functions, structs, etc - from B.h without actually including it. Then in the
+future if A.h removes the include directive for B.h because of some
+internal changes, your code wouldn&rsquo;t compile. IWYU checks what symbols do you
+use in your code and includes all necessary headers directly and removes all
+unused headers.</p>
+<blockquote>
+<p>&ldquo;Include what you use&rdquo; means this: for every symbol (type, function variable,
+or macro) that you use in foo.cc, either foo.cc or foo.h should #include a .h
+file that exports the declaration of that symbol. The include-what-you-use
+tool is a program that can be built with the clang libraries in order to
+analyze #includes of source files to find include-what-you-use violations,
+and suggest fixes for them.</p>
+</blockquote>
+<blockquote>
+<p>The main goal of include-what-you-use is to remove superfluous #includes. It
+does this both by figuring out what #includes are not actually needed
+for this file (for both .cc and .h files), and replacing #includes with
+forward-declares when possible.</p>
+</blockquote>
+<p>Don&rsquo;t forget about multithreading! IWYU supports multithreading with the
+<strong>-j NUM_THREADS</strong> CLI flag.</p>
+<p>In NeoVim I set up IWYU like this:</p>
+<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-lua" data-lang="lua"><span style="display:flex;"><span><span style="color:#268bd2">local</span> groups <span style="color:#719e07">=</span> require (<span style="color:#2aa198">&#34;modular.autogroups&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#268bd2">if</span> <span style="color:#2aa198">1</span> <span style="color:#719e07">==</span> vim.fn.executable (<span style="color:#2aa198">&#34;iwyu-tool&#34;</span>) <span style="color:#719e07">and</span> <span style="color:#2aa198">1</span> <span style="color:#719e07">==</span> vim.fn.executable (<span style="color:#2aa198">&#34;iwyu-fix-includes&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#268bd2">then</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#268bd2">local</span> nproc <span style="color:#719e07">=</span> require (<span style="color:#2aa198">&#34;modular.utils&#34;</span>).nproc
+</span></span><span style="display:flex;"><span>	<span style="color:#268bd2">local</span> iwyu_current
+</span></span><span style="display:flex;"><span>	<span style="color:#268bd2">local</span> iwyu_root
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#268bd2">if</span> <span style="color:#2aa198">0</span> <span style="color:#719e07">~=</span> nproc
+</span></span><span style="display:flex;"><span>	<span style="color:#268bd2">then</span>
+</span></span><span style="display:flex;"><span>		iwyu_current <span style="color:#719e07">=</span> <span style="color:#2aa198">&#34;w | !iwyu-tool -p . -j &#34;</span> <span style="color:#719e07">..</span> (nproc <span style="color:#719e07">-</span> <span style="color:#2aa198">1</span>) <span style="color:#719e07">..</span> <span style="color:#2aa198">&#34; % | iwyu-fix-includes&#34;</span>
+</span></span><span style="display:flex;"><span>		iwyu_root <span style="color:#719e07">=</span> <span style="color:#2aa198">&#34;w | !iwyu-tool -p . -j &#34;</span> <span style="color:#719e07">..</span> (nproc <span style="color:#719e07">-</span> <span style="color:#2aa198">1</span>) <span style="color:#719e07">..</span> <span style="color:#2aa198">&#34; | iwyu-fix-includes&#34;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#268bd2">else</span>
+</span></span><span style="display:flex;"><span>		iwyu_current <span style="color:#719e07">=</span> <span style="color:#2aa198">&#34;w | !iwyu-tool -p . % | iwyu-fix-includes&#34;</span>
+</span></span><span style="display:flex;"><span>		iwyu_root <span style="color:#719e07">=</span> <span style="color:#2aa198">&#34;w | !iwyu-tool -p . | iwyu-fix-includes&#34;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#268bd2">end</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	vim.api.nvim_create_autocmd (<span style="color:#2aa198">&#34;FileType&#34;</span>, {
+</span></span><span style="display:flex;"><span>		group <span style="color:#719e07">=</span> vim.api.nvim_create_augroup (groups.ClangIWYU, { clear <span style="color:#719e07">=</span> <span style="color:#cb4b16">true</span> }),
+</span></span><span style="display:flex;"><span>		pattern <span style="color:#719e07">=</span> { <span style="color:#2aa198">&#34;cpp&#34;</span> },
+</span></span><span style="display:flex;"><span>		callback <span style="color:#719e07">=</span> <span style="color:#268bd2">function</span> (args)
+</span></span><span style="display:flex;"><span>			<span style="color:#268bd2">local</span> bufnr <span style="color:#719e07">=</span> args.buf
+</span></span><span style="display:flex;"><span>				vim.api.nvim_buf_create_user_command (bufnr, <span style="color:#2aa198">&#34;ClangIWYUCurrent&#34;</span>,
+</span></span><span style="display:flex;"><span>					<span style="color:#268bd2">function</span> () vim.cmd (iwyu_current) <span style="color:#268bd2">end</span>, { nargs <span style="color:#719e07">=</span> <span style="color:#2aa198">0</span> }
+</span></span><span style="display:flex;"><span>				)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>				vim.api.nvim_buf_create_user_command (bufnr, <span style="color:#2aa198">&#34;ClangIWYURoot&#34;</span>,
+</span></span><span style="display:flex;"><span>					<span style="color:#268bd2">function</span> () vim.cmd (iwyu_root) <span style="color:#268bd2">end</span>, { nargs <span style="color:#719e07">=</span> <span style="color:#2aa198">0</span> }
+</span></span><span style="display:flex;"><span>				)
+</span></span><span style="display:flex;"><span>		<span style="color:#268bd2">end</span>
+</span></span><span style="display:flex;"><span>	})
+</span></span><span style="display:flex;"><span><span style="color:#268bd2">end</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#586e75">-- ...</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#268bd2">local</span> groups <span style="color:#719e07">=</span> require (<span style="color:#2aa198">&#34;modular.autogroups&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#268bd2">local</span> map <span style="color:#719e07">=</span> vim.keymap.set
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#268bd2">if</span> <span style="color:#2aa198">1</span> <span style="color:#719e07">==</span> vim.fn.executable (<span style="color:#2aa198">&#34;iwyu-tool&#34;</span>) <span style="color:#719e07">and</span> <span style="color:#2aa198">1</span> <span style="color:#719e07">==</span> vim.fn.executable (<span style="color:#2aa198">&#34;iwyu-fix-includes&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#268bd2">then</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#268bd2">local</span> reg_mapping_group <span style="color:#719e07">=</span> require (<span style="color:#2aa198">&#34;modular.utils&#34;</span>).reg_mapping_group
+</span></span><span style="display:flex;"><span>	reg_mapping_group (<span style="color:#2aa198">&#34;&lt;leader&gt;Ch&#34;</span>,  <span style="color:#2aa198">&#34;headers&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	vim.api.nvim_create_autocmd (<span style="color:#2aa198">&#34;FileType&#34;</span>, {
+</span></span><span style="display:flex;"><span>		group <span style="color:#719e07">=</span> vim.api.nvim_create_augroup (groups.ClangIWYUMappings, { clear <span style="color:#719e07">=</span> <span style="color:#cb4b16">true</span> }),
+</span></span><span style="display:flex;"><span>		pattern <span style="color:#719e07">=</span> { <span style="color:#2aa198">&#34;cpp&#34;</span> },
+</span></span><span style="display:flex;"><span>		callback <span style="color:#719e07">=</span> <span style="color:#268bd2">function</span> (args)
+</span></span><span style="display:flex;"><span>			<span style="color:#268bd2">local</span> bufnr <span style="color:#719e07">=</span> args.buf
+</span></span><span style="display:flex;"><span>			map (<span style="color:#2aa198">&#34;n&#34;</span>, <span style="color:#2aa198">&#34;&lt;leader&gt;Chc&#34;</span>, vim.cmd.ClangIWYUCurrent, { buffer <span style="color:#719e07">=</span> bufnr, desc <span style="color:#719e07">=</span> <span style="color:#2aa198">&#34;iwyu current file&#34;</span> })
+</span></span><span style="display:flex;"><span>			map (<span style="color:#2aa198">&#34;n&#34;</span>, <span style="color:#2aa198">&#34;&lt;leader&gt;Chr&#34;</span>, vim.cmd.ClangIWYURoot, { buffer <span style="color:#719e07">=</span> bufnr, desc <span style="color:#719e07">=</span> <span style="color:#2aa198">&#34;iwyu root&#34;</span> })
+</span></span><span style="display:flex;"><span>		<span style="color:#268bd2">end</span>
+</span></span><span style="display:flex;"><span>	})
+</span></span><span style="display:flex;"><span><span style="color:#268bd2">end</span>
+</span></span></code></pre></div><p>There&rsquo;s no NeoVim IWYU plugin available but it doesn&rsquo;t stop
+NeoVim users from integrating it in their workflow. In &ldquo;modern&rdquo; IDEs
+you might be forced to use IWYU manually from the terminal. In
+this case, or in general, consider using <a href="https://www.slingacademy.com/article/git-pre-commit-hook-a-practical-guide-with-examples/">git pre-commit
+hooks</a>.</p>
+<p>Clangd also supports IWYU-like functionality. To enable it, edit the
+<strong>~/.config/clangd/config.yaml</strong> file and add this:</p>
+<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#268bd2">Diagnostics</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#268bd2">UnusedIncludes</span>: Strict
+</span></span><span style="display:flex;"><span>  <span style="color:#268bd2">MissingIncludes</span>: Strict
+</span></span></code></pre></div><p>This will generate warnings and enable <strong>code actions</strong> (automated small code
+editing actions) to remove the unused includes and include the missing headers.</p>
+<h2 id="utilize-the-full-power-of-your-device">Utilize the full power of your device</h2>
+<p>You probably already know about the &ldquo;power profiles&rdquo; of your device. You
+can set it to &ldquo;Performance&rdquo;, &ldquo;Balanced&rdquo;, &ldquo;Power&rdquo; and other modes. This will
+change the performance of your system. It&rsquo;s something motherboard-related
+and affects both CPU and GPU. Your system can be tuned further. For
+example, in Linux Intel CPUs give a configuration interface through the
+<a href="https://docs.kernel.org/admin-guide/pm/intel_pstate.html">intel pstate</a>
+driver. This driver enables configuration options for turbo
+boost, hardware-managed performance states, CPU core frequency
+limitations and exposes various global and per-core settings via
+<a href="https://docs.kernel.org/admin-guide/pm/cpufreq.html">cpufreq</a>.  Intel RAPL
+(Running Average Power Limit) exposes CPU energy configuration options through
+<a href="https://www.kernel.org/doc/html/next/power/powercap/powercap.html">powercap</a>.</p>
+<p>When you compile your C/C++ projects, these
+configurations matter! Nvidia GPUs can be tuned through the
+<a href="https://man.archlinux.org/man/nvidia-smi.1">nvidia-smi</a> CLI tool. Consider tweaking
+it if you use CUDA. By tuning the <a href="https://man.archlinux.org/man/nvidia-smi.1#Performance_State">performance state</a>
+and other settings, you can speed-up CUDA applications.</p>
+<p>On Linux there are user-friendly tools such as <a href="https://linrunner.de/tlp/index.html">TLP</a>
+available to configure these options.</p>
+<p>Modern CPUs often feature different types of cores. Some are Performance
+cores (P-cores), while others are Efficiency cores (E-cores). These cores
+differ in their operating frequencies and, consequently, in the frequency
+ranges available for configuration.</p>
+<p>One limitation of TLP is that it requires exact frequency values to be
+specified. However, the valid frequency ranges vary between core types and,
+naturally, between CPU models.</p>
+<p>To simplify this, I developed
+<a href="https://github.com/GasparVardanyan/DeviceMaster">DeviceMaster</a>, which allows
+frequency limits to be configured using percentages rather than absolute
+values. It also provides several additional features that make CPU power
+and performance tuning easier to manage.</p>
+<p>I configure my device like
+<a href="https://github.com/GasparVardanyan/DeviceMaster/tree/master#example-usage">this</a>.</p>
+<p>Another important thing to configure properly is the Extensible Scheduler Class
+of the Linux Kernel. Roughly speaking, it decides which cores have to be used for
+which tasks. Remember that CPUs have P cores and E cores, so this is important
+for compilation speed and overall system performance. It can be configured with
+the <a href="https://wiki.cachyos.org/configuration/sched-ext/">sched-ext</a> CLI tool.</p>
+<p>I configure it like this in <strong>/etc/scx_loader.toml</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-toml" data-lang="toml"><span style="display:flex;"><span>default_sched = <span style="color:#2aa198">&#34;scx_lavd&#34;</span>
+</span></span><span style="display:flex;"><span>default_mode = <span style="color:#2aa198">&#34;Auto&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>[scheds.scx_lavd]
+</span></span><span style="display:flex;"><span>auto_mode = [<span style="color:#2aa198">&#34;--autopower&#34;</span>]
+</span></span></code></pre></div><h2 id="use-linters">Use linters</h2>
+<p>Linters help to quickly notice bugs, modernize your code and learn good coding
+practices. For example, when your function takes a forwarding reference and you
+forget to std::forward it like this:</p>
+<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#719e07">template</span> <span style="color:#719e07">&lt;</span><span style="color:#719e07">typename</span> T<span style="color:#719e07">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#dc322f">void</span> f (T <span style="color:#719e07">&amp;&amp;</span> t) {
+</span></span><span style="display:flex;"><span>	someFunc (t);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>you wouldn&rsquo;t have compilation errors or warnings. This code would work fine in
+many situations and could be hard to debug when something fails because
+of it. However, clang-tidy would give a diagnostic message like this:</p>
+<pre tabindex="0"><code>forwarding reference parameter &#39;t&#39; is never forwarded inside the function body
+[cppcoreguidelines-missing-std-forward]
+</code></pre><p>In NeoVim I set up clang-tidy and cppcheck like this:</p>
+<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-lua" data-lang="lua"><span style="display:flex;"><span><span style="color:#268bd2">local</span> clang_config <span style="color:#719e07">=</span> require (<span style="color:#2aa198">&#34;modular.config.clang&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#268bd2">local</span> clang_standard <span style="color:#719e07">=</span> <span style="color:#268bd2">function</span> ()
+</span></span><span style="display:flex;"><span>    <span style="color:#268bd2">if</span> vim.bo.filetype <span style="color:#719e07">==</span> <span style="color:#2aa198">&#34;cpp&#34;</span> <span style="color:#268bd2">then</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#268bd2">return</span> <span style="color:#2aa198">&#34;--extra-arg=-std=&#34;</span> <span style="color:#719e07">..</span> clang_config.stdcpp
+</span></span><span style="display:flex;"><span>    <span style="color:#268bd2">elseif</span> vim.bo.filetype <span style="color:#719e07">==</span> <span style="color:#2aa198">&#34;c&#34;</span> <span style="color:#268bd2">then</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#268bd2">return</span> <span style="color:#2aa198">&#34;--extra-arg=-std=&#34;</span> <span style="color:#719e07">..</span> clang_config.stdc
+</span></span><span style="display:flex;"><span>    <span style="color:#268bd2">else</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#268bd2">return</span> <span style="color:#2aa198">&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#268bd2">end</span>
+</span></span><span style="display:flex;"><span><span style="color:#268bd2">end</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#268bd2">local</span> cppcheck_standard <span style="color:#719e07">=</span> <span style="color:#268bd2">function</span> ()
+</span></span><span style="display:flex;"><span>    <span style="color:#268bd2">if</span> vim.bo.filetype <span style="color:#719e07">==</span> <span style="color:#2aa198">&#34;cpp&#34;</span> <span style="color:#268bd2">then</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#268bd2">return</span> <span style="color:#2aa198">&#34;--std=&#34;</span> <span style="color:#719e07">..</span> clang_config.stdcpp
+</span></span><span style="display:flex;"><span>    <span style="color:#268bd2">elseif</span> vim.bo.filetype <span style="color:#719e07">==</span> <span style="color:#2aa198">&#34;c&#34;</span> <span style="color:#268bd2">then</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#268bd2">return</span> <span style="color:#2aa198">&#34;--std=&#34;</span> <span style="color:#719e07">..</span> clang_config.stdc
+</span></span><span style="display:flex;"><span>    <span style="color:#268bd2">else</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#268bd2">return</span> <span style="color:#2aa198">&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#268bd2">end</span>
+</span></span><span style="display:flex;"><span><span style="color:#268bd2">end</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#268bd2">local</span> nproc <span style="color:#719e07">=</span> require (<span style="color:#2aa198">&#34;modular.utils&#34;</span>).nproc
+</span></span><span style="display:flex;"><span><span style="color:#268bd2">local</span> cppcheck_jnproc <span style="color:#719e07">=</span> <span style="color:#2aa198">&#39;&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#268bd2">if</span> <span style="color:#2aa198">0</span> <span style="color:#719e07">~=</span> nproc
+</span></span><span style="display:flex;"><span><span style="color:#268bd2">then</span>
+</span></span><span style="display:flex;"><span>    cppcheck_jnproc <span style="color:#719e07">=</span>  <span style="color:#2aa198">&#34;-j &#34;</span> <span style="color:#719e07">..</span> (nproc <span style="color:#719e07">-</span> <span style="color:#2aa198">1</span>)
+</span></span><span style="display:flex;"><span><span style="color:#268bd2">end</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#268bd2">local</span> clang_tidy <span style="color:#719e07">=</span> require (<span style="color:#2aa198">&#34;lint.linters.clangtidy&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#268bd2">local</span> cppcheck <span style="color:#719e07">=</span> require (<span style="color:#2aa198">&#34;lint.linters.cppcheck&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#586e75">-- https://clang.llvm.org/extra/clang-tidy/</span>
+</span></span><span style="display:flex;"><span>vim.list_extend (clang_tidy.args, {
+</span></span><span style="display:flex;"><span>    clang_standard,
+</span></span><span style="display:flex;"><span>    <span style="color:#2aa198">&#34;--checks=*&#34;</span> <span style="color:#586e75">-- abseil, altera, android, boost, bugprone,</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#586e75">-- cert, clang, concurrency, cppcoreguidelines, darwin,</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#586e75">-- fuchsia, google, hicpp, linuxkernel, llvm, llvmlibc,</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#586e75">-- misc, modernize, mpi, objc, openmp, performance,</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#586e75">-- portability, readability, zircon</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#719e07">..</span> <span style="color:#2aa198">&#34;,-darwin-*&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#719e07">..</span> <span style="color:#2aa198">&#34;,-linuxkernel-*&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#719e07">..</span> <span style="color:#2aa198">&#34;,-llvmlibc-*&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#719e07">..</span> <span style="color:#2aa198">&#34;,-objc-*&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#719e07">..</span> <span style="color:#2aa198">&#34;,-altera-unroll-loops&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#719e07">..</span> <span style="color:#2aa198">&#34;,-bugprone-easily-swappable-parameters&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#719e07">..</span> <span style="color:#2aa198">&#34;,-fuchsia-default-arguments-calls&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#719e07">..</span> <span style="color:#2aa198">&#34;,-fuchsia-default-arguments-declarations&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#719e07">..</span> <span style="color:#2aa198">&#34;,-fuchsia-overloaded-operator&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#719e07">..</span> <span style="color:#2aa198">&#34;,-fuchsia-trailing-return&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#719e07">..</span> <span style="color:#2aa198">&#34;,-google-explicit-constructor&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#719e07">..</span> <span style="color:#2aa198">&#34;,-hicpp-explicit-conversions&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#719e07">..</span> <span style="color:#2aa198">&#34;,-llvm-else-after-return&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#719e07">..</span> <span style="color:#2aa198">&#34;,-llvm-header-guard&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#719e07">..</span> <span style="color:#2aa198">&#34;,-misc-non-private-member-variables-in-classes&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#719e07">..</span> <span style="color:#2aa198">&#34;,-misc-use-anonymous-namespace&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#719e07">..</span> <span style="color:#2aa198">&#34;,-modernize-use-trailing-return-type&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#719e07">..</span> <span style="color:#2aa198">&#34;,-readability-else-after-return&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#719e07">..</span> <span style="color:#2aa198">&#34;,-readability-function-cognitive-complexity&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#719e07">..</span> <span style="color:#2aa198">&#34;,-readability-identifier-length&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#719e07">..</span> <span style="color:#2aa198">&#34;,-readability-isolate-declaration&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#719e07">..</span> <span style="color:#2aa198">&#34;,-readability-magic-numbers&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#719e07">..</span> <span style="color:#2aa198">&#34;,-readability-redundant-access-specifiers&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#719e07">..</span> <span style="color:#2aa198">&#34;,-readability-redundant-inline-specifier&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#719e07">..</span> <span style="color:#2aa198">&#34;,-readability-simplify-boolean-expr&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#586e75">-- .. &#34;,-cppcoreguidelines-avoid-do-while&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#586e75">-- .. &#34;,-cppcoreguidelines-avoid-magic-numbers&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#586e75">-- .. &#34;,-cppcoreguidelines-non-private-member-variables-in-classes&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#586e75">-- .. &#34;,-cppcoreguidelines-owning-memory&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#586e75">-- .. &#34;,-cppcoreguidelines-rvalue-reference-param-not-moved&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#586e75">-- .. &#34;,-modernize-use-nodiscard&#34;</span>
+</span></span><span style="display:flex;"><span>})
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>vim.list_extend (cppcheck.args, {
+</span></span><span style="display:flex;"><span>    cppcheck_standard,
+</span></span><span style="display:flex;"><span>    cppcheck_jnproc,
+</span></span><span style="display:flex;"><span>    <span style="color:#2aa198">&#34;--check-level=exhaustive&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#2aa198">&#34;--enable=all&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#2aa198">&#34;--suppress=missingIncludeSystem&#34;</span>,
+</span></span><span style="display:flex;"><span>})
+</span></span></code></pre></div><p>clang-tidy works with <a href="https://clang.llvm.org/extra/clang-tidy/#running-clang-tidy-on-cuda-files">CUDA
+too</a>.</p>
+<p>For Qt applications, use <a href="https://github.com/KDE/clazy">clazy</a>. Unfortunately
+clazy doesn&rsquo;t support enabling all diagnostics and disabling selected ones.
+In NeoVim I set up clazy like this:</p>
+<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-lua" data-lang="lua"><span style="display:flex;"><span><span style="color:#268bd2">local</span> clazy <span style="color:#719e07">=</span> require (<span style="color:#2aa198">&#34;lint.linters.clazy&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>vim.list_extend (clazy.args, {
+</span></span><span style="display:flex;"><span>    clang_standard,
+</span></span><span style="display:flex;"><span>    <span style="color:#2aa198">&#34;-checks=&#34;</span> <span style="color:#586e75">-- why * doesn&#39;t work here?</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#719e07">..</span> <span style="color:#2aa198">&#34;level0&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#719e07">..</span> <span style="color:#2aa198">&#34;,level1&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#719e07">..</span> <span style="color:#2aa198">&#34;,level2&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#719e07">..</span> <span style="color:#2aa198">&#34;,assert-with-side-effects&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#719e07">..</span> <span style="color:#2aa198">&#34;,compare-member-check&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#719e07">..</span> <span style="color:#2aa198">&#34;,container-inside-loop&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#719e07">..</span> <span style="color:#2aa198">&#34;,detaching-member&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#719e07">..</span> <span style="color:#2aa198">&#34;,heap-allocated-small-trivial-type&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#719e07">..</span> <span style="color:#2aa198">&#34;,ifndef-define-typo&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#719e07">..</span> <span style="color:#2aa198">&#34;,isempty-vs-count&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#719e07">..</span> <span style="color:#2aa198">&#34;,jni-signatures&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#719e07">..</span> <span style="color:#2aa198">&#34;,qbytearray-conversion-to-c-style&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#719e07">..</span> <span style="color:#2aa198">&#34;,qhash-with-char-pointer-key&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#719e07">..</span> <span style="color:#2aa198">&#34;,qproperty-type-mismatch&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#719e07">..</span> <span style="color:#2aa198">&#34;,qrequiredresult-candidates&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#719e07">..</span> <span style="color:#2aa198">&#34;,qstring-ref&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#719e07">..</span> <span style="color:#2aa198">&#34;,qstring-varargs&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#719e07">..</span> <span style="color:#2aa198">&#34;,qt-keyword-emit&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#719e07">..</span> <span style="color:#2aa198">&#34;,qt-keywords&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#719e07">..</span> <span style="color:#2aa198">&#34;,qvariant-template-instantiation&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#719e07">..</span> <span style="color:#2aa198">&#34;,raw-environment-function&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#719e07">..</span> <span style="color:#2aa198">&#34;,reserve-candidates&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#719e07">..</span> <span style="color:#2aa198">&#34;,sanitize-inline-keyword&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#719e07">..</span> <span style="color:#2aa198">&#34;,signal-with-return-value&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#719e07">..</span> <span style="color:#2aa198">&#34;,thread-with-slots&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#719e07">..</span> <span style="color:#2aa198">&#34;,tr-non-literal&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#719e07">..</span> <span style="color:#2aa198">&#34;,unexpected-flag-enumerator-value&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#719e07">..</span> <span style="color:#2aa198">&#34;,unneeded-cast&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#719e07">..</span> <span style="color:#2aa198">&#34;,unused-result-check&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#719e07">..</span> <span style="color:#2aa198">&#34;,use-arrow-operator-instead-of-data&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#719e07">..</span> <span style="color:#2aa198">&#34;,use-chrono-in-qtimer&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#719e07">..</span> <span style="color:#2aa198">&#34;,used-qunused-variable&#34;</span>,
+</span></span><span style="display:flex;"><span>})
+</span></span></code></pre></div><h2 id="use-profilers">Use profilers</h2>
+<p>Linux has a built in performance profiler called
+<a href="https://perfwiki.github.io/main/">perf</a>.  It helps you analyze
+your application&rsquo;s performance and pinpoint which functions consume
+the most CPU time. Other operating systems likely offer similar
+tools. If you&rsquo;re using NeoVim, you&rsquo;re in luck - there&rsquo;s an excellent
+<a href="https://github.com/t-troebst/perfanno.nvim">extension</a> that integrates perf
+directly into NeoVim.</p>
+<h2 id="conditional-breakpoints">Conditional breakpoints</h2>
+<p>This is worth noting here because if you use a &ldquo;modern&rdquo; IDE, there&rsquo;s a good
+chance you&rsquo;re not familiar with conditional breakpoints. For example, when
+you need to stop inside a loop only when the loop counter reaches a specific
+value, you might write an if statement and place a breakpoint inside it:</p>
+<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#719e07">for</span> (std<span style="color:#719e07">::</span>size_t i <span style="color:#719e07">=</span> <span style="color:#2aa198">0</span>; i <span style="color:#719e07">&lt;</span> COUNT; <span style="color:#719e07">++</span>i) {
+</span></span><span style="display:flex;"><span>    <span style="color:#719e07">if</span> (i <span style="color:#719e07">==</span> <span style="color:#2aa198">1000</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#dc322f">int</span> xxx; <span style="color:#586e75">// breakpoint on this line
+</span></span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>In &ldquo;modern&rdquo; IDEs the conditional breakpoint feature is &ldquo;hidden&rdquo; behind the
+GUI blocks. With NeoVim, debugging is not a built-in feature. You have to set
+up the debugger yourself, configure key mappings, and explore the available
+functionality. In the process, you often discover features that you might
+never have encountered in a traditional IDE, including powerful debugging
+capabilities such as conditional breakpoints.</p>
+<h2 id="documentation-tools">Documentation tools</h2>
+<p>You can browse <a href="cppreference.com">cppreference.com</a> and
+<a href="cplusplus.com">cplusplus.com</a> from your terminal like the man pages
+with <a href="https://github.com/aitjcize/cppman">cppman</a>. It also supports caching both
+sites and browsing in offline mode. There&rsquo;s also a NeoVim
+<a href="https://github.com/madskjeldgaard/cppman.nvim">extension</a> to integrate
+cppman.</p>
+<p><a href="https://zealdocs.org/">Zeal</a> is an offline GUI documentation browser. It
+supports sources like cppreference, Qt, CUDA, OpenGL, etc. There&rsquo;s also a Vim
+<a href="https://github.com/nilp0inter/zeavim.vim">extension</a> to access Zeal docs like
+you access Qt docs from QtCreator.</p>
+<p>I manage zeavim mappings in NeoVim like this:</p>
+<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-lua" data-lang="lua"><span style="display:flex;"><span><span style="color:#268bd2">local</span> map <span style="color:#719e07">=</span> vim.keymap.set
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#268bd2">local</span> <span style="color:#268bd2">function</span> <span style="color:#268bd2">zeal_search</span> (docset, query)
+</span></span><span style="display:flex;"><span>    <span style="color:#268bd2">local</span> old_docset <span style="color:#719e07">=</span> vim.b.manualDocset
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    vim.fn [<span style="color:#2aa198">&#34;zeavim#DocsetInBuffer&#34;</span>] (docset)
+</span></span><span style="display:flex;"><span>    vim.fn [<span style="color:#2aa198">&#34;zeavim#SearchFor&#34;</span>] (<span style="color:#2aa198">&#34;&#34;</span>, query)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	vim.print (<span style="color:#2aa198">&#34;Searching for &#34;</span> <span style="color:#719e07">..</span> query)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#268bd2">if</span> old_docset <span style="color:#719e07">~=</span> <span style="color:#cb4b16">nil</span> <span style="color:#268bd2">then</span>
+</span></span><span style="display:flex;"><span>        vim.b.manualDocset <span style="color:#719e07">=</span> old_docset
+</span></span><span style="display:flex;"><span>    <span style="color:#268bd2">else</span>
+</span></span><span style="display:flex;"><span>        vim.b.manualDocset <span style="color:#719e07">=</span> <span style="color:#cb4b16">nil</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#268bd2">end</span>
+</span></span><span style="display:flex;"><span><span style="color:#268bd2">end</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#268bd2">local</span> <span style="color:#268bd2">function</span> <span style="color:#268bd2">zeal_search_input</span> (docset)
+</span></span><span style="display:flex;"><span>	<span style="color:#268bd2">local</span> query <span style="color:#719e07">=</span> vim.fn.input(<span style="color:#2aa198">&#34;Search for: &#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#268bd2">if</span> docset <span style="color:#719e07">~=</span> <span style="color:#2aa198">&#34;&#34;</span> <span style="color:#719e07">and</span> query <span style="color:#719e07">~=</span> <span style="color:#2aa198">&#34;&#34;</span> <span style="color:#268bd2">then</span>
+</span></span><span style="display:flex;"><span>		zeal_search (docset, query)
+</span></span><span style="display:flex;"><span>    <span style="color:#268bd2">end</span>
+</span></span><span style="display:flex;"><span><span style="color:#268bd2">end</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>map (<span style="color:#2aa198">&#34;n&#34;</span>, <span style="color:#2aa198">&#34;&lt;leader&gt;zc&#34;</span>, <span style="color:#268bd2">function</span> ()
+</span></span><span style="display:flex;"><span>	zeal_search (<span style="color:#2aa198">&#34;c&#34;</span>, vim.fn.expand (<span style="color:#2aa198">&#34;&lt;cWORD&gt;&#34;</span>))
+</span></span><span style="display:flex;"><span><span style="color:#268bd2">end</span>, { desc <span style="color:#719e07">=</span> <span style="color:#2aa198">&#34;C&#34;</span> })
+</span></span><span style="display:flex;"><span>map (<span style="color:#2aa198">&#34;n&#34;</span>, <span style="color:#2aa198">&#34;&lt;leader&gt;zp&#34;</span>, <span style="color:#268bd2">function</span> ()
+</span></span><span style="display:flex;"><span>	zeal_search (<span style="color:#2aa198">&#34;cpp&#34;</span>, vim.fn.expand (<span style="color:#2aa198">&#34;&lt;cWORD&gt;&#34;</span>))
+</span></span><span style="display:flex;"><span><span style="color:#268bd2">end</span>, { desc <span style="color:#719e07">=</span> <span style="color:#2aa198">&#34;C++&#34;</span> })
+</span></span><span style="display:flex;"><span>map (<span style="color:#2aa198">&#34;n&#34;</span>, <span style="color:#2aa198">&#34;&lt;leader&gt;zq&#34;</span>, <span style="color:#268bd2">function</span> ()
+</span></span><span style="display:flex;"><span>	zeal_search (<span style="color:#2aa198">&#34;qt6&#34;</span>, vim.fn.expand (<span style="color:#2aa198">&#34;&lt;cWORD&gt;&#34;</span>))
+</span></span><span style="display:flex;"><span><span style="color:#268bd2">end</span>, { desc <span style="color:#719e07">=</span> <span style="color:#2aa198">&#34;Qt6&#34;</span> })
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>map (<span style="color:#2aa198">&#34;n&#34;</span>, <span style="color:#2aa198">&#34;&lt;leader&gt;zC&#34;</span>, <span style="color:#268bd2">function</span> ()
+</span></span><span style="display:flex;"><span>	zeal_search_input (<span style="color:#2aa198">&#34;c&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#268bd2">end</span>, { desc <span style="color:#719e07">=</span> <span style="color:#2aa198">&#34;C - input&#34;</span> })
+</span></span><span style="display:flex;"><span>map (<span style="color:#2aa198">&#34;n&#34;</span>, <span style="color:#2aa198">&#34;&lt;leader&gt;zP&#34;</span>, <span style="color:#268bd2">function</span> ()
+</span></span><span style="display:flex;"><span>	zeal_search_input (<span style="color:#2aa198">&#34;cpp&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#268bd2">end</span>, { desc <span style="color:#719e07">=</span> <span style="color:#2aa198">&#34;C++ - input&#34;</span> })
+</span></span><span style="display:flex;"><span>map (<span style="color:#2aa198">&#34;n&#34;</span>, <span style="color:#2aa198">&#34;&lt;leader&gt;zQ&#34;</span>, <span style="color:#268bd2">function</span> ()
+</span></span><span style="display:flex;"><span>	zeal_search_input (<span style="color:#2aa198">&#34;qt6&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#268bd2">end</span>, { desc <span style="color:#719e07">=</span> <span style="color:#2aa198">&#34;Qt6 - input&#34;</span> })
+</span></span></code></pre></div><h2 id="use-powerful-tools-and-master-your-tools">Use powerful tools and master your tools</h2>
+<p>Using Windows wouldn&rsquo;t teach you anything. Instead, you&rsquo;ll have to do a lot of
+things manually, set up your tools and libraries manually every time you do a
+fresh install. It would make your device feel slow.</p>
+<p>Using a preconfigured Linux distribution wouldn&rsquo;t teach you as much as DIY ones.
+Instead for example Ubuntu would force you to use heave snaps instead of regular
+deb packages and rusted coreutils as GNU coreutils replacement which don&rsquo;t pass
+all of the GNU coreutils tests. Ubuntu will force its politics on you too!
+That distribution isn&rsquo;t for conservatives ))</p>
+<p>Using &ldquo;modern&rdquo; IDEs wouldn&rsquo;t teach you anything; you wouldn&rsquo;t know what
+happens under the hood when you press that green triangle button, for example.</p>
+<p>DIY Linux distros such as Arch and Gentoo or good IDEs such as Vim and NeoVim
+can make things harder for you if you&rsquo;re new to programming. You&rsquo;ll had to
+learn programming plus your OS plus your programming tools, all at once. First
+learn programming and only then switch to powerful tools. For beginners,
+CachyOS is a great Linux distribution. VSCode is bloated but flexible and good
+enough IDE.</p>
+</div>
+
+		<p class="meta">Posted on <span class="postdate">25. May 2026</span></p>
+	</article>
+
+			</div>
+
+			<footer id="footer">
+				
+				
+				
+				
+				
+				
+
+				<div align="right"><p><a href="/gaspar.monero">monero wallet</a> | <a href="/gaspar.asc">pgp public key</a> | <a href="/gaspar.pub">ssh public key</a> | <a href="https://github.com/GasparVardanyan/gasparvardanyan.github.io/">source</a></p></div>
+
+
+			</footer>
+		</div>
+	</body>
+</html>
