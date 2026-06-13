@@ -40,13 +40,13 @@ How it worked? Explore the magic yourself 🙂
 I use NeoVim primarily for C/C++ development and it have everything I
 need. And there are NeoVim integrations for almost anything!!
 
-* Unity: [neovim-unity](https://lnkd.in/d7eUxSqc), [nvim-unity](https://lnkd.in/d7Bp4DGQ).
-* Unreal Engine: [Unreal.nvim](https://lnkd.in/dtFE85cF), [UnrealDev.nvim](https://lnkd.in/dBymGZAq).
-* Java: [nvim-java](https://lnkd.in/dpYJ5a8J), [nvim-jdtls](https://lnkd.in/dhypJpU6).
-* Android: [android-nvim](https://lnkd.in/dqkPS-uC).
-* Apple ecosystem: [xcodebuild.nvim](https://lnkd.in/d7JqUWEY)
-* Dot Net: [easy-dotnet.nvim](https://lnkd.in/dPCthSvj).
-* CMake: [cmake-tools.nvim](https://lnkd.in/dmPpGaGG), universal compiler: [compiler.nvim](https://lnkd.in/dgrzZbDg).
-* Unit tests: [neotest](https://lnkd.in/d3_un4uV)
+* Unity: [neovim-unity](https://github.com/walcht/neovim-unity), [nvim-unity](https://github.com/apyra/nvim-unity).
+* Unreal Engine: [Unreal.nvim](https://github.com/zadirion/Unreal.nvim), [UnrealDev.nvim](https://github.com/taku25/UnrealDev.nvim).
+* Java: [nvim-java](https://github.com/nvim-java/nvim-java), [nvim-jdtls](https://github.com/mfussenegger/nvim-jdtls).
+* Android: [android-nvim](https://github.com/ariedov/android-nvim).
+* Apple ecosystem: [xcodebuild.nvim](https://github.com/wojciech-kulik/xcodebuild.nvim)
+* Dot Net: [easy-dotnet.nvim](https://github.com/GustavEikaas/easy-dotnet.nvim).
+* CMake: [cmake-tools.nvim](https://github.com/Civitasv/cmake-tools.nvim), universal compiler: [compiler.nvim](https://github.com/Zeioth/compiler.nvim).
+* Unit tests: [neotest](https://github.com/nvim-neotest/neotest)
 * AI: [avante.nvim](https://github.com/yetone/avante.nvim)
 * ...
