@@ -25,6 +25,9 @@ pygmentsStyle = "solarized-dark"
 		name = "Blog"
 		url = "/blog/"
 	[[menu.1main]]
+		name = "Nanolog"
+		url = "/nanolog/"
+	[[menu.1main]]
 		name = "Wallpapers"
 		url = "/wallpapers/"
 	[[menu.1main]]

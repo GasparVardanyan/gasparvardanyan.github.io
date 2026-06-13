@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width">
+		
+
+		<title>Undo Isn&#39;t Linear. It&#39;s a Tree (and Your IDE Hides It)</title>
+
+		
+		<link rel="stylesheet" href="/css/colors-dark.min.9ce07affbfe84fc8345761dc792a8a8743f97e40fde853efc81b2829b99b46be.css">
+
+		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/Iosevka.css" />
+
+<style>
+body {
+	 
+	 
+	font-family: 'Iosevka Web', monospace;
+}
+
+.copyright {
+	text-align: right;
+}
+
+table, th, td {
+	border: 1px solid;
+	border-collapse: collapse;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+iframe {
+	border: 4px solid #073642;
+	border-radius: 12px;
+}
+</style>
+
+<link rel="stylesheet" href="/fancybox/fancybox.css" />
+
+	</head>
+	<body>
+		<header id="header">
+			<h1><a href="https://gasparvardanyan.github.io/">Gaspar Vardanyan</a></h1>
+			<p>C&#43;&#43; Software Engineer and Instructor</p>
+		</header>
+
+		<div id="page">
+			<div id="sidebar">
+				<nav>
+	
+		<ul class="nav">
+			
+				<li><a href="/blog/"><span>Blog</span></a></li>
+			
+				<li><a href="/coding/"><span>Coding</span></a></li>
+			
+				<li><a href="https://github.com/GasparVardanyan/gasparvardanyan.github.io/discussions"><span>Discussions</span></a></li>
+			
+				<li><a href="/index.xml"><span>Feed</span></a></li>
+			
+				<li><a href="/nanolog/"><span>Nanolog</span></a></li>
+			
+				<li><a href="/wallpapers/"><span>Wallpapers</span></a></li>
+			
+		</ul>
+	
+		<ul class="nav">
+			
+				<li><a href="mailto:gaspar_pm@proton.me"><span>Email</span></a></li>
+			
+				<li><a href="https://github.com/GasparVardanyan"><span>GitHub</span></a></li>
+			
+				<li><a href="https://gitlab.com/GasparVardanyan"><span>GitLab</span></a></li>
+			
+				<li><a href="https://mov.im/?contact/gaspar%40jabber.am"><span>Jabber</span></a></li>
+			
+				<li><a href="https://www.linkedin.com/in/gasparvardanyan/"><span>LinkedIn</span></a></li>
+			
+				<li><a href="https://matrix.to/#/@gaspar_m:matrix.org"><span>Matrix</span></a></li>
+			
+				<li><a href="https://t.me/Gaspar123456789"><span>Telegram</span></a></li>
+			
+		</ul>
+	
+</nav>
+
+			</div>
+
+			<div id="content">
+				
+
+				
+	<article class="post">
+		<h1><a href="https://gasparvardanyan.github.io/nanolog/undo-isnt-linear.-its-a-tree-and-your-ide-hides-it/">Undo Isn&#39;t Linear. It&#39;s a Tree (and Your IDE Hides It)</a> </h1>
+
+		<div class="post-content"><p>
+
+<a href="/nanolog/2026-06-13-223233_484x1029_scrot.png" data-fancybox>
+  <img src="/nanolog/2026-06-13-223233_484x1029_scrot.png" />
+</a>
+
+Have you ever found yourself in this situation: you delete a piece of code,
+add something new, and then realize you want to bring back a small chunk
+from what you deleted? You press Ctrl+Z until the deleted code appears,
+copy it - and then accidentally press some key other than Ctrl+C. Now your
+newest changes are gone.  I suspect many IDE users run into this constantly.</p>
+<p>This happens because, in most IDEs, the undo buffer is effectively linear. Or
+perhaps the UX is so poor that even when the undo history is a tree, most
+developers never discover it or learn how to navigate it.</p>
+<p>In a true undo-tree model, undoing changes and then making a new edit doesn&rsquo;t
+overwrite history. Instead, it creates a new branch in the tree. You can
+then navigate this tree and recover your code from any state it ever passed
+through during editing.</p>
+<p>Combine this with persistent undo buffers - where closing a file, restarting
+the IDE, or even overwriting the file with an external tool doesn&rsquo;t destroy
+your undo history - and once you get used to it, coding without this feature
+feels like zipping your code and uploading it to Drive instead of using Git.</p>
+<p>Now consider this: what happens when you close a file in your IDE, or close
+the entire IDE, and then reopen it? Usually, the file opens at the beginning.
+In Vim or Neovim, with just three lines of configuration, the file reopens
+at the exact cursor position where you left off. You can even restore the
+entire layout of tabs and windows.</p>
+<p>This is why Vim and Neovim are better - not simply because they have an
+undo tree built in, but because almost every Vim user knows about powerful
+features like these and actually uses them. I&rsquo;d bet that very few &ldquo;regular&rdquo;
+IDE users use comparable features, or even know they exist - or ever imagined
+that editing could work this way.</p>
+<p>Vim and Neovim aren&rsquo;t black boxes from the &rsquo;80s. They support LSPs (thanks,
+Microsoft 😄), DAP, TreeSitter based syntax-aware highlighting and
+textobjects, excellent AI integration, and all the classic Vim advantages:
+marks, registers (clipboards on steroids), macros, and more.</p>
+<p>You have to try it. If you think you don&rsquo;t have time to learn Vim, the truth
+is you don&rsquo;t have time not to. Vim saves an enormous amount of time - and
+makes coding a better and more fun process.</p>
+</div>
+
+		<p class="meta">Posted on <span class="postdate">07. February 2026</span></p>
+	</article>
+
+			</div>
+
+			<footer id="footer">
+				
+				
+				
+				
+				
+				
+
+				<div align="right"><p><a href="/gaspar.monero">monero wallet</a> | <a href="/gaspar.asc">pgp public key</a> | <a href="/gaspar.pub">ssh public key</a> | <a href="https://github.com/GasparVardanyan/gasparvardanyan.github.io/">source</a></p></div>
+
+
+<script src="/fancybox/fancybox.umd.js"></script>
+<script>
+Fancybox.bind('[data-fancybox]', {
+	Thumbs: {
+		type: "classic",
+	},
+	Toolbar: {
+		display: {
+			left: ["infobar"],
+			right: ["zoomIn", "zoomOut", "toggle1to1", "thumbs", "download", "close"]
+		},
+	}
+});
+</script>
+
+			</footer>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width">
+		
+
+		<title>Why &#34;Modern&#34; IDEs Are Actually a Step Backward</title>
+
+		
+		<link rel="stylesheet" href="/css/colors-dark.min.9ce07affbfe84fc8345761dc792a8a8743f97e40fde853efc81b2829b99b46be.css">
+
+		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/Iosevka.css" />
+
+<style>
+body {
+	 
+	 
+	font-family: 'Iosevka Web', monospace;
+}
+
+.copyright {
+	text-align: right;
+}
+
+table, th, td {
+	border: 1px solid;
+	border-collapse: collapse;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+iframe {
+	border: 4px solid #073642;
+	border-radius: 12px;
+}
+</style>
+
+<link rel="stylesheet" href="/fancybox/fancybox.css" />
+
+	</head>
+	<body>
+		<header id="header">
+			<h1><a href="https://gasparvardanyan.github.io/">Gaspar Vardanyan</a></h1>
+			<p>C&#43;&#43; Software Engineer and Instructor</p>
+		</header>
+
+		<div id="page">
+			<div id="sidebar">
+				<nav>
+	
+		<ul class="nav">
+			
+				<li><a href="/blog/"><span>Blog</span></a></li>
+			
+				<li><a href="/coding/"><span>Coding</span></a></li>
+			
+				<li><a href="https://github.com/GasparVardanyan/gasparvardanyan.github.io/discussions"><span>Discussions</span></a></li>
+			
+				<li><a href="/index.xml"><span>Feed</span></a></li>
+			
+				<li><a href="/nanolog/"><span>Nanolog</span></a></li>
+			
+				<li><a href="/wallpapers/"><span>Wallpapers</span></a></li>
+			
+		</ul>
+	
+		<ul class="nav">
+			
+				<li><a href="mailto:gaspar_pm@proton.me"><span>Email</span></a></li>
+			
+				<li><a href="https://github.com/GasparVardanyan"><span>GitHub</span></a></li>
+			
+				<li><a href="https://gitlab.com/GasparVardanyan"><span>GitLab</span></a></li>
+			
+				<li><a href="https://mov.im/?contact/gaspar%40jabber.am"><span>Jabber</span></a></li>
+			
+				<li><a href="https://www.linkedin.com/in/gasparvardanyan/"><span>LinkedIn</span></a></li>
+			
+				<li><a href="https://matrix.to/#/@gaspar_m:matrix.org"><span>Matrix</span></a></li>
+			
+				<li><a href="https://t.me/Gaspar123456789"><span>Telegram</span></a></li>
+			
+		</ul>
+	
+</nav>
+
+			</div>
+
+			<div id="content">
+				
+
+				
+	<article class="post">
+		<h1><a href="https://gasparvardanyan.github.io/nanolog/why-modern-ides-are-actually-a-step-backward/">Why &#34;Modern&#34; IDEs Are Actually a Step Backward</a> </h1>
+
+		<div class="post-content"><p>First of all, when you close your &ldquo;modern&rdquo; IDE, then reopen it and open a
+project, what do you get? An empty editor. It doesn&rsquo;t recover the old files,
+layouts, and tabs you had before closing the IDE. Yes, it stores the recent
+files list, and under the &ldquo;File&rdquo; submenu, you have another submenu, &ldquo;Recent,&rdquo;
+from which you can open your recent files.</p>
+<p>But after opening an old file, what do you get? Your cursor is at the
+beginning of the file instead of being at the last position where you edited
+it. This is absurd. Modern IDEs shouldn&rsquo;t be this clunky regarding simple
+yet essential things.</p>
+<p>On the other hand, what do you get in Vim or NeoVim? Either you start your
+config from scratch and add support for this kind of stuff, or you use a
+preconfigured Vim/NeoVim distribution such as LazyVim, which has already been
+configured not to act like a dumb piece of brick in these situations. Try
+to configure your &ldquo;modern&rdquo; IDE or edit the source code and recompile it so
+it doesn&rsquo;t act like a brick. Good luck :d</p>
+<p>Probably you didn&rsquo;t even notice how easy life can be with the simple
+intelligence of your development environment, right? Maybe even now you
+can&rsquo;t imagine it. You first need to work in a truly professional development
+environment, then try to go back to &ldquo;modern&rdquo; IDEs to understand and feel
+the difference.</p>
+<p>Vim and NeoVim save your cursor locations to registers. These registers
+are saved in the cache automatically, so after closing and reopening the
+editor, you don&rsquo;t lose them. I have a simple autocmd - in the Vim world,
+this is the equivalent of an event listener - which gets executed every
+time I open a file, finds my cursor&rsquo;s last position from the registers,
+and moves my cursor to that position.</p>
+<p>Furthermore, in the Vim world, you can save your session to a file. That session
+file consists of simple Vim commands which open the saved windows, buffers,
+and tabs exactly as you saved them. I have autocmds to store the session
+before closing a project and reload the session after opening a project. To
+navigate projects, I use a plugin which simply gives me the ability to save a
+directory list, edit that list, and cd into any of them. Right after the cd,
+the &ldquo;project opened autocmd&rdquo; gets executed. Right before the cd and before
+exiting Vim, the &ldquo;project closed autocmd&rdquo; gets executed. And that plugin
+supports fuzzy finders such as FzfLua and Telescope.</p>
+<p>Furthermore, do you remember the magic of fuzzy searching? FzfLua, a great
+NeoVim plugin, supports fuzzy searching worktrees of the repo and navigating
+between them.</p>
+<p>I quickly navigate projects and worktrees without losing the state of my
+editor. When I open a project, every window and every tab is in the same
+place as I left it, with the same cursor position and the same layout.</p>
+<p>Does your IDE allow you to edit the same file in two different splits in
+different parts at the same time?</p>
+</div>
+
+		<p class="meta">Posted on <span class="postdate">13. March 2026</span></p>
+	</article>
+
+			</div>
+
+			<footer id="footer">
+				
+				
+				
+				
+				
+				
+
+				<div align="right"><p><a href="/gaspar.monero">monero wallet</a> | <a href="/gaspar.asc">pgp public key</a> | <a href="/gaspar.pub">ssh public key</a> | <a href="https://github.com/GasparVardanyan/gasparvardanyan.github.io/">source</a></p></div>
+
+
+<script src="/fancybox/fancybox.umd.js"></script>
+<script>
+Fancybox.bind('[data-fancybox]', {
+	Thumbs: {
+		type: "classic",
+	},
+	Toolbar: {
+		display: {
+			left: ["infobar"],
+			right: ["zoomIn", "zoomOut", "toggle1to1", "thumbs", "download", "close"]
+		},
+	}
+});
+</script>
+
+			</footer>
+		</div>
+	</body>
+</html>

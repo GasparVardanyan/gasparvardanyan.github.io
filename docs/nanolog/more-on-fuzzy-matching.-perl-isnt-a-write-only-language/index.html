@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width">
+		
+
+		<title>More on Fuzzy Matching. Perl Isn&#39;t a &#34;Write Only&#34; Language</title>
+
+		
+		<link rel="stylesheet" href="/css/colors-dark.min.9ce07affbfe84fc8345761dc792a8a8743f97e40fde853efc81b2829b99b46be.css">
+
+		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/Iosevka.css" />
+
+<style>
+body {
+	 
+	 
+	font-family: 'Iosevka Web', monospace;
+}
+
+.copyright {
+	text-align: right;
+}
+
+table, th, td {
+	border: 1px solid;
+	border-collapse: collapse;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+iframe {
+	border: 4px solid #073642;
+	border-radius: 12px;
+}
+</style>
+
+<link rel="stylesheet" href="/fancybox/fancybox.css" />
+
+	</head>
+	<body>
+		<header id="header">
+			<h1><a href="https://gasparvardanyan.github.io/">Gaspar Vardanyan</a></h1>
+			<p>C&#43;&#43; Software Engineer and Instructor</p>
+		</header>
+
+		<div id="page">
+			<div id="sidebar">
+				<nav>
+	
+		<ul class="nav">
+			
+				<li><a href="/blog/"><span>Blog</span></a></li>
+			
+				<li><a href="/coding/"><span>Coding</span></a></li>
+			
+				<li><a href="https://github.com/GasparVardanyan/gasparvardanyan.github.io/discussions"><span>Discussions</span></a></li>
+			
+				<li><a href="/index.xml"><span>Feed</span></a></li>
+			
+				<li><a href="/nanolog/"><span>Nanolog</span></a></li>
+			
+				<li><a href="/wallpapers/"><span>Wallpapers</span></a></li>
+			
+		</ul>
+	
+		<ul class="nav">
+			
+				<li><a href="mailto:gaspar_pm@proton.me"><span>Email</span></a></li>
+			
+				<li><a href="https://github.com/GasparVardanyan"><span>GitHub</span></a></li>
+			
+				<li><a href="https://gitlab.com/GasparVardanyan"><span>GitLab</span></a></li>
+			
+				<li><a href="https://mov.im/?contact/gaspar%40jabber.am"><span>Jabber</span></a></li>
+			
+				<li><a href="https://www.linkedin.com/in/gasparvardanyan/"><span>LinkedIn</span></a></li>
+			
+				<li><a href="https://matrix.to/#/@gaspar_m:matrix.org"><span>Matrix</span></a></li>
+			
+				<li><a href="https://t.me/Gaspar123456789"><span>Telegram</span></a></li>
+			
+		</ul>
+	
+</nav>
+
+			</div>
+
+			<div id="content">
+				
+
+				
+	<article class="post">
+		<h1><a href="https://gasparvardanyan.github.io/nanolog/more-on-fuzzy-matching.-perl-isnt-a-write-only-language/">More on Fuzzy Matching. Perl Isn&#39;t a &#34;Write Only&#34; Language</a> </h1>
+
+		<div class="post-content"><p>
+
+<a href="https://cloud.githubusercontent.com/assets/674812/3480320/3bd2e726-035f-11e4-9e64-db599724c931.gif" data-fancybox>
+  <img src="https://cloud.githubusercontent.com/assets/674812/3480320/3bd2e726-035f-11e4-9e64-db599724c931.gif" />
+</a>
+
+Some people say Perl is a &ldquo;write-only&rdquo; language. Is it? Back in the day, I used
+the urxvt terminal; it was the best, and every &ldquo;cool kid&rdquo; was using it. The
+de facto window manager was i3 until Suckless took over with its high-quality,
+simple software like the dwm window manager and the st terminal. The Suckless
+philosophy is that core functionality should be minimal, with extra features
+available as patches. You are supposed to patch the code, fix conflicts,
+and recompile. Even for simple configurations, you edit the source code in
+plain, understandable C.</p>
+<p>urxvt had a great plugin called autocomplete-ALL-the-things. It was a fuzzy
+matcher for screen text with several modes to autocomplete words, &ldquo;WORDS&rdquo;
+(in the Vim sense), text surrounded by braces and quotes, etc. It worked
+in the terminal command line, in Vim, or anywhere you typed text. Since
+urxvt had a Perl interface, the plugin was written in Perl. It highlighted
+matches on the terminal and allowed you to cycle through them to autocomplete
+partially typed text.</p>
+<p>I was so used to it that working in a terminal without it felt impossible. When
+I switched from urxvt to st, I decided to port that plugin. I didn&rsquo;t
+have an internet connection that day, and LLMs weren&rsquo;t a thing yet, so
+I only had man pages and some PDF books. I edited the plugin to act as
+a standalone CLI tool that took info from stdin and printed matches to
+stdout. Then I integrated it into st to keep the same experience. This
+was my very first experience with Perl. The patch is still available
+<a href="https://st.suckless.org/patches/autocomplete/">here</a>.</p>
+<p>Years later, I moved to the Alacritty terminal, which is written in Rust. Since
+I, the lowly peasant, do not know Rust, I asked the developers to integrate
+that functionality. They didn&rsquo;t; they were busy rewriting the world in the
+most perfect language ever created.</p>
+<p>So, I integrated that functionality directly into NeoVim
+instead. At least there, I have the same amazing tool under
+my fingers as before. The NeoVim version is available
+<a href="https://gasparvardanyan.github.io/blog/autocomplete/">here</a>.</p>
+<p>NeoVim uses Lua along with VimScript for configuration. Lua is an easy
+language, similar to C or even easier. I learned Lua just by configuring NeoVim.</p>
+<p>This is the Linux way. We don&rsquo;t wait for a GUI toggle or a feature request. We
+aren&rsquo;t limited by rigid, hardcoded blocks. We patch the source, script the
+bridge, and build our own reality.</p>
+</div>
+
+		<p class="meta">Posted on <span class="postdate">18. February 2026</span></p>
+	</article>
+
+			</div>
+
+			<footer id="footer">
+				
+				
+				
+				
+				
+				
+
+				<div align="right"><p><a href="/gaspar.monero">monero wallet</a> | <a href="/gaspar.asc">pgp public key</a> | <a href="/gaspar.pub">ssh public key</a> | <a href="https://github.com/GasparVardanyan/gasparvardanyan.github.io/">source</a></p></div>
+
+
+<script src="/fancybox/fancybox.umd.js"></script>
+<script>
+Fancybox.bind('[data-fancybox]', {
+	Thumbs: {
+		type: "classic",
+	},
+	Toolbar: {
+		display: {
+			left: ["infobar"],
+			right: ["zoomIn", "zoomOut", "toggle1to1", "thumbs", "download", "close"]
+		},
+	}
+});
+</script>
+
+			</footer>
+		</div>
+	</body>
+</html>

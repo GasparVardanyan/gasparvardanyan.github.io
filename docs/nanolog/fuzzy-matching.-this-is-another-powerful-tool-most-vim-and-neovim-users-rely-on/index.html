@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width">
+		
+
+		<title>Fuzzy Matching. This Is Another Powerful Tool Most Vim and NeoVim Users Rely On</title>
+
+		
+		<link rel="stylesheet" href="/css/colors-dark.min.9ce07affbfe84fc8345761dc792a8a8743f97e40fde853efc81b2829b99b46be.css">
+
+		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/Iosevka.css" />
+
+<style>
+body {
+	 
+	 
+	font-family: 'Iosevka Web', monospace;
+}
+
+.copyright {
+	text-align: right;
+}
+
+table, th, td {
+	border: 1px solid;
+	border-collapse: collapse;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+iframe {
+	border: 4px solid #073642;
+	border-radius: 12px;
+}
+</style>
+
+<link rel="stylesheet" href="/fancybox/fancybox.css" />
+
+	</head>
+	<body>
+		<header id="header">
+			<h1><a href="https://gasparvardanyan.github.io/">Gaspar Vardanyan</a></h1>
+			<p>C&#43;&#43; Software Engineer and Instructor</p>
+		</header>
+
+		<div id="page">
+			<div id="sidebar">
+				<nav>
+	
+		<ul class="nav">
+			
+				<li><a href="/blog/"><span>Blog</span></a></li>
+			
+				<li><a href="/coding/"><span>Coding</span></a></li>
+			
+				<li><a href="https://github.com/GasparVardanyan/gasparvardanyan.github.io/discussions"><span>Discussions</span></a></li>
+			
+				<li><a href="/index.xml"><span>Feed</span></a></li>
+			
+				<li><a href="/nanolog/"><span>Nanolog</span></a></li>
+			
+				<li><a href="/wallpapers/"><span>Wallpapers</span></a></li>
+			
+		</ul>
+	
+		<ul class="nav">
+			
+				<li><a href="mailto:gaspar_pm@proton.me"><span>Email</span></a></li>
+			
+				<li><a href="https://github.com/GasparVardanyan"><span>GitHub</span></a></li>
+			
+				<li><a href="https://gitlab.com/GasparVardanyan"><span>GitLab</span></a></li>
+			
+				<li><a href="https://mov.im/?contact/gaspar%40jabber.am"><span>Jabber</span></a></li>
+			
+				<li><a href="https://www.linkedin.com/in/gasparvardanyan/"><span>LinkedIn</span></a></li>
+			
+				<li><a href="https://matrix.to/#/@gaspar_m:matrix.org"><span>Matrix</span></a></li>
+			
+				<li><a href="https://t.me/Gaspar123456789"><span>Telegram</span></a></li>
+			
+		</ul>
+	
+</nav>
+
+			</div>
+
+			<div id="content">
+				
+
+				
+	<article class="post">
+		<h1><a href="https://gasparvardanyan.github.io/nanolog/fuzzy-matching.-this-is-another-powerful-tool-most-vim-and-neovim-users-rely-on/">Fuzzy Matching. This Is Another Powerful Tool Most Vim and NeoVim Users Rely On</a> </h1>
+
+		<div class="post-content"><p>In a regular IDE, many users eventually discover the &ldquo;Ctrl+P&rdquo; window and use
+it to fuzzy find files, but that is often where it ends. Or maybe it will
+fuzzy-match workspace symbols like classes and functions in a single place
+with files. Meanwhile, somewhere in the menus, a dedicated fuzzy matcher
+for symbols only is &ldquo;hidden,&rdquo; waiting to be discovered some day.</p>
+<p>What do typical beginner Vim or NeoVim users do? They google a tutorial on
+how to configure their editor, watch some videos, and discover a cool feature
+everyone uses through plugins like Telescope or FzfLua. After installing
+the plugin, they start configuring mappings and discover an incredible range
+of functionality. These plugins provide fuzzy matching for search history,
+command history, document symbols, document diagnostics, workspace symbols
+and diagnostics, live grep, buffers, themes, LSP incoming/outgoing calls,
+LSP references, debugger commands, breakpoints, frames, and Vim-specifics
+like the quickfix list, jumps, marks, registers, options, and many more. And
+of course, files. Do you know regular expressions? You can match with regular
+expressions too.</p>
+<p>Does this feel like too much to remember? The key is that in the Vim world,
+your knowledge grows exponentially rather than linearly. It is all about the
+power of composition. You learn motions, then you learn actions, and suddenly
+you can combine them. You learn commands and combine those with your motions
+and actions too. Then come macros: you can record your edits - commands,
+motions, actions, and all - into a macro and repeat it instantly. Then you
+discover that just as you can prefix motions with numbers to repeat them,
+you can do the same with actions and macros. Every new thing you learn
+doesn&rsquo;t just add to your skill; it multiplies it.</p>
+<p>Remember the undo tree from my previous post? Now we have fuzzy matching and
+the undo tree together. Since this is the Vim world, software and functionality
+are not separate, monolithic GUI blocks. You can combine fuzzy matching with
+the undo tree: your typed string matches against the diff of undo tree nodes,
+and the matcher gives you separate mappings to jump to that state, copy
+deletions from the diff, or copy the additions. This is done by combining
+a fuzzy matcher plugin with Vim&rsquo;s built-in undo tree functionality.</p>
+<p>Can you do this with the GUI blocks of regular IDEs? Who goes beyond GUI configs
+to edit the source code of a regular IDE and recompile it? In regular IDEs,
+many users probably never even touch the settings. When you get used to this
+level of control, you become very fast and waste less mental energy. You stay
+in the flow state and, as the saying goes, you edit at the speed of thought.</p>
+<p><a href="https://github.com/nvim-telescope/telescope.nvim/wiki/Showcase">This</a>
+is a quick showcase of the Telescope plugin.</p>
+</div>
+
+		<p class="meta">Posted on <span class="postdate">14. February 2026</span></p>
+	</article>
+
+			</div>
+
+			<footer id="footer">
+				
+				
+				
+				
+				
+				
+
+				<div align="right"><p><a href="/gaspar.monero">monero wallet</a> | <a href="/gaspar.asc">pgp public key</a> | <a href="/gaspar.pub">ssh public key</a> | <a href="https://github.com/GasparVardanyan/gasparvardanyan.github.io/">source</a></p></div>
+
+
+<script src="/fancybox/fancybox.umd.js"></script>
+<script>
+Fancybox.bind('[data-fancybox]', {
+	Thumbs: {
+		type: "classic",
+	},
+	Toolbar: {
+		display: {
+			left: ["infobar"],
+			right: ["zoomIn", "zoomOut", "toggle1to1", "thumbs", "download", "close"]
+		},
+	}
+});
+</script>
+
+			</footer>
+		</div>
+	</body>
+</html>

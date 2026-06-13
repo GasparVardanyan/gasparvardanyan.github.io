@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width">
+		
+
+		<title>This Is an Example of Why Vim and NeoVim Are Superior to Most of the Other IDEs</title>
+
+		
+		<link rel="stylesheet" href="/css/colors-dark.min.9ce07affbfe84fc8345761dc792a8a8743f97e40fde853efc81b2829b99b46be.css">
+
+		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/Iosevka.css" />
+
+<style>
+body {
+	 
+	 
+	font-family: 'Iosevka Web', monospace;
+}
+
+.copyright {
+	text-align: right;
+}
+
+table, th, td {
+	border: 1px solid;
+	border-collapse: collapse;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+iframe {
+	border: 4px solid #073642;
+	border-radius: 12px;
+}
+</style>
+
+<link rel="stylesheet" href="/fancybox/fancybox.css" />
+
+	</head>
+	<body>
+		<header id="header">
+			<h1><a href="https://gasparvardanyan.github.io/">Gaspar Vardanyan</a></h1>
+			<p>C&#43;&#43; Software Engineer and Instructor</p>
+		</header>
+
+		<div id="page">
+			<div id="sidebar">
+				<nav>
+	
+		<ul class="nav">
+			
+				<li><a href="/blog/"><span>Blog</span></a></li>
+			
+				<li><a href="/coding/"><span>Coding</span></a></li>
+			
+				<li><a href="https://github.com/GasparVardanyan/gasparvardanyan.github.io/discussions"><span>Discussions</span></a></li>
+			
+				<li><a href="/index.xml"><span>Feed</span></a></li>
+			
+				<li><a href="/nanolog/"><span>Nanolog</span></a></li>
+			
+				<li><a href="/wallpapers/"><span>Wallpapers</span></a></li>
+			
+		</ul>
+	
+		<ul class="nav">
+			
+				<li><a href="mailto:gaspar_pm@proton.me"><span>Email</span></a></li>
+			
+				<li><a href="https://github.com/GasparVardanyan"><span>GitHub</span></a></li>
+			
+				<li><a href="https://gitlab.com/GasparVardanyan"><span>GitLab</span></a></li>
+			
+				<li><a href="https://mov.im/?contact/gaspar%40jabber.am"><span>Jabber</span></a></li>
+			
+				<li><a href="https://www.linkedin.com/in/gasparvardanyan/"><span>LinkedIn</span></a></li>
+			
+				<li><a href="https://matrix.to/#/@gaspar_m:matrix.org"><span>Matrix</span></a></li>
+			
+				<li><a href="https://t.me/Gaspar123456789"><span>Telegram</span></a></li>
+			
+		</ul>
+	
+</nav>
+
+			</div>
+
+			<div id="content">
+				
+
+				
+	<article class="post">
+		<h1><a href="https://gasparvardanyan.github.io/nanolog/this-is-an-example-of-why-vim-and-neovim-are-superior-to-most-of-the-other-ides/">This Is an Example of Why Vim and NeoVim Are Superior to Most of the Other IDEs</a> </h1>
+
+		<div class="post-content">
+
+<a href="/nanolog/2026-04-25_18-22.png" data-fancybox>
+  <img src="/nanolog/2026-04-25_18-22.png" />
+</a>
+
+<p>I&rsquo;m writing an article about C++ in markdown (will publish here soon).
+In that article I have a lot of C++ code blocks and their outputs. The
+problem I was facing was that every time I wanted to change something in a
+code block I had to copy the block to a separate C++ file, compile and run
+to check for errors and update the output in my article.</p>
+<p>Of course there are a couple of good plugins that automate this process, but
+I remembered that I had automated this when I was learning NeoVim internals.
+I automated this process in neorg files. Neorg is a document type like markdown.
+It&rsquo;s a variation of Emacs&rsquo; Org mode in NeoVim.</p>
+<p>NeoVim uses TreeSitter for syntax highlighting and some other stuff to work
+with the document structure at the syntax level.</p>
+<p>I use a NeoVim plugin which supports highlighting code blocks in markdown
+files like in the language-native files with TreeSitter. I remember when
+I was doing web development in other IDEs, before I started using NeoVim,
+the JavaScript highlighting wasn&rsquo;t as good in an HTML script tag as in .js
+files. That&rsquo;s not the case with NeoVim!</p>
+<p>NeoVim gives an interface to work with TreeSitter (and everything).</p>
+<p>I wrote a small NeoVim Lua code that extracted the code block under the cursor
+in neorg files, wrote it to a C++ file, and compiled and ran it in a separate
+NeoVim window. The same code works for markdown files without any change.</p>
+<p>When the cursor is inside a code block, I take the appropriate TreeSitter
+node and go up through parents until I find the whole translation_unit node.
+Then I read the translation_unit node&rsquo;s content which is the entire code
+block, save it to a file, compile and run in NeoVim.</p>
+<p>Now I have to move my cursor inside a code block and press &ldquo;<!-- raw HTML omitted -->r&rdquo; to
+compile and run that code block instead of copying it to a separate file
+and doing the job manually.</p>
+<p>The idea here isn&rsquo;t the specific problem I&rsquo;ve faced and been able to solve.
+The idea here is that NeoVim gives the ability to do whatever you want
+without using any plugins.</p>
+<p>Maybe other IDEs give that ability too, but who does it in Visual Studio
+for example, or Xcode (is it even possible in Apple&rsquo;s ecosystem?).</p>
+<p>Everyone using NeoVim does this.  Using NeoVim you learn about TreeSitter,
+LSP, DAP and other stuff and customize your coding environment exactly as
+you like. You see beyond the green run button.</p>
+<p>If someone or even the community has decided that a specific (maybe a little
+customizable) workflow is the best for most users, it doesn&rsquo;t mean that it&rsquo;s
+the best for you!</p>
+</div>
+
+		<p class="meta">Posted on <span class="postdate">25. April 2026</span></p>
+	</article>
+
+			</div>
+
+			<footer id="footer">
+				
+				
+				
+				
+				
+				
+
+				<div align="right"><p><a href="/gaspar.monero">monero wallet</a> | <a href="/gaspar.asc">pgp public key</a> | <a href="/gaspar.pub">ssh public key</a> | <a href="https://github.com/GasparVardanyan/gasparvardanyan.github.io/">source</a></p></div>
+
+
+<script src="/fancybox/fancybox.umd.js"></script>
+<script>
+Fancybox.bind('[data-fancybox]', {
+	Thumbs: {
+		type: "classic",
+	},
+	Toolbar: {
+		display: {
+			left: ["infobar"],
+			right: ["zoomIn", "zoomOut", "toggle1to1", "thumbs", "download", "close"]
+		},
+	}
+});
+</script>
+
+			</footer>
+		</div>
+	</body>
+</html>

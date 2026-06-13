@@ -1,5 +1,3 @@
-<link rel="stylesheet" href="/fancybox/fancybox.css" />
-
 {{ $image := (.Page.Resources.ByType "image") }}
 {{ with $image }}
 	{{ range . }}
@@ -17,18 +15,3 @@
 	{{ end }}
 	{{ end }}
 {{ end }}
-
-<script src="/fancybox/fancybox.umd.js"></script>
-<script>
-Fancybox.bind('[data-fancybox="gallery"]', {
-	Thumbs: {
-		type: "classic",
-	},
-	Toolbar: {
-		display: {
-			left: ["infobar"],
-			right: ["zoomIn", "zoomOut", "toggle1to1", "thumbs", "download", "close"]
-		},
-	}
-});
-</script>

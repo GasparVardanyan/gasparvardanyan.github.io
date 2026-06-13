@@ -53,6 +53,8 @@ iframe {
 }
 </style>
 
+<link rel="stylesheet" href="/fancybox/fancybox.css" />
+
 	</head>
 	<body>
 		<header id="header">
@@ -73,6 +75,8 @@ iframe {
 				<li><a href="https://github.com/GasparVardanyan/gasparvardanyan.github.io/discussions"><span>Discussions</span></a></li>
 			
 				<li><a href="/index.xml"><span>Feed</span></a></li>
+			
+				<li><a href="/nanolog/"><span>Nanolog</span></a></li>
 			
 				<li><a href="/wallpapers/"><span>Wallpapers</span></a></li>
 			
@@ -107,9 +111,7 @@ iframe {
 	<article class="post">
 		<h1><a href="https://gasparvardanyan.github.io/wallpapers/">Wallpapers</a> </h1>
 
-		<div class="post-content"><link rel="stylesheet" href="/fancybox/fancybox.css" />
-
-
+		<div class="post-content">
 
 	
 	
@@ -1228,21 +1230,6 @@ iframe {
 	
 
 
-<script src="/fancybox/fancybox.umd.js"></script>
-<script>
-Fancybox.bind('[data-fancybox="gallery"]', {
-	Thumbs: {
-		type: "classic",
-	},
-	Toolbar: {
-		display: {
-			left: ["infobar"],
-			right: ["zoomIn", "zoomOut", "toggle1to1", "thumbs", "download", "close"]
-		},
-	}
-});
-</script>
-
 </div>
 
 		<p class="meta">Posted on <span class="postdate">03. April 2023</span></p>
@@ -1260,6 +1247,21 @@ Fancybox.bind('[data-fancybox="gallery"]', {
 
 				<div align="right"><p><a href="/gaspar.monero">monero wallet</a> | <a href="/gaspar.asc">pgp public key</a> | <a href="/gaspar.pub">ssh public key</a> | <a href="https://github.com/GasparVardanyan/gasparvardanyan.github.io/">source</a></p></div>
 
+
+<script src="/fancybox/fancybox.umd.js"></script>
+<script>
+Fancybox.bind('[data-fancybox]', {
+	Thumbs: {
+		type: "classic",
+	},
+	Toolbar: {
+		display: {
+			left: ["infobar"],
+			right: ["zoomIn", "zoomOut", "toggle1to1", "thumbs", "download", "close"]
+		},
+	}
+});
+</script>
 
 			</footer>
 		</div>

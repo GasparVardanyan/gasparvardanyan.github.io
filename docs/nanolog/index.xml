@@ -1,0 +1,356 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+	<title>Nanologs on Gaspar Vardanyan</title>
+	<link>https://gasparvardanyan.github.io/nanolog/</link>
+	<description>Recent content in Nanologs on Gaspar Vardanyan</description>
+	<generator>Hugo -- gohugo.io</generator>
+	<language>en-us</language>
+	<lastBuildDate>Sat, 06 Jun 2026 19:36:29 +0000</lastBuildDate><atom:link href="https://gasparvardanyan.github.io/nanolog/index.xml" rel="self" type="application/rss+xml" />
+	<item>
+	  <title>Using NeoVim Is an Awesome Experience</title>
+	  <link>https://gasparvardanyan.github.io/nanolog/using-neovim-is-an-awesome-experience/</link>
+	  <pubDate>Sat, 06 Jun 2026 19:36:29 +0000</pubDate>
+	  
+	  <guid>https://gasparvardanyan.github.io/nanolog/using-neovim-is-an-awesome-experience/</guid>
+	  <description>&lt;p&gt;There are a lot of plugins covering almost anything you&amp;rsquo;ll need in your
+development environment.&lt;/p&gt;
+&lt;p&gt;When there&amp;rsquo;s no plugin solving your problem, you can manually do it. It&amp;rsquo;s easy!&lt;/p&gt;
+&lt;p&gt;For example I wanted &lt;a href=&#34;https://include-what-you-use.org/&#34;&gt;IWYU&lt;/a&gt; integration in NeoVim
+and didn&amp;rsquo;t found any plugins for it.  &lt;a href=&#34;https://github.com/GasparVardanyan/nvconf/blob/v2/lua/modular/autocmds/Clang/iwyu.lua&#34;&gt;This&lt;/a&gt; is how
+I integrated IWYU in my NeoVim config, and &lt;a href=&#34;https://github.com/GasparVardanyan/nvconf/blob/v2/lua/modular/mappings/Clang/iwyu.lua&#34;&gt;these&lt;/a&gt;
+are the mappings.&lt;/p&gt;
+&lt;p&gt;I was using a theme plugin which didn&amp;rsquo;t working with some plugins
+I was using, on some places didn&amp;rsquo;t working the way I wanted. I&amp;rsquo;ve
+&lt;a href=&#34;https://github.com/NvChad/base46/pulls/GasparVardanyan&#34;&gt;customized&lt;/a&gt; the
+plugin manually and now it works as I like.&lt;/p&gt;
+&lt;p&gt;The repo was inactive and had a good PR&amp;hellip; No problem! I merged the PR
+directly into my fork.&lt;/p&gt;
+&lt;p&gt;Sometimes you don&amp;rsquo;t even need to code anything to solve your problem.
+I&amp;rsquo;m using a plugin to manage &lt;a href=&#34;https://tree-sitter.github.io/tree-sitter/&#34;&gt;treesitters&lt;/a&gt;.
+Seems it doesn&amp;rsquo;t have an &amp;ldquo;update all&amp;rdquo; feature and I wanted to update all
+installed treesitters. In its UI in front of every installed treesitter it
+shows ✅ and it have &amp;ldquo;u&amp;rdquo; mapping to update the &amp;ldquo;selected&amp;rdquo; treesitter. To
+&amp;ldquo;select&amp;rdquo; a treesitter you just navigate to its line.&lt;/p&gt;
+
+
+&lt;a href=&#34;https://gasparvardanyan.github.io/nanolog/2026-06-13-232151_545x753_scrot.png&#34; data-fancybox&gt;
+  &lt;img src=&#34;https://gasparvardanyan.github.io/nanolog/2026-06-13-232151_545x753_scrot.png&#34; /&gt;
+&lt;/a&gt;
+
+&lt;p&gt;This is what I&amp;rsquo;ve did: moved the cursor to a ✅ symbol, pressed * and
+executed this command:
+:%g//norm u
+And it updated all of the installed treesitters.&lt;/p&gt;
+&lt;p&gt;How it worked? Explore the magic yourself 🙂&lt;/p&gt;
+&lt;p&gt;I use NeoVim primarily for C/C++ development and it have everything I
+need. And there are NeoVim integrations for almost anything!!&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Unity: &lt;a href=&#34;https://lnkd.in/d7eUxSqc&#34;&gt;neovim-unity&lt;/a&gt;, &lt;a href=&#34;https://lnkd.in/d7Bp4DGQ&#34;&gt;nvim-unity&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;Unreal Engine: &lt;a href=&#34;https://lnkd.in/dtFE85cF&#34;&gt;Unreal.nvim&lt;/a&gt;, &lt;a href=&#34;https://lnkd.in/dBymGZAq&#34;&gt;UnrealDev.nvim&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;Java: &lt;a href=&#34;https://lnkd.in/dpYJ5a8J&#34;&gt;nvim-java&lt;/a&gt;, &lt;a href=&#34;https://lnkd.in/dhypJpU6&#34;&gt;nvim-jdtls&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;Android: &lt;a href=&#34;https://lnkd.in/dqkPS-uC&#34;&gt;android-nvim&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;Apple ecosystem: &lt;a href=&#34;https://lnkd.in/d7JqUWEY&#34;&gt;xcodebuild.nvim&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Dot Net: &lt;a href=&#34;https://lnkd.in/dPCthSvj&#34;&gt;easy-dotnet.nvim&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;CMake: &lt;a href=&#34;https://lnkd.in/dmPpGaGG&#34;&gt;cmake-tools.nvim&lt;/a&gt;, universal compiler: &lt;a href=&#34;https://lnkd.in/dgrzZbDg&#34;&gt;compiler.nvim&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;Unit tests: &lt;a href=&#34;https://lnkd.in/d3_un4uV&#34;&gt;neotest&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;AI: &lt;a href=&#34;https://github.com/yetone/avante.nvim&#34;&gt;avante.nvim&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&amp;hellip;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+	</item>
+	
+	<item>
+	  <title>This Is an Example of Why Vim and NeoVim Are Superior to Most of the Other IDEs</title>
+	  <link>https://gasparvardanyan.github.io/nanolog/this-is-an-example-of-why-vim-and-neovim-are-superior-to-most-of-the-other-ides/</link>
+	  <pubDate>Sat, 25 Apr 2026 14:27:34 +0000</pubDate>
+	  
+	  <guid>https://gasparvardanyan.github.io/nanolog/this-is-an-example-of-why-vim-and-neovim-are-superior-to-most-of-the-other-ides/</guid>
+	  <description>
+
+&lt;a href=&#34;https://gasparvardanyan.github.io/nanolog/2026-04-25_18-22.png&#34; data-fancybox&gt;
+  &lt;img src=&#34;https://gasparvardanyan.github.io/nanolog/2026-04-25_18-22.png&#34; /&gt;
+&lt;/a&gt;
+
+&lt;p&gt;I&amp;rsquo;m writing an article about C++ in markdown (will publish here soon).
+In that article I have a lot of C++ code blocks and their outputs. The
+problem I was facing was that every time I wanted to change something in a
+code block I had to copy the block to a separate C++ file, compile and run
+to check for errors and update the output in my article.&lt;/p&gt;
+&lt;p&gt;Of course there are a couple of good plugins that automate this process, but
+I remembered that I had automated this when I was learning NeoVim internals.
+I automated this process in neorg files. Neorg is a document type like markdown.
+It&amp;rsquo;s a variation of Emacs&amp;rsquo; Org mode in NeoVim.&lt;/p&gt;
+&lt;p&gt;NeoVim uses TreeSitter for syntax highlighting and some other stuff to work
+with the document structure at the syntax level.&lt;/p&gt;
+&lt;p&gt;I use a NeoVim plugin which supports highlighting code blocks in markdown
+files like in the language-native files with TreeSitter. I remember when
+I was doing web development in other IDEs, before I started using NeoVim,
+the JavaScript highlighting wasn&amp;rsquo;t as good in an HTML script tag as in .js
+files. That&amp;rsquo;s not the case with NeoVim!&lt;/p&gt;
+&lt;p&gt;NeoVim gives an interface to work with TreeSitter (and everything).&lt;/p&gt;
+&lt;p&gt;I wrote a small NeoVim Lua code that extracted the code block under the cursor
+in neorg files, wrote it to a C++ file, and compiled and ran it in a separate
+NeoVim window. The same code works for markdown files without any change.&lt;/p&gt;
+&lt;p&gt;When the cursor is inside a code block, I take the appropriate TreeSitter
+node and go up through parents until I find the whole translation_unit node.
+Then I read the translation_unit node&amp;rsquo;s content which is the entire code
+block, save it to a file, compile and run in NeoVim.&lt;/p&gt;
+&lt;p&gt;Now I have to move my cursor inside a code block and press &amp;ldquo;&lt;!-- raw HTML omitted --&gt;r&amp;rdquo; to
+compile and run that code block instead of copying it to a separate file
+and doing the job manually.&lt;/p&gt;
+&lt;p&gt;The idea here isn&amp;rsquo;t the specific problem I&amp;rsquo;ve faced and been able to solve.
+The idea here is that NeoVim gives the ability to do whatever you want
+without using any plugins.&lt;/p&gt;
+&lt;p&gt;Maybe other IDEs give that ability too, but who does it in Visual Studio
+for example, or Xcode (is it even possible in Apple&amp;rsquo;s ecosystem?).&lt;/p&gt;
+&lt;p&gt;Everyone using NeoVim does this.  Using NeoVim you learn about TreeSitter,
+LSP, DAP and other stuff and customize your coding environment exactly as
+you like. You see beyond the green run button.&lt;/p&gt;
+&lt;p&gt;If someone or even the community has decided that a specific (maybe a little
+customizable) workflow is the best for most users, it doesn&amp;rsquo;t mean that it&amp;rsquo;s
+the best for you!&lt;/p&gt;
+</description>
+	</item>
+	
+	<item>
+	  <title>Why &#34;Modern&#34; IDEs Are Actually a Step Backward</title>
+	  <link>https://gasparvardanyan.github.io/nanolog/why-modern-ides-are-actually-a-step-backward/</link>
+	  <pubDate>Fri, 13 Mar 2026 21:18:18 +0000</pubDate>
+	  
+	  <guid>https://gasparvardanyan.github.io/nanolog/why-modern-ides-are-actually-a-step-backward/</guid>
+	  <description>&lt;p&gt;First of all, when you close your &amp;ldquo;modern&amp;rdquo; IDE, then reopen it and open a
+project, what do you get? An empty editor. It doesn&amp;rsquo;t recover the old files,
+layouts, and tabs you had before closing the IDE. Yes, it stores the recent
+files list, and under the &amp;ldquo;File&amp;rdquo; submenu, you have another submenu, &amp;ldquo;Recent,&amp;rdquo;
+from which you can open your recent files.&lt;/p&gt;
+&lt;p&gt;But after opening an old file, what do you get? Your cursor is at the
+beginning of the file instead of being at the last position where you edited
+it. This is absurd. Modern IDEs shouldn&amp;rsquo;t be this clunky regarding simple
+yet essential things.&lt;/p&gt;
+&lt;p&gt;On the other hand, what do you get in Vim or NeoVim? Either you start your
+config from scratch and add support for this kind of stuff, or you use a
+preconfigured Vim/NeoVim distribution such as LazyVim, which has already been
+configured not to act like a dumb piece of brick in these situations. Try
+to configure your &amp;ldquo;modern&amp;rdquo; IDE or edit the source code and recompile it so
+it doesn&amp;rsquo;t act like a brick. Good luck :d&lt;/p&gt;
+&lt;p&gt;Probably you didn&amp;rsquo;t even notice how easy life can be with the simple
+intelligence of your development environment, right? Maybe even now you
+can&amp;rsquo;t imagine it. You first need to work in a truly professional development
+environment, then try to go back to &amp;ldquo;modern&amp;rdquo; IDEs to understand and feel
+the difference.&lt;/p&gt;
+&lt;p&gt;Vim and NeoVim save your cursor locations to registers. These registers
+are saved in the cache automatically, so after closing and reopening the
+editor, you don&amp;rsquo;t lose them. I have a simple autocmd - in the Vim world,
+this is the equivalent of an event listener - which gets executed every
+time I open a file, finds my cursor&amp;rsquo;s last position from the registers,
+and moves my cursor to that position.&lt;/p&gt;
+&lt;p&gt;Furthermore, in the Vim world, you can save your session to a file. That session
+file consists of simple Vim commands which open the saved windows, buffers,
+and tabs exactly as you saved them. I have autocmds to store the session
+before closing a project and reload the session after opening a project. To
+navigate projects, I use a plugin which simply gives me the ability to save a
+directory list, edit that list, and cd into any of them. Right after the cd,
+the &amp;ldquo;project opened autocmd&amp;rdquo; gets executed. Right before the cd and before
+exiting Vim, the &amp;ldquo;project closed autocmd&amp;rdquo; gets executed. And that plugin
+supports fuzzy finders such as FzfLua and Telescope.&lt;/p&gt;
+&lt;p&gt;Furthermore, do you remember the magic of fuzzy searching? FzfLua, a great
+NeoVim plugin, supports fuzzy searching worktrees of the repo and navigating
+between them.&lt;/p&gt;
+&lt;p&gt;I quickly navigate projects and worktrees without losing the state of my
+editor. When I open a project, every window and every tab is in the same
+place as I left it, with the same cursor position and the same layout.&lt;/p&gt;
+&lt;p&gt;Does your IDE allow you to edit the same file in two different splits in
+different parts at the same time?&lt;/p&gt;
+</description>
+	</item>
+	
+	<item>
+	  <title>More on Fuzzy Matching. Perl Isn&#39;t a &#34;Write Only&#34; Language</title>
+	  <link>https://gasparvardanyan.github.io/nanolog/more-on-fuzzy-matching.-perl-isnt-a-write-only-language/</link>
+	  <pubDate>Wed, 18 Feb 2026 23:29:35 +0000</pubDate>
+	  
+	  <guid>https://gasparvardanyan.github.io/nanolog/more-on-fuzzy-matching.-perl-isnt-a-write-only-language/</guid>
+	  <description>&lt;p&gt;
+
+&lt;a href=&#34;https://cloud.githubusercontent.com/assets/674812/3480320/3bd2e726-035f-11e4-9e64-db599724c931.gif&#34; data-fancybox&gt;
+  &lt;img src=&#34;https://cloud.githubusercontent.com/assets/674812/3480320/3bd2e726-035f-11e4-9e64-db599724c931.gif&#34; /&gt;
+&lt;/a&gt;
+
+Some people say Perl is a &amp;ldquo;write-only&amp;rdquo; language. Is it? Back in the day, I used
+the urxvt terminal; it was the best, and every &amp;ldquo;cool kid&amp;rdquo; was using it. The
+de facto window manager was i3 until Suckless took over with its high-quality,
+simple software like the dwm window manager and the st terminal. The Suckless
+philosophy is that core functionality should be minimal, with extra features
+available as patches. You are supposed to patch the code, fix conflicts,
+and recompile. Even for simple configurations, you edit the source code in
+plain, understandable C.&lt;/p&gt;
+&lt;p&gt;urxvt had a great plugin called autocomplete-ALL-the-things. It was a fuzzy
+matcher for screen text with several modes to autocomplete words, &amp;ldquo;WORDS&amp;rdquo;
+(in the Vim sense), text surrounded by braces and quotes, etc. It worked
+in the terminal command line, in Vim, or anywhere you typed text. Since
+urxvt had a Perl interface, the plugin was written in Perl. It highlighted
+matches on the terminal and allowed you to cycle through them to autocomplete
+partially typed text.&lt;/p&gt;
+&lt;p&gt;I was so used to it that working in a terminal without it felt impossible. When
+I switched from urxvt to st, I decided to port that plugin. I didn&amp;rsquo;t
+have an internet connection that day, and LLMs weren&amp;rsquo;t a thing yet, so
+I only had man pages and some PDF books. I edited the plugin to act as
+a standalone CLI tool that took info from stdin and printed matches to
+stdout. Then I integrated it into st to keep the same experience. This
+was my very first experience with Perl. The patch is still available
+&lt;a href=&#34;https://st.suckless.org/patches/autocomplete/&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Years later, I moved to the Alacritty terminal, which is written in Rust. Since
+I, the lowly peasant, do not know Rust, I asked the developers to integrate
+that functionality. They didn&amp;rsquo;t; they were busy rewriting the world in the
+most perfect language ever created.&lt;/p&gt;
+&lt;p&gt;So, I integrated that functionality directly into NeoVim
+instead. At least there, I have the same amazing tool under
+my fingers as before. The NeoVim version is available
+&lt;a href=&#34;https://gasparvardanyan.github.io/blog/autocomplete/&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;NeoVim uses Lua along with VimScript for configuration. Lua is an easy
+language, similar to C or even easier. I learned Lua just by configuring NeoVim.&lt;/p&gt;
+&lt;p&gt;This is the Linux way. We don&amp;rsquo;t wait for a GUI toggle or a feature request. We
+aren&amp;rsquo;t limited by rigid, hardcoded blocks. We patch the source, script the
+bridge, and build our own reality.&lt;/p&gt;
+</description>
+	</item>
+	
+	<item>
+	  <title>Filesystem Version Control: A Better Way to Manage a Linux System</title>
+	  <link>https://gasparvardanyan.github.io/nanolog/filesystem-version-control-a-better-way-to-manage-a-linux-system/</link>
+	  <pubDate>Tue, 17 Feb 2026 22:21:24 +0000</pubDate>
+	  
+	  <guid>https://gasparvardanyan.github.io/nanolog/filesystem-version-control-a-better-way-to-manage-a-linux-system/</guid>
+	  <description>&lt;p&gt;Have you ever accidentally deleted a folder and lost important data? Or an
+OS upgrade broke your system and you were forced to reinstall it? Or one of
+your partitions got full while others still had free space?&lt;/p&gt;
+&lt;p&gt;When you install a Linux distro, it is not always obvious how much space
+/home or /root will need in the future. If you choose the wrong size, you
+have to resize partitions later, which is annoying.&lt;/p&gt;
+&lt;p&gt;Btrfs solves these problems. With Btrfs, you format your whole drive as a
+single partition (and a small EFI partition for UEFI). You organize your
+data in subvolumes. You don&amp;rsquo;t choose a fixed size for each subvolume -
+they just take as much space as they need from the drive.&lt;/p&gt;
+&lt;p&gt;Creating a subvolume is simple:
+btrfs subvolume create /path/to/subvol&lt;/p&gt;
+&lt;p&gt;You mount them like regular partitions:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;mount /dev/&lt;span style=&#34;color:#268bd2&#34;&gt;$DISK&lt;/span&gt; -o &lt;span style=&#34;color:#268bd2&#34;&gt;subvol&lt;/span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt;/path/to/subvol /mount/path
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Btrfs also lets you backup data easily with snapshots:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;btrfs subvolume snapshot -r /path/to/subvol /path/to/new/snapshot
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Initially, these snapshots only copy the metadata, not the actual data. After
+snapshotting a 100GB subvolume, you might only use ~1KB of extra space. The
+metadata keeps &amp;ldquo;pointers&amp;rdquo; to the blocks of your files. When you update a
+big file that exists in multiple subvolumes, only the updated blocks get
+duplicated. This results in very small space usage increase.&lt;/p&gt;
+&lt;p&gt;If your system breaks, you can replace the broken subvolume with a snapshot
+of the last working state. You don&amp;rsquo;t even need a live-USB if you keep a small
+rescue system - just snapshot your initial system after install and make it
+bootable. Some tools even allow automated snapshots of the base system and
+let you boot directly into them.&lt;/p&gt;
+&lt;p&gt;Another option is ZFS, which is very powerful. It is less common on Linux
+because of license issues, so it requires more manual work to setup. In
+fact, Btrfs was created as a result of those licensing issues to give Linux
+a native filesystem with similar features.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://gasparvardanyan.github.io/blog/arch-workstation-1/&#34;&gt;This&lt;/a&gt; is how I organize my system with Btrfs.&lt;/p&gt;
+</description>
+	</item>
+	
+	<item>
+	  <title>Fuzzy Matching. This Is Another Powerful Tool Most Vim and NeoVim Users Rely On</title>
+	  <link>https://gasparvardanyan.github.io/nanolog/fuzzy-matching.-this-is-another-powerful-tool-most-vim-and-neovim-users-rely-on/</link>
+	  <pubDate>Sat, 14 Feb 2026 22:49:12 +0000</pubDate>
+	  
+	  <guid>https://gasparvardanyan.github.io/nanolog/fuzzy-matching.-this-is-another-powerful-tool-most-vim-and-neovim-users-rely-on/</guid>
+	  <description>&lt;p&gt;In a regular IDE, many users eventually discover the &amp;ldquo;Ctrl+P&amp;rdquo; window and use
+it to fuzzy find files, but that is often where it ends. Or maybe it will
+fuzzy-match workspace symbols like classes and functions in a single place
+with files. Meanwhile, somewhere in the menus, a dedicated fuzzy matcher
+for symbols only is &amp;ldquo;hidden,&amp;rdquo; waiting to be discovered some day.&lt;/p&gt;
+&lt;p&gt;What do typical beginner Vim or NeoVim users do? They google a tutorial on
+how to configure their editor, watch some videos, and discover a cool feature
+everyone uses through plugins like Telescope or FzfLua. After installing
+the plugin, they start configuring mappings and discover an incredible range
+of functionality. These plugins provide fuzzy matching for search history,
+command history, document symbols, document diagnostics, workspace symbols
+and diagnostics, live grep, buffers, themes, LSP incoming/outgoing calls,
+LSP references, debugger commands, breakpoints, frames, and Vim-specifics
+like the quickfix list, jumps, marks, registers, options, and many more. And
+of course, files. Do you know regular expressions? You can match with regular
+expressions too.&lt;/p&gt;
+&lt;p&gt;Does this feel like too much to remember? The key is that in the Vim world,
+your knowledge grows exponentially rather than linearly. It is all about the
+power of composition. You learn motions, then you learn actions, and suddenly
+you can combine them. You learn commands and combine those with your motions
+and actions too. Then come macros: you can record your edits - commands,
+motions, actions, and all - into a macro and repeat it instantly. Then you
+discover that just as you can prefix motions with numbers to repeat them,
+you can do the same with actions and macros. Every new thing you learn
+doesn&amp;rsquo;t just add to your skill; it multiplies it.&lt;/p&gt;
+&lt;p&gt;Remember the undo tree from my previous post? Now we have fuzzy matching and
+the undo tree together. Since this is the Vim world, software and functionality
+are not separate, monolithic GUI blocks. You can combine fuzzy matching with
+the undo tree: your typed string matches against the diff of undo tree nodes,
+and the matcher gives you separate mappings to jump to that state, copy
+deletions from the diff, or copy the additions. This is done by combining
+a fuzzy matcher plugin with Vim&amp;rsquo;s built-in undo tree functionality.&lt;/p&gt;
+&lt;p&gt;Can you do this with the GUI blocks of regular IDEs? Who goes beyond GUI configs
+to edit the source code of a regular IDE and recompile it? In regular IDEs,
+many users probably never even touch the settings. When you get used to this
+level of control, you become very fast and waste less mental energy. You stay
+in the flow state and, as the saying goes, you edit at the speed of thought.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/nvim-telescope/telescope.nvim/wiki/Showcase&#34;&gt;This&lt;/a&gt;
+is a quick showcase of the Telescope plugin.&lt;/p&gt;
+</description>
+	</item>
+	
+	<item>
+	  <title>Undo Isn&#39;t Linear. It&#39;s a Tree (and Your IDE Hides It)</title>
+	  <link>https://gasparvardanyan.github.io/nanolog/undo-isnt-linear.-its-a-tree-and-your-ide-hides-it/</link>
+	  <pubDate>Sat, 07 Feb 2026 20:42:02 +0000</pubDate>
+	  
+	  <guid>https://gasparvardanyan.github.io/nanolog/undo-isnt-linear.-its-a-tree-and-your-ide-hides-it/</guid>
+	  <description>&lt;p&gt;
+
+&lt;a href=&#34;https://gasparvardanyan.github.io/nanolog/2026-06-13-223233_484x1029_scrot.png&#34; data-fancybox&gt;
+  &lt;img src=&#34;https://gasparvardanyan.github.io/nanolog/2026-06-13-223233_484x1029_scrot.png&#34; /&gt;
+&lt;/a&gt;
+
+Have you ever found yourself in this situation: you delete a piece of code,
+add something new, and then realize you want to bring back a small chunk
+from what you deleted? You press Ctrl+Z until the deleted code appears,
+copy it - and then accidentally press some key other than Ctrl+C. Now your
+newest changes are gone.  I suspect many IDE users run into this constantly.&lt;/p&gt;
+&lt;p&gt;This happens because, in most IDEs, the undo buffer is effectively linear. Or
+perhaps the UX is so poor that even when the undo history is a tree, most
+developers never discover it or learn how to navigate it.&lt;/p&gt;
+&lt;p&gt;In a true undo-tree model, undoing changes and then making a new edit doesn&amp;rsquo;t
+overwrite history. Instead, it creates a new branch in the tree. You can
+then navigate this tree and recover your code from any state it ever passed
+through during editing.&lt;/p&gt;
+&lt;p&gt;Combine this with persistent undo buffers - where closing a file, restarting
+the IDE, or even overwriting the file with an external tool doesn&amp;rsquo;t destroy
+your undo history - and once you get used to it, coding without this feature
+feels like zipping your code and uploading it to Drive instead of using Git.&lt;/p&gt;
+&lt;p&gt;Now consider this: what happens when you close a file in your IDE, or close
+the entire IDE, and then reopen it? Usually, the file opens at the beginning.
+In Vim or Neovim, with just three lines of configuration, the file reopens
+at the exact cursor position where you left off. You can even restore the
+entire layout of tabs and windows.&lt;/p&gt;
+&lt;p&gt;This is why Vim and Neovim are better - not simply because they have an
+undo tree built in, but because almost every Vim user knows about powerful
+features like these and actually uses them. I&amp;rsquo;d bet that very few &amp;ldquo;regular&amp;rdquo;
+IDE users use comparable features, or even know they exist - or ever imagined
+that editing could work this way.&lt;/p&gt;
+&lt;p&gt;Vim and Neovim aren&amp;rsquo;t black boxes from the &amp;rsquo;80s. They support LSPs (thanks,
+Microsoft 😄), DAP, TreeSitter based syntax-aware highlighting and
+textobjects, excellent AI integration, and all the classic Vim advantages:
+marks, registers (clipboards on steroids), macros, and more.&lt;/p&gt;
+&lt;p&gt;You have to try it. If you think you don&amp;rsquo;t have time to learn Vim, the truth
+is you don&amp;rsquo;t have time not to. Vim saves an enormous amount of time - and
+makes coding a better and more fun process.&lt;/p&gt;
+</description>
+	</item>
+	
+  </channel>
+</rss>

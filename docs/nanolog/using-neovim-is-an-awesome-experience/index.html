@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width">
+		
+
+		<title>Using NeoVim Is an Awesome Experience</title>
+
+		
+		<link rel="stylesheet" href="/css/colors-dark.min.9ce07affbfe84fc8345761dc792a8a8743f97e40fde853efc81b2829b99b46be.css">
+
+		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/Iosevka.css" />
+
+<style>
+body {
+	 
+	 
+	font-family: 'Iosevka Web', monospace;
+}
+
+.copyright {
+	text-align: right;
+}
+
+table, th, td {
+	border: 1px solid;
+	border-collapse: collapse;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+iframe {
+	border: 4px solid #073642;
+	border-radius: 12px;
+}
+</style>
+
+<link rel="stylesheet" href="/fancybox/fancybox.css" />
+
+	</head>
+	<body>
+		<header id="header">
+			<h1><a href="https://gasparvardanyan.github.io/">Gaspar Vardanyan</a></h1>
+			<p>C&#43;&#43; Software Engineer and Instructor</p>
+		</header>
+
+		<div id="page">
+			<div id="sidebar">
+				<nav>
+	
+		<ul class="nav">
+			
+				<li><a href="/blog/"><span>Blog</span></a></li>
+			
+				<li><a href="/coding/"><span>Coding</span></a></li>
+			
+				<li><a href="https://github.com/GasparVardanyan/gasparvardanyan.github.io/discussions"><span>Discussions</span></a></li>
+			
+				<li><a href="/index.xml"><span>Feed</span></a></li>
+			
+				<li><a href="/nanolog/"><span>Nanolog</span></a></li>
+			
+				<li><a href="/wallpapers/"><span>Wallpapers</span></a></li>
+			
+		</ul>
+	
+		<ul class="nav">
+			
+				<li><a href="mailto:gaspar_pm@proton.me"><span>Email</span></a></li>
+			
+				<li><a href="https://github.com/GasparVardanyan"><span>GitHub</span></a></li>
+			
+				<li><a href="https://gitlab.com/GasparVardanyan"><span>GitLab</span></a></li>
+			
+				<li><a href="https://mov.im/?contact/gaspar%40jabber.am"><span>Jabber</span></a></li>
+			
+				<li><a href="https://www.linkedin.com/in/gasparvardanyan/"><span>LinkedIn</span></a></li>
+			
+				<li><a href="https://matrix.to/#/@gaspar_m:matrix.org"><span>Matrix</span></a></li>
+			
+				<li><a href="https://t.me/Gaspar123456789"><span>Telegram</span></a></li>
+			
+		</ul>
+	
+</nav>
+
+			</div>
+
+			<div id="content">
+				
+
+				
+	<article class="post">
+		<h1><a href="https://gasparvardanyan.github.io/nanolog/using-neovim-is-an-awesome-experience/">Using NeoVim Is an Awesome Experience</a> </h1>
+
+		<div class="post-content"><p>There are a lot of plugins covering almost anything you&rsquo;ll need in your
+development environment.</p>
+<p>When there&rsquo;s no plugin solving your problem, you can manually do it. It&rsquo;s easy!</p>
+<p>For example I wanted <a href="https://include-what-you-use.org/">IWYU</a> integration in NeoVim
+and didn&rsquo;t found any plugins for it.  <a href="https://github.com/GasparVardanyan/nvconf/blob/v2/lua/modular/autocmds/Clang/iwyu.lua">This</a> is how
+I integrated IWYU in my NeoVim config, and <a href="https://github.com/GasparVardanyan/nvconf/blob/v2/lua/modular/mappings/Clang/iwyu.lua">these</a>
+are the mappings.</p>
+<p>I was using a theme plugin which didn&rsquo;t working with some plugins
+I was using, on some places didn&rsquo;t working the way I wanted. I&rsquo;ve
+<a href="https://github.com/NvChad/base46/pulls/GasparVardanyan">customized</a> the
+plugin manually and now it works as I like.</p>
+<p>The repo was inactive and had a good PR&hellip; No problem! I merged the PR
+directly into my fork.</p>
+<p>Sometimes you don&rsquo;t even need to code anything to solve your problem.
+I&rsquo;m using a plugin to manage <a href="https://tree-sitter.github.io/tree-sitter/">treesitters</a>.
+Seems it doesn&rsquo;t have an &ldquo;update all&rdquo; feature and I wanted to update all
+installed treesitters. In its UI in front of every installed treesitter it
+shows ✅ and it have &ldquo;u&rdquo; mapping to update the &ldquo;selected&rdquo; treesitter. To
+&ldquo;select&rdquo; a treesitter you just navigate to its line.</p>
+
+
+<a href="/nanolog/2026-06-13-232151_545x753_scrot.png" data-fancybox>
+  <img src="/nanolog/2026-06-13-232151_545x753_scrot.png" />
+</a>
+
+<p>This is what I&rsquo;ve did: moved the cursor to a ✅ symbol, pressed * and
+executed this command:
+:%g//norm u
+And it updated all of the installed treesitters.</p>
+<p>How it worked? Explore the magic yourself 🙂</p>
+<p>I use NeoVim primarily for C/C++ development and it have everything I
+need. And there are NeoVim integrations for almost anything!!</p>
+<ul>
+<li>Unity: <a href="https://lnkd.in/d7eUxSqc">neovim-unity</a>, <a href="https://lnkd.in/d7Bp4DGQ">nvim-unity</a>.</li>
+<li>Unreal Engine: <a href="https://lnkd.in/dtFE85cF">Unreal.nvim</a>, <a href="https://lnkd.in/dBymGZAq">UnrealDev.nvim</a>.</li>
+<li>Java: <a href="https://lnkd.in/dpYJ5a8J">nvim-java</a>, <a href="https://lnkd.in/dhypJpU6">nvim-jdtls</a>.</li>
+<li>Android: <a href="https://lnkd.in/dqkPS-uC">android-nvim</a>.</li>
+<li>Apple ecosystem: <a href="https://lnkd.in/d7JqUWEY">xcodebuild.nvim</a></li>
+<li>Dot Net: <a href="https://lnkd.in/dPCthSvj">easy-dotnet.nvim</a>.</li>
+<li>CMake: <a href="https://lnkd.in/dmPpGaGG">cmake-tools.nvim</a>, universal compiler: <a href="https://lnkd.in/dgrzZbDg">compiler.nvim</a>.</li>
+<li>Unit tests: <a href="https://lnkd.in/d3_un4uV">neotest</a></li>
+<li>AI: <a href="https://github.com/yetone/avante.nvim">avante.nvim</a></li>
+<li>&hellip;</li>
+</ul>
+</div>
+
+		<p class="meta">Posted on <span class="postdate">06. June 2026</span></p>
+	</article>
+
+			</div>
+
+			<footer id="footer">
+				
+				
+				
+				
+				
+				
+
+				<div align="right"><p><a href="/gaspar.monero">monero wallet</a> | <a href="/gaspar.asc">pgp public key</a> | <a href="/gaspar.pub">ssh public key</a> | <a href="https://github.com/GasparVardanyan/gasparvardanyan.github.io/">source</a></p></div>
+
+
+<script src="/fancybox/fancybox.umd.js"></script>
+<script>
+Fancybox.bind('[data-fancybox]', {
+	Thumbs: {
+		type: "classic",
+	},
+	Toolbar: {
+		display: {
+			left: ["infobar"],
+			right: ["zoomIn", "zoomOut", "toggle1to1", "thumbs", "download", "close"]
+		},
+	}
+});
+</script>
+
+			</footer>
+		</div>
+	</body>
+</html>
