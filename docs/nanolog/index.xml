@@ -19,7 +19,7 @@ it&amp;rsquo;s not a great experience reading plain diff in terminal?
 it does in the &amp;ldquo;Staged changes&amp;rdquo; window in this screensot:
 
 
-&lt;a href=&#34;https://gasparvardanyan.github.io/nanolog/2026-06-14-170627_1920x1080_scrot.png&#34; data-fancybox&gt;
+&lt;a href=&#34;https://gasparvardanyan.github.io/nanolog/2026-06-14-170627_1920x1080_scrot.png&#34; data-fancybox=&#34;gallery&#34;&gt;
   &lt;img src=&#34;https://gasparvardanyan.github.io/nanolog/2026-06-14-170627_1920x1080_scrot.png&#34; /&gt;
 &lt;/a&gt;
 &lt;/p&gt;
@@ -46,7 +46,7 @@ files, open the necessary one or add all of them to quickfix list and review
 them one by one:
 
 
-&lt;a href=&#34;https://gasparvardanyan.github.io/nanolog/2026-06-14-173151_1920x1080_scrot.png&#34; data-fancybox&gt;
+&lt;a href=&#34;https://gasparvardanyan.github.io/nanolog/2026-06-14-173151_1920x1080_scrot.png&#34; data-fancybox=&#34;gallery&#34;&gt;
   &lt;img src=&#34;https://gasparvardanyan.github.io/nanolog/2026-06-14-173151_1920x1080_scrot.png&#34; /&gt;
 &lt;/a&gt;
 
@@ -54,7 +54,7 @@ It also helps fuzzy-navigating git
 worktrees:
 
 
-&lt;a href=&#34;https://gasparvardanyan.github.io/nanolog/2026-06-14-173218_1920x1080_scrot.png&#34; data-fancybox&gt;
+&lt;a href=&#34;https://gasparvardanyan.github.io/nanolog/2026-06-14-173218_1920x1080_scrot.png&#34; data-fancybox=&#34;gallery&#34;&gt;
   &lt;img src=&#34;https://gasparvardanyan.github.io/nanolog/2026-06-14-173218_1920x1080_scrot.png&#34; /&gt;
 &lt;/a&gt;
 &lt;/p&gt;
@@ -64,7 +64,7 @@ diff of the current hunk, navigate between hunks, undo hunks, stage/unstage
 hunks, etc:
 
 
-&lt;a href=&#34;https://gasparvardanyan.github.io/nanolog/2026-06-14-173328_968x488_scrot.png&#34; data-fancybox&gt;
+&lt;a href=&#34;https://gasparvardanyan.github.io/nanolog/2026-06-14-173328_968x488_scrot.png&#34; data-fancybox=&#34;gallery&#34;&gt;
   &lt;img src=&#34;https://gasparvardanyan.github.io/nanolog/2026-06-14-173328_968x488_scrot.png&#34; /&gt;
 &lt;/a&gt;
 &lt;/p&gt;
@@ -77,7 +77,7 @@ with diffs and merge conflicts, viewing individual file git history and much
 more:
 
 
-&lt;a href=&#34;https://gasparvardanyan.github.io/nanolog/2026-06-14-173705_1920x1080_scrot.png&#34; data-fancybox&gt;
+&lt;a href=&#34;https://gasparvardanyan.github.io/nanolog/2026-06-14-173705_1920x1080_scrot.png&#34; data-fancybox=&#34;gallery&#34;&gt;
   &lt;img src=&#34;https://gasparvardanyan.github.io/nanolog/2026-06-14-173705_1920x1080_scrot.png&#34; /&gt;
 &lt;/a&gt;
 &lt;/p&gt;
@@ -112,7 +112,7 @@ shows ✅ and it have &amp;ldquo;u&amp;rdquo; mapping to update the &amp;ldquo;s
 &amp;ldquo;select&amp;rdquo; a treesitter you just navigate to its line.&lt;/p&gt;
 
 
-&lt;a href=&#34;https://gasparvardanyan.github.io/nanolog/2026-06-13-232151_545x753_scrot.png&#34; data-fancybox&gt;
+&lt;a href=&#34;https://gasparvardanyan.github.io/nanolog/2026-06-13-232151_545x753_scrot.png&#34; data-fancybox=&#34;gallery&#34;&gt;
   &lt;img src=&#34;https://gasparvardanyan.github.io/nanolog/2026-06-13-232151_545x753_scrot.png&#34; /&gt;
 &lt;/a&gt;
 
@@ -146,7 +146,7 @@ need. And there are NeoVim integrations for almost anything!!&lt;/p&gt;
 	  <guid>https://gasparvardanyan.github.io/nanolog/this-is-an-example-of-why-vim-and-neovim-are-superior-to-most-of-the-other-ides/</guid>
 	  <description>
 
-&lt;a href=&#34;https://gasparvardanyan.github.io/nanolog/2026-04-25_18-22.png&#34; data-fancybox&gt;
+&lt;a href=&#34;https://gasparvardanyan.github.io/nanolog/2026-04-25_18-22.png&#34; data-fancybox=&#34;gallery&#34;&gt;
   &lt;img src=&#34;https://gasparvardanyan.github.io/nanolog/2026-04-25_18-22.png&#34; /&gt;
 &lt;/a&gt;
 
@@ -251,7 +251,7 @@ different parts at the same time?&lt;/p&gt;
 	  <guid>https://gasparvardanyan.github.io/nanolog/more-on-fuzzy-matching.-perl-isnt-a-write-only-language/</guid>
 	  <description>&lt;p&gt;
 
-&lt;a href=&#34;https://cloud.githubusercontent.com/assets/674812/3480320/3bd2e726-035f-11e4-9e64-db599724c931.gif&#34; data-fancybox&gt;
+&lt;a href=&#34;https://cloud.githubusercontent.com/assets/674812/3480320/3bd2e726-035f-11e4-9e64-db599724c931.gif&#34; data-fancybox=&#34;gallery&#34;&gt;
   &lt;img src=&#34;https://cloud.githubusercontent.com/assets/674812/3480320/3bd2e726-035f-11e4-9e64-db599724c931.gif&#34; /&gt;
 &lt;/a&gt;
 
@@ -390,7 +390,7 @@ is a quick showcase of the Telescope plugin.&lt;/p&gt;
 	  <guid>https://gasparvardanyan.github.io/nanolog/undo-isnt-linear.-its-a-tree-and-your-ide-hides-it/</guid>
 	  <description>&lt;p&gt;
 
-&lt;a href=&#34;https://gasparvardanyan.github.io/nanolog/2026-06-13-223233_484x1029_scrot.png&#34; data-fancybox&gt;
+&lt;a href=&#34;https://gasparvardanyan.github.io/nanolog/2026-06-13-223233_484x1029_scrot.png&#34; data-fancybox=&#34;gallery&#34;&gt;
   &lt;img src=&#34;https://gasparvardanyan.github.io/nanolog/2026-06-13-223233_484x1029_scrot.png&#34; /&gt;
 &lt;/a&gt;
 
