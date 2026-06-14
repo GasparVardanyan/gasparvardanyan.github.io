@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+	<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width">
+		
+
+		<title>Do You Read Diffs Before Committing?</title>
+
+		
+		<link rel="stylesheet" href="/css/colors-dark.min.9ce07affbfe84fc8345761dc792a8a8743f97e40fde853efc81b2829b99b46be.css">
+
+		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/Iosevka.css" />
+
+<style>
+body {
+	 
+	 
+	font-family: 'Iosevka Web', monospace;
+}
+
+.copyright {
+	text-align: right;
+}
+
+table, th, td {
+	border: 1px solid;
+	border-collapse: collapse;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+iframe {
+	border: 4px solid #073642;
+	border-radius: 12px;
+}
+</style>
+
+<link rel="stylesheet" href="/fancybox/fancybox.css" />
+
+	</head>
+	<body>
+		<header id="header">
+			<h1><a href="http://localhost:1313/">Gaspar Vardanyan</a></h1>
+			<p>C&#43;&#43; Software Engineer and Instructor</p>
+		</header>
+
+		<div id="page">
+			<div id="sidebar">
+				<nav>
+	
+		<ul class="nav">
+			
+				<li><a href="/blog/"><span>Blog</span></a></li>
+			
+				<li><a href="/coding/"><span>Coding</span></a></li>
+			
+				<li><a href="https://github.com/GasparVardanyan/gasparvardanyan.github.io/discussions"><span>Discussions</span></a></li>
+			
+				<li><a href="/index.xml"><span>Feed</span></a></li>
+			
+				<li><a href="/nanolog/"><span>Nanolog</span></a></li>
+			
+				<li><a href="/wallpapers/"><span>Wallpapers</span></a></li>
+			
+		</ul>
+	
+		<ul class="nav">
+			
+				<li><a href="mailto:gaspar_pm@proton.me"><span>Email</span></a></li>
+			
+				<li><a href="https://github.com/GasparVardanyan"><span>GitHub</span></a></li>
+			
+				<li><a href="https://gitlab.com/GasparVardanyan"><span>GitLab</span></a></li>
+			
+				<li><a href="https://mov.im/?contact/gaspar%40jabber.am"><span>Jabber</span></a></li>
+			
+				<li><a href="https://www.linkedin.com/in/gasparvardanyan/"><span>LinkedIn</span></a></li>
+			
+				<li><a href="https://matrix.to/#/@gaspar_m:matrix.org"><span>Matrix</span></a></li>
+			
+				<li><a href="https://t.me/Gaspar123456789"><span>Telegram</span></a></li>
+			
+		</ul>
+	
+</nav>
+
+			</div>
+
+			<div id="content">
+				
+
+				
+	<article class="post">
+		<h1><a href="http://localhost:1313/nanolog/do-you-read-diffs-before-commiting/">Do You Read Diffs Before Committing?</a> </h1>
+
+		<div class="post-content"><p>Do you read diffs before committing?  If no, maybe because
+it&rsquo;s not a great experience reading plain diff in terminal?
+<a href="https://dandavison.github.io/delta/">Delta</a> makes diffs more readable as
+it does in the &ldquo;Staged changes&rdquo; window in this screensot:
+
+
+<a href="/nanolog/2026-06-14-170627_1920x1080_scrot.png" data-fancybox>
+  <img src="/nanolog/2026-06-14-170627_1920x1080_scrot.png" />
+</a>
+</p>
+<p>I use delta in <a href="https://github.com/jesseduffield/lazygit">LazyGit</a> (the rest
+of the git related stuff in the screenshot). Two separate programs doing
+different things &ldquo;mixed&rdquo; together. LazyGit is a TUI wrapper on git. It shows
+changed files, whether they are staged or not (as in the &ldquo;Files&rdquo; window in this
+screenshot), worktrees, branches and the diff, helpes with staging/unstaging by
+hunks, merging, rebasing, etc. By default LazyGit displays plain git diff. You
+can configure git to use Delta as diff pager. This way both LazyGit and the
+&ldquo;git diff&rdquo; command use Delta to display the diff.</p>
+<p>Furthermore I use lazygit inside NeoVim. When I want to commit and push
+changes I upen lazygit with &ldquo;<!-- raw HTML omitted -->gl&rdquo;, check the diff, fix things if
+necessary, stage files, commit and push from LazyGit.</p>
+<p>NeoVim developers don&rsquo;t have to worry about git support. When git support
+(or something else) is broken, other IDEs can give the priority to other
+things and delay the fix. NeoVim cares only about editing the text. LazyGit
+and Delta are separate projects, they don&rsquo;t stop each other.</p>
+<p>Furthermore in NeoVim world there are a lot of great plugins making git easier.</p>
+<p>A lot of the times you have to jump from one changed file to another to do
+modifications. <a href="https://github.com/ibhagwan/fzf-lua">FzfLua</a> - a generic fuzzy
+matcher - makes this process very easy. You can fuzzy-find the changed git
+files, open the necessary one or add all of them to quickfix list and review
+them one by one:
+
+
+<a href="/nanolog/2026-06-14-173151_1920x1080_scrot.png" data-fancybox>
+  <img src="/nanolog/2026-06-14-173151_1920x1080_scrot.png" />
+</a>
+
+It also helps fuzzy-navigating git
+worktrees:
+
+
+<a href="/nanolog/2026-06-14-173218_1920x1080_scrot.png" data-fancybox>
+  <img src="/nanolog/2026-06-14-173218_1920x1080_scrot.png" />
+</a>
+</p>
+<p>Then comes <a href="https://github.com/lewis6991/gitsigns.nvim">GitSigns</a>. It helps
+to see the status of each line (appended, removed, changed), quickly view the
+diff of the current hunk, navigate between hunks, undo hunks, stage/unstage
+hunks, etc:
+
+
+<a href="/nanolog/2026-06-14-173328_968x488_scrot.png" data-fancybox>
+  <img src="/nanolog/2026-06-14-173328_968x488_scrot.png" />
+</a>
+</p>
+<p>Buth FzfLua and LazyGit use Delta to display the diff. They don&rsquo;t have to
+worry about making the diff readable - there&rsquo;s already a good software which
+does it and does it well, so they just use it.</p>
+<p>Then there&rsquo;s another NeoVim plugin -
+<a href="https://github.com/sindrets/diffview.nvim">DiffView</a> - which helps working
+with diffs and merge conflicts, viewing individual file git history and much
+more:
+
+
+<a href="/nanolog/2026-06-14-173705_1920x1080_scrot.png" data-fancybox>
+  <img src="/nanolog/2026-06-14-173705_1920x1080_scrot.png" />
+</a>
+</p>
+<p>🔥🔥 Using NeoVim is an awesome experience 🔥🔥</p>
+</div>
+
+		<p class="meta">Posted on <span class="postdate">14. June 2026</span></p>
+	</article>
+
+			</div>
+
+			<footer id="footer">
+				
+				
+				
+				
+				
+				
+
+				<div align="right"><p><a href="/gaspar.monero">monero wallet</a> | <a href="/gaspar.asc">pgp public key</a> | <a href="/gaspar.pub">ssh public key</a> | <a href="https://github.com/GasparVardanyan/gasparvardanyan.github.io/">source</a></p></div>
+
+
+<script src="/fancybox/fancybox.umd.js"></script>
+<script>
+Fancybox.bind('[data-fancybox]', {
+	Thumbs: {
+		type: "classic",
+	},
+	Toolbar: {
+		display: {
+			left: ["infobar"],
+			right: ["zoomIn", "zoomOut", "toggle1to1", "thumbs", "download", "close"]
+		},
+	}
+});
+</script>
+
+			</footer>
+		</div>
+	</body>
+</html>

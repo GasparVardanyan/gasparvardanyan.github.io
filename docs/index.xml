@@ -6,7 +6,85 @@
 	<description>Recent content on Gaspar Vardanyan</description>
 	<generator>Hugo -- gohugo.io</generator>
 	<language>en-us</language>
-	<lastBuildDate>Sat, 06 Jun 2026 19:36:29 +0000</lastBuildDate><atom:link href="https://gasparvardanyan.github.io/index.xml" rel="self" type="application/rss+xml" />
+	<lastBuildDate>Sun, 14 Jun 2026 17:45:03 +0400</lastBuildDate><atom:link href="https://gasparvardanyan.github.io/index.xml" rel="self" type="application/rss+xml" />
+	<item>
+	  <title>Do You Read Diffs Before Committing?</title>
+	  <link>https://gasparvardanyan.github.io/nanolog/do-you-read-diffs-before-committing/</link>
+	  <pubDate>Sun, 14 Jun 2026 17:45:03 +0400</pubDate>
+	  
+	  <guid>https://gasparvardanyan.github.io/nanolog/do-you-read-diffs-before-committing/</guid>
+	  <description>&lt;p&gt;Do you read diffs before committing?  If no, maybe because
+it&amp;rsquo;s not a great experience reading plain diff in terminal?
+&lt;a href=&#34;https://dandavison.github.io/delta/&#34;&gt;Delta&lt;/a&gt; makes diffs more readable as
+it does in the &amp;ldquo;Staged changes&amp;rdquo; window in this screensot:
+
+
+&lt;a href=&#34;https://gasparvardanyan.github.io/nanolog/2026-06-14-170627_1920x1080_scrot.png&#34; data-fancybox&gt;
+  &lt;img src=&#34;https://gasparvardanyan.github.io/nanolog/2026-06-14-170627_1920x1080_scrot.png&#34; /&gt;
+&lt;/a&gt;
+&lt;/p&gt;
+&lt;p&gt;I use delta in &lt;a href=&#34;https://github.com/jesseduffield/lazygit&#34;&gt;LazyGit&lt;/a&gt; (the rest
+of the git related stuff in the screenshot). Two separate programs doing
+different things &amp;ldquo;mixed&amp;rdquo; together. LazyGit is a TUI wrapper on git. It shows
+changed files, whether they are staged or not (as in the &amp;ldquo;Files&amp;rdquo; window in this
+screenshot), worktrees, branches and the diff, helps with staging/unstaging by
+hunks, merging, rebasing, etc. By default LazyGit displays plain git diff. You
+can configure git to use Delta as diff pager. This way both LazyGit and the
+&amp;ldquo;git diff&amp;rdquo; command use Delta to display the diff.&lt;/p&gt;
+&lt;p&gt;Furthermore I use lazygit inside NeoVim. When I want to commit and push
+changes I open lazygit with &amp;ldquo;&lt;!-- raw HTML omitted --&gt;gl&amp;rdquo;, check the diff, fix things if
+necessary, stage files, commit and push from LazyGit.&lt;/p&gt;
+&lt;p&gt;NeoVim developers don&amp;rsquo;t have to worry about git support. When git support
+(or something else) is broken, other IDEs can give the priority to other
+things and delay the fix. NeoVim cares only about editing the text. LazyGit
+and Delta are separate projects, they don&amp;rsquo;t stop each other.&lt;/p&gt;
+&lt;p&gt;Furthermore in NeoVim world there are a lot of great plugins making git easier.&lt;/p&gt;
+&lt;p&gt;A lot of the times you have to jump from one changed file to another to do
+modifications. &lt;a href=&#34;https://github.com/ibhagwan/fzf-lua&#34;&gt;FzfLua&lt;/a&gt; - a generic fuzzy
+matcher - makes this process very easy. You can fuzzy-find the changed git
+files, open the necessary one or add all of them to quickfix list and review
+them one by one:
+
+
+&lt;a href=&#34;https://gasparvardanyan.github.io/nanolog/2026-06-14-173151_1920x1080_scrot.png&#34; data-fancybox&gt;
+  &lt;img src=&#34;https://gasparvardanyan.github.io/nanolog/2026-06-14-173151_1920x1080_scrot.png&#34; /&gt;
+&lt;/a&gt;
+
+It also helps fuzzy-navigating git
+worktrees:
+
+
+&lt;a href=&#34;https://gasparvardanyan.github.io/nanolog/2026-06-14-173218_1920x1080_scrot.png&#34; data-fancybox&gt;
+  &lt;img src=&#34;https://gasparvardanyan.github.io/nanolog/2026-06-14-173218_1920x1080_scrot.png&#34; /&gt;
+&lt;/a&gt;
+&lt;/p&gt;
+&lt;p&gt;Then comes &lt;a href=&#34;https://github.com/lewis6991/gitsigns.nvim&#34;&gt;GitSigns&lt;/a&gt;. It helps
+to see the status of each line (appended, removed, changed), quickly view the
+diff of the current hunk, navigate between hunks, undo hunks, stage/unstage
+hunks, etc:
+
+
+&lt;a href=&#34;https://gasparvardanyan.github.io/nanolog/2026-06-14-173328_968x488_scrot.png&#34; data-fancybox&gt;
+  &lt;img src=&#34;https://gasparvardanyan.github.io/nanolog/2026-06-14-173328_968x488_scrot.png&#34; /&gt;
+&lt;/a&gt;
+&lt;/p&gt;
+&lt;p&gt;Both FzfLua and LazyGit use Delta to display the diff. They don&amp;rsquo;t have to
+worry about making the diff readable - there&amp;rsquo;s already a good software which
+does it and does it well, so they just use it.&lt;/p&gt;
+&lt;p&gt;Then there&amp;rsquo;s another NeoVim plugin -
+&lt;a href=&#34;https://github.com/sindrets/diffview.nvim&#34;&gt;DiffView&lt;/a&gt; - which helps working
+with diffs and merge conflicts, viewing individual file git history and much
+more:
+
+
+&lt;a href=&#34;https://gasparvardanyan.github.io/nanolog/2026-06-14-173705_1920x1080_scrot.png&#34; data-fancybox&gt;
+  &lt;img src=&#34;https://gasparvardanyan.github.io/nanolog/2026-06-14-173705_1920x1080_scrot.png&#34; /&gt;
+&lt;/a&gt;
+&lt;/p&gt;
+&lt;p&gt;🔥🔥 Using NeoVim is an awesome experience 🔥🔥&lt;/p&gt;
+</description>
+	</item>
+	
 	<item>
 	  <title>Using NeoVim Is an Awesome Experience</title>
 	  <link>https://gasparvardanyan.github.io/nanolog/using-neovim-is-an-awesome-experience/</link>
