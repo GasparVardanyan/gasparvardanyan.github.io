@@ -539,6 +539,32 @@ the most CPU time. Other operating systems likely offer similar
 tools. If you&amp;rsquo;re using NeoVim, you&amp;rsquo;re in luck - there&amp;rsquo;s an excellent
 &lt;a href=&#34;https://github.com/t-troebst/perfanno.nvim&#34;&gt;extension&lt;/a&gt; that integrates perf
 directly into NeoVim.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://valgrind.org/&#34;&gt;Valgrind&lt;/a&gt; is an instrumentation framework for
+building dynamic analysis tools. There are Valgrind tools that can
+automatically detect many memory management and threading bugs, and
+profile your programs in detail.  In NeoVim you can use valgrind with
+&lt;a href=&#34;https://github.com/dlyongemallo/sanity.nvim/tree/main&#34;&gt;sanity.nvim&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;This is how I automate the process of running perf and valgrind in NeoVim with
+&lt;a href=&#34;https://github.com/Civitasv/cmake-tools.nvim&#34;&gt;cmake-tools.nvim&lt;/a&gt;:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-lua&#34; data-lang=&#34;lua&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;local&lt;/span&gt; cmake &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; require (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;cmake-tools&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;vim.api.nvim_create_user_command (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;CMakeRunPerf&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#268bd2&#34;&gt;function&lt;/span&gt; ()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	cmake.run ({ wrap_call &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; { &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;perf&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;record&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;--call-graph&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;dwarf&amp;#34;&lt;/span&gt; } })
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;end&lt;/span&gt;, {})
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;vim.api.nvim_create_user_command (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;CMakeRunValgrind&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#268bd2&#34;&gt;function&lt;/span&gt; ()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	cmake.run ({ wrap_call &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; { &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;valgrind&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;--leak-check=full&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;--xml=yes&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;--xml-file=valgrind.xml&amp;#34;&lt;/span&gt; } })
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;end&lt;/span&gt;, {})
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;vim.api.nvim_create_user_command (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;CMakeRunPerfCurrent&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#268bd2&#34;&gt;function&lt;/span&gt; ()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	cmake.run_current_file ({ wrap_call &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; { &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;perf&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;record&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;--call-graph&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;dwarf&amp;#34;&lt;/span&gt; } })
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;end&lt;/span&gt;, {})
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;vim.api.nvim_create_user_command (&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;CMakeRunValgrindCurrent&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#268bd2&#34;&gt;function&lt;/span&gt; ()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	cmake.run_current_file ({ wrap_call &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; { &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;valgrind&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;--leak-check=full&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;--xml=yes&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;--xml-file=valgrind.xml&amp;#34;&lt;/span&gt;  } })
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;end&lt;/span&gt;, {})
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;After running perf/valgrind the output can be parsed in NeoVim for example with
+&lt;strong&gt;:PerfLoadCallGraph&lt;/strong&gt; and &lt;strong&gt;:SanityLoadLog&lt;/strong&gt;.&lt;/p&gt;
 &lt;h2 id=&#34;conditional-breakpoints&#34;&gt;Conditional breakpoints&lt;/h2&gt;
 &lt;p&gt;This is worth noting here because if you use a &amp;ldquo;modern&amp;rdquo; IDE, there&amp;rsquo;s a good
 chance you&amp;rsquo;re not familiar with conditional breakpoints. For example, when

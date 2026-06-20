@@ -506,6 +506,32 @@ the most CPU time. Other operating systems likely offer similar
 tools. If you&rsquo;re using NeoVim, you&rsquo;re in luck - there&rsquo;s an excellent
 <a href="https://github.com/t-troebst/perfanno.nvim">extension</a> that integrates perf
 directly into NeoVim.</p>
+<p><a href="https://valgrind.org/">Valgrind</a> is an instrumentation framework for
+building dynamic analysis tools. There are Valgrind tools that can
+automatically detect many memory management and threading bugs, and
+profile your programs in detail.  In NeoVim you can use valgrind with
+<a href="https://github.com/dlyongemallo/sanity.nvim/tree/main">sanity.nvim</a>.</p>
+<p>This is how I automate the process of running perf and valgrind in NeoVim with
+<a href="https://github.com/Civitasv/cmake-tools.nvim">cmake-tools.nvim</a>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-lua" data-lang="lua"><span style="display:flex;"><span><span style="color:#268bd2">local</span> cmake <span style="color:#719e07">=</span> require (<span style="color:#2aa198">&#34;cmake-tools&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>vim.api.nvim_create_user_command (<span style="color:#2aa198">&#34;CMakeRunPerf&#34;</span>, <span style="color:#268bd2">function</span> ()
+</span></span><span style="display:flex;"><span>	cmake.run ({ wrap_call <span style="color:#719e07">=</span> { <span style="color:#2aa198">&#34;perf&#34;</span>, <span style="color:#2aa198">&#34;record&#34;</span>, <span style="color:#2aa198">&#34;--call-graph&#34;</span>, <span style="color:#2aa198">&#34;dwarf&#34;</span> } })
+</span></span><span style="display:flex;"><span><span style="color:#268bd2">end</span>, {})
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>vim.api.nvim_create_user_command (<span style="color:#2aa198">&#34;CMakeRunValgrind&#34;</span>, <span style="color:#268bd2">function</span> ()
+</span></span><span style="display:flex;"><span>	cmake.run ({ wrap_call <span style="color:#719e07">=</span> { <span style="color:#2aa198">&#34;valgrind&#34;</span>, <span style="color:#2aa198">&#34;--leak-check=full&#34;</span>, <span style="color:#2aa198">&#34;--xml=yes&#34;</span>, <span style="color:#2aa198">&#34;--xml-file=valgrind.xml&#34;</span> } })
+</span></span><span style="display:flex;"><span><span style="color:#268bd2">end</span>, {})
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>vim.api.nvim_create_user_command (<span style="color:#2aa198">&#34;CMakeRunPerfCurrent&#34;</span>, <span style="color:#268bd2">function</span> ()
+</span></span><span style="display:flex;"><span>	cmake.run_current_file ({ wrap_call <span style="color:#719e07">=</span> { <span style="color:#2aa198">&#34;perf&#34;</span>, <span style="color:#2aa198">&#34;record&#34;</span>, <span style="color:#2aa198">&#34;--call-graph&#34;</span>, <span style="color:#2aa198">&#34;dwarf&#34;</span> } })
+</span></span><span style="display:flex;"><span><span style="color:#268bd2">end</span>, {})
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>vim.api.nvim_create_user_command (<span style="color:#2aa198">&#34;CMakeRunValgrindCurrent&#34;</span>, <span style="color:#268bd2">function</span> ()
+</span></span><span style="display:flex;"><span>	cmake.run_current_file ({ wrap_call <span style="color:#719e07">=</span> { <span style="color:#2aa198">&#34;valgrind&#34;</span>, <span style="color:#2aa198">&#34;--leak-check=full&#34;</span>, <span style="color:#2aa198">&#34;--xml=yes&#34;</span>, <span style="color:#2aa198">&#34;--xml-file=valgrind.xml&#34;</span>  } })
+</span></span><span style="display:flex;"><span><span style="color:#268bd2">end</span>, {})
+</span></span></code></pre></div><p>After running perf/valgrind the output can be parsed in NeoVim for example with
+<strong>:PerfLoadCallGraph</strong> and <strong>:SanityLoadLog</strong>.</p>
 <h2 id="conditional-breakpoints">Conditional breakpoints</h2>
 <p>This is worth noting here because if you use a &ldquo;modern&rdquo; IDE, there&rsquo;s a good
 chance you&rsquo;re not familiar with conditional breakpoints. For example, when

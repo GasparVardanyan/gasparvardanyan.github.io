@@ -460,6 +460,37 @@ tools. If you're using NeoVim, you're in luck - there's an excellent
 [extension](https://github.com/t-troebst/perfanno.nvim) that integrates perf
 directly into NeoVim.
 
+[Valgrind](https://valgrind.org/) is an instrumentation framework for
+building dynamic analysis tools. There are Valgrind tools that can
+automatically detect many memory management and threading bugs, and
+profile your programs in detail.  In NeoVim you can use valgrind with
+[sanity.nvim](https://github.com/dlyongemallo/sanity.nvim/tree/main).
+
+This is how I automate the process of running perf and valgrind in NeoVim with
+[cmake-tools.nvim](https://github.com/Civitasv/cmake-tools.nvim):
+```lua
+local cmake = require ("cmake-tools")
+
+vim.api.nvim_create_user_command ("CMakeRunPerf", function ()
+	cmake.run ({ wrap_call = { "perf", "record", "--call-graph", "dwarf" } })
+end, {})
+
+vim.api.nvim_create_user_command ("CMakeRunValgrind", function ()
+	cmake.run ({ wrap_call = { "valgrind", "--leak-check=full", "--xml=yes", "--xml-file=valgrind.xml" } })
+end, {})
+
+vim.api.nvim_create_user_command ("CMakeRunPerfCurrent", function ()
+	cmake.run_current_file ({ wrap_call = { "perf", "record", "--call-graph", "dwarf" } })
+end, {})
+
+vim.api.nvim_create_user_command ("CMakeRunValgrindCurrent", function ()
+	cmake.run_current_file ({ wrap_call = { "valgrind", "--leak-check=full", "--xml=yes", "--xml-file=valgrind.xml"  } })
+end, {})
+```
+
+After running perf/valgrind the output can be parsed in NeoVim for example with
+**:PerfLoadCallGraph** and **:SanityLoadLog**.
+
 ## Conditional breakpoints
 
 This is worth noting here because if you use a "modern" IDE, there's a good
