@@ -540,6 +540,56 @@ No single line is written by AI 🙂 I&amp;rsquo;ve started this as an article,
 but the size of it continues to grow. At the end I think this will
 become a book.  You can find the most up to date version with pdf builds
 &lt;a href=&#34;https://github.com/GasparVardanyan/TupleInCPP20&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;div id=&#34;toc_custom&#34;&gt;&lt;/div&gt;
+&lt;script&gt;
+function generateToc(container) {
+    const headings = container.querySelectorAll(&#34;h1[id], h2[id], h3[id], h4[id], h5[id], h6[id]&#34;);
+
+    const root = document.createElement(&#34;ul&#34;);
+    const stack = [{ level: 0, list: root }];
+
+    for (const heading of headings) {
+        const level = Number(heading.tagName[1]);
+
+        
+        while (stack[stack.length - 1].level &gt;= level) {
+            stack.pop();
+        }
+
+        const li = document.createElement(&#34;li&#34;);
+
+        const a = document.createElement(&#34;a&#34;);
+        a.href = `#${heading.id}`;
+        a.textContent = heading.textContent;
+
+        li.appendChild(a);
+
+        stack[stack.length - 1].list.appendChild(li);
+
+        const childList = document.createElement(&#34;ul&#34;);
+        li.appendChild(childList);
+
+        stack.push({
+            level,
+            list: childList,
+        });
+    }
+
+    
+    root.querySelectorAll(&#34;ul&#34;).forEach(ul =&gt; {
+        if (!ul.children.length) {
+            ul.remove();
+        }
+    });
+
+    return root;
+}
+
+window.addEventListener (&#39;load&#39;, function () {
+	document.getElementById(&#34;toc_custom&#34;).appendChild(generateToc (document.getElementsByClassName(&#34;post-content&#34;) [0]));
+});
+&lt;/script&gt;
+
 &lt;h2 id=&#34;downloads&#34;&gt;Downloads&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://github.com/GasparVardanyan/TupleInCPP20/releases/latest/download/tuple-in-cpp20.pdf&#34;&gt;Regular PDF&lt;/a&gt;&lt;/li&gt;

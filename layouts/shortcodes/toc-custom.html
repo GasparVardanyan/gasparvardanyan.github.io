@@ -1,0 +1,49 @@
+<div id="toc_custom"></div>
+<script>
+function generateToc(container) {
+    const headings = container.querySelectorAll("h1[id], h2[id], h3[id], h4[id], h5[id], h6[id]");
+
+    const root = document.createElement("ul");
+    const stack = [{ level: 0, list: root }];
+
+    for (const heading of headings) {
+        const level = Number(heading.tagName[1]);
+
+        // Move up until we find the parent level
+        while (stack[stack.length - 1].level >= level) {
+            stack.pop();
+        }
+
+        const li = document.createElement("li");
+
+        const a = document.createElement("a");
+        a.href = `#${heading.id}`;
+        a.textContent = heading.textContent;
+
+        li.appendChild(a);
+
+        stack[stack.length - 1].list.appendChild(li);
+
+        const childList = document.createElement("ul");
+        li.appendChild(childList);
+
+        stack.push({
+            level,
+            list: childList,
+        });
+    }
+
+    // Remove empty <ul>s
+    root.querySelectorAll("ul").forEach(ul => {
+        if (!ul.children.length) {
+            ul.remove();
+        }
+    });
+
+    return root;
+}
+
+window.addEventListener ('load', function () {
+	document.getElementById("toc_custom").appendChild(generateToc (document.getElementsByClassName("post-content") [0]));
+});
+</script>
