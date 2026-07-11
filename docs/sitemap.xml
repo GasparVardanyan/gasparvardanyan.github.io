@@ -2,13 +2,16 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://gasparvardanyan.github.io/nanolog/do-you-read-diffs-before-committing/</loc>
-    <lastmod>2026-06-14T17:45:03+04:00</lastmod>
+    <loc>https://gasparvardanyan.github.io/nanolog/another-reason-why-neovim-is-superior-to-modern-ides/</loc>
+    <lastmod>2026-07-11T07:03:05+04:00</lastmod>
   </url><url>
     <loc>https://gasparvardanyan.github.io/</loc>
-    <lastmod>2026-06-14T17:45:03+04:00</lastmod>
+    <lastmod>2026-07-11T07:03:05+04:00</lastmod>
   </url><url>
     <loc>https://gasparvardanyan.github.io/nanolog/</loc>
+    <lastmod>2026-07-11T07:03:05+04:00</lastmod>
+  </url><url>
+    <loc>https://gasparvardanyan.github.io/nanolog/do-you-read-diffs-before-committing/</loc>
     <lastmod>2026-06-14T17:45:03+04:00</lastmod>
   </url><url>
     <loc>https://gasparvardanyan.github.io/nanolog/using-neovim-is-an-awesome-experience/</loc>

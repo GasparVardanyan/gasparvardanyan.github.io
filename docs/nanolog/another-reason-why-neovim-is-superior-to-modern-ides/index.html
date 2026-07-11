@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width">
+		
+
+		<title>Another Reason Why NeoVim Is Superior to &#34;Modern&#34; IDEs.</title>
+
+		
+		<link rel="stylesheet" href="/css/colors-dark.min.9ce07affbfe84fc8345761dc792a8a8743f97e40fde853efc81b2829b99b46be.css">
+
+		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/Iosevka.css" />
+
+<style>
+body {
+	 
+	 
+	font-family: 'Iosevka Web', monospace;
+}
+
+.copyright {
+	text-align: right;
+}
+
+table, th, td {
+	border: 1px solid;
+	border-collapse: collapse;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+iframe {
+	border: 4px solid #073642;
+	border-radius: 12px;
+}
+</style>
+
+<link rel="stylesheet" href="/fancybox/fancybox.css" />
+
+	</head>
+	<body>
+		<header id="header">
+			<h1><a href="https://gasparvardanyan.github.io/">Gaspar Vardanyan</a></h1>
+			<p>C&#43;&#43; Software Engineer and Instructor</p>
+		</header>
+
+		<div id="page">
+			<div id="sidebar">
+				<nav>
+	
+		<ul class="nav">
+			
+				<li><a href="/blog/"><span>Blog</span></a></li>
+			
+				<li><a href="/coding/"><span>Coding</span></a></li>
+			
+				<li><a href="https://github.com/GasparVardanyan/gasparvardanyan.github.io/discussions"><span>Discussions</span></a></li>
+			
+				<li><a href="/index.xml"><span>Feed</span></a></li>
+			
+				<li><a href="/nanolog/"><span>Nanolog</span></a></li>
+			
+				<li><a href="/wallpapers/"><span>Wallpapers</span></a></li>
+			
+		</ul>
+	
+		<ul class="nav">
+			
+				<li><a href="mailto:gaspar_pm@proton.me"><span>Email</span></a></li>
+			
+				<li><a href="https://github.com/GasparVardanyan"><span>GitHub</span></a></li>
+			
+				<li><a href="https://gitlab.com/GasparVardanyan"><span>GitLab</span></a></li>
+			
+				<li><a href="https://mov.im/?contact/gaspar%40jabber.am"><span>Jabber</span></a></li>
+			
+				<li><a href="https://www.linkedin.com/in/gasparvardanyan/"><span>LinkedIn</span></a></li>
+			
+				<li><a href="https://matrix.to/#/@gaspar_m:matrix.org"><span>Matrix</span></a></li>
+			
+				<li><a href="https://t.me/Gaspar123456789"><span>Telegram</span></a></li>
+			
+		</ul>
+	
+</nav>
+
+			</div>
+
+			<div id="content">
+				
+
+				
+	<article class="post">
+		<h1><a href="https://gasparvardanyan.github.io/nanolog/another-reason-why-neovim-is-superior-to-modern-ides/">Another Reason Why NeoVim Is Superior to &#34;Modern&#34; IDEs.</a> </h1>
+
+		<div class="post-content"><p>In IDEs, things like code completion and language-specific features are handled
+by language servers. The IDE sends the source files to the language server
+and asks for the information it needs. For example, when you &ldquo;control-click&rdquo;
+on a class name, the IDE queries the language server for its definition,
+gets the file and line number, and takes you there.</p>
+<p>Most language servers support &ldquo;code actions&rdquo;. For instance, if you include
+a C++ header but never use it, the language server can both warn you about
+the unused include and offer a code action to remove it automatically.</p>
+<p>On the other hand, many linters only produce warnings without any
+corresponding code actions. In &ldquo;modern&rdquo; IDEs, that&rsquo;s usually all you get. So
+when clang-tidy tells you &ldquo;variable &lsquo;x&rsquo; of type &lsquo;int&rsquo; can be declared &lsquo;const&rsquo;
+[misc-const-correctness]&rdquo;, you still have to type the const yourself.</p>
+<p>NeoVim is different - you&rsquo;re free to do whatever you want, and you have deep
+access to everything through Lua. I&rsquo;m now building a custom language server
+that reads linter diagnostics and generates suitable code actions for them. I
+just finished the action for the clang-tidy const-correctness warning.</p>
+<p>It solves a very small problem: instead of typing const by hand, I open the
+code actions menu and pick the one that adds it automatically. Honestly,
+in this case the time saved is tiny.</p>
+<p>But the foundation is already there, so I can easily add more code actions
+for other diagnostics. Once I have a handful of them - each fixing a minor
+annoyance with a quick key combination - the overall experience will be much
+smoother than fixing every warning manually.</p>
+<h2 id="update">Update</h2>
+<p>It&rsquo;s already a plugin and supports a couple code actions:</p>
+
+
+<a href="/nanolog/diactions.gif" data-fancybox="gallery">
+  <img src="/nanolog/diactions.gif" />
+</a>
+
+<p>The plugin is available
+<a href="https://github.com/GasparVardanyan/diactions.nvim">here</a>.</p>
+</div>
+
+		<p class="meta">Posted on <span class="postdate">11. July 2026</span></p>
+	</article>
+
+			</div>
+
+			<footer id="footer">
+				
+				
+				
+				
+				
+				
+
+				<div align="right"><p><a href="/gaspar.monero">monero wallet</a> | <a href="/gaspar.asc">pgp public key</a> | <a href="/gaspar.pub">ssh public key</a> | <a href="https://github.com/GasparVardanyan/gasparvardanyan.github.io/">source</a></p></div>
+
+
+<script src="/fancybox/fancybox.umd.js"></script>
+<script>
+Fancybox.bind('[data-fancybox]', {
+	Thumbs: {
+		type: "classic",
+	},
+	Toolbar: {
+		display: {
+			left: ["infobar"],
+			right: ["zoomIn", "zoomOut", "toggle1to1", "thumbs", "download", "close"]
+		},
+	}
+});
+</script>
+
+			</footer>
+		</div>
+	</body>
+</html>

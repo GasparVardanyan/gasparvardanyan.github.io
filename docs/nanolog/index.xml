@@ -6,7 +6,49 @@
 	<description>Recent content in Nanologs on Gaspar Vardanyan</description>
 	<generator>Hugo -- gohugo.io</generator>
 	<language>en-us</language>
-	<lastBuildDate>Sun, 14 Jun 2026 17:45:03 +0400</lastBuildDate><atom:link href="https://gasparvardanyan.github.io/nanolog/index.xml" rel="self" type="application/rss+xml" />
+	<lastBuildDate>Sat, 11 Jul 2026 07:03:05 +0400</lastBuildDate><atom:link href="https://gasparvardanyan.github.io/nanolog/index.xml" rel="self" type="application/rss+xml" />
+	<item>
+	  <title>Another Reason Why NeoVim Is Superior to &#34;Modern&#34; IDEs.</title>
+	  <link>https://gasparvardanyan.github.io/nanolog/another-reason-why-neovim-is-superior-to-modern-ides/</link>
+	  <pubDate>Sat, 11 Jul 2026 07:03:05 +0400</pubDate>
+	  
+	  <guid>https://gasparvardanyan.github.io/nanolog/another-reason-why-neovim-is-superior-to-modern-ides/</guid>
+	  <description>&lt;p&gt;In IDEs, things like code completion and language-specific features are handled
+by language servers. The IDE sends the source files to the language server
+and asks for the information it needs. For example, when you &amp;ldquo;control-click&amp;rdquo;
+on a class name, the IDE queries the language server for its definition,
+gets the file and line number, and takes you there.&lt;/p&gt;
+&lt;p&gt;Most language servers support &amp;ldquo;code actions&amp;rdquo;. For instance, if you include
+a C++ header but never use it, the language server can both warn you about
+the unused include and offer a code action to remove it automatically.&lt;/p&gt;
+&lt;p&gt;On the other hand, many linters only produce warnings without any
+corresponding code actions. In &amp;ldquo;modern&amp;rdquo; IDEs, that&amp;rsquo;s usually all you get. So
+when clang-tidy tells you &amp;ldquo;variable &amp;lsquo;x&amp;rsquo; of type &amp;lsquo;int&amp;rsquo; can be declared &amp;lsquo;const&amp;rsquo;
+[misc-const-correctness]&amp;rdquo;, you still have to type the const yourself.&lt;/p&gt;
+&lt;p&gt;NeoVim is different - you&amp;rsquo;re free to do whatever you want, and you have deep
+access to everything through Lua. I&amp;rsquo;m now building a custom language server
+that reads linter diagnostics and generates suitable code actions for them. I
+just finished the action for the clang-tidy const-correctness warning.&lt;/p&gt;
+&lt;p&gt;It solves a very small problem: instead of typing const by hand, I open the
+code actions menu and pick the one that adds it automatically. Honestly,
+in this case the time saved is tiny.&lt;/p&gt;
+&lt;p&gt;But the foundation is already there, so I can easily add more code actions
+for other diagnostics. Once I have a handful of them - each fixing a minor
+annoyance with a quick key combination - the overall experience will be much
+smoother than fixing every warning manually.&lt;/p&gt;
+&lt;h2 id=&#34;update&#34;&gt;Update&lt;/h2&gt;
+&lt;p&gt;It&amp;rsquo;s already a plugin and supports a couple code actions:&lt;/p&gt;
+
+
+&lt;a href=&#34;https://gasparvardanyan.github.io/nanolog/diactions.gif&#34; data-fancybox=&#34;gallery&#34;&gt;
+  &lt;img src=&#34;https://gasparvardanyan.github.io/nanolog/diactions.gif&#34; /&gt;
+&lt;/a&gt;
+
+&lt;p&gt;The plugin is available
+&lt;a href=&#34;https://github.com/GasparVardanyan/diactions.nvim&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+</description>
+	</item>
+	
 	<item>
 	  <title>Do You Read Diffs Before Committing?</title>
 	  <link>https://gasparvardanyan.github.io/nanolog/do-you-read-diffs-before-committing/</link>
