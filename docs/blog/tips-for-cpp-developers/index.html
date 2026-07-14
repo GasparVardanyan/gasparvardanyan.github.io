@@ -570,7 +570,7 @@ additional code actions. It generates additional code actions from linter
 diagnostics and exposes them through the null-ls LSP server.</p>
 <h2 id="use-profilers">Use profilers</h2>
 <p>Linux has a built in performance profiler called
-<a href="https://perfwiki.github.io/main/">perf</a>.  It helps you analyze
+<a href="https://perfwiki.github.io/main/">perf</a>. It helps you analyze
 your application&rsquo;s performance and pinpoint which functions consume
 the most CPU time. Other operating systems likely offer similar
 tools. If you&rsquo;re using NeoVim, you&rsquo;re in luck - there&rsquo;s an excellent
@@ -579,8 +579,8 @@ directly into NeoVim.</p>
 <p><a href="https://valgrind.org/">Valgrind</a> is an instrumentation framework for
 building dynamic analysis tools. There are Valgrind tools that can
 automatically detect many memory management and threading bugs, and
-profile your programs in detail.  In NeoVim you can use valgrind with
-<a href="https://github.com/dlyongemallo/sanity.nvim/tree/main">sanity.nvim</a>.</p>
+profile your programs in detail. In NeoVim you can use valgrind with
+<a href="https://github.com/dlyongemallo/sanity.nvim">sanity.nvim</a>.</p>
 <p>This is how I automate the process of running perf and valgrind in NeoVim with
 <a href="https://github.com/Civitasv/cmake-tools.nvim">cmake-tools.nvim</a>:</p>
 <div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-lua" data-lang="lua"><span style="display:flex;"><span><span style="color:#268bd2">local</span> cmake <span style="color:#719e07">=</span> require (<span style="color:#2aa198">&#34;cmake-tools&#34;</span>)
@@ -691,6 +691,37 @@ learn programming plus your OS plus your programming tools, all at once. First
 learn programming and only then switch to powerful tools. For beginners,
 CachyOS is a great Linux distribution. VSCode is bloated but flexible and good
 enough IDE.</p>
+<h2 id="neovim-plugins">NeoVim plugins</h2>
+<p>If you are working in NeoVim, consider using these additional plugins.</p>
+<p>C/C++ specific:</p>
+<ul>
+<li><a href="https://git.sr.ht/~p00f/clangd_extensions.nvim">clangd_extensions.nvim</a> - Clangd&rsquo;s off-spec features for neovim&rsquo;s LSP client</li>
+<li><a href="https://github.com/J-Cowsert/classlayout.nvim">classlayout.nvim</a> - Neovim plugin to visualize C/C++ class/struct memory layouts using clang</li>
+<li><a href="https://github.com/krady21/compiler-explorer.nvim">compiler-explorer.nvim</a> - Run compilers and inspect assembly directly from Neovim with the help of <a href="https://godbolt.org">https://godbolt.org</a></li>
+<li><a href="https://github.com/GasparVardanyan/insights.nvim">insights.nvim</a> - Native neovim lua integration for cppinsights, with async, telescope, and optional HTTP support.</li>
+<li><a href="https://github.com/Badhi/nvim-treesitter-cpp-tools">nvim-treesitter-cpp-tools</a> - C++ Helper Snippets Using Treesitter</li>
+</ul>
+<p>Generic LSP and DAP:</p>
+<ul>
+<li><a href="https://github.com/Zeioth/compiler.nvim">compiler.nvim</a> - Neovim compiler for building and running your code without having to configure anything</li>
+<li><a href="https://github.com/Bekaboo/dropbar.nvim">dropbar.nvim</a> - IDE-like breadcrumbs, out of the box</li>
+<li><a href="https://github.com/rmagatti/goto-preview">goto-preview</a> - A small Neovim plugin for previewing definitions using floating windows.</li>
+<li><a href="https://github.com/onsails/lspkind.nvim">lspkind.nvim</a> - VS Code–style pictograms for Neovim completion items</li>
+<li><a href="https://github.com/mason-org/mason.nvim">mason.nvim</a> - Portable package manager for Neovim that runs everywhere Neovim runs. Easily install and manage LSP servers, DAP servers, linters, and formatters.</li>
+<li><a href="https://github.com/nvim-neotest/neotest">neotest</a> - An extensible framework for interacting with tests within NeoVim.</li>
+<li><a href="https://github.com/rcarriga/nvim-dap-ui">nvim-dap-ui</a> - A UI for nvim-dap</li>
+<li><a href="https://github.com/sakhnik/nvim-gdb">nvim-gdb</a> - Neovim thin wrapper for GDB, LLDB, PDB/PDB++ and BashDB</li>
+<li><a href="https://github.com/mfussenegger/nvim-lint">nvim-lint</a> - An asynchronous linter plugin for Neovim complementary to the built-in Language Server Protocol support.</li>
+<li><a href="https://github.com/antosha417/nvim-lsp-file-operations">nvim-lsp-file-operations</a> - Neovim plugin that adds support for file operations using built-in LSP</li>
+<li><a href="https://github.com/neovim/nvim-lspconfig">nvim-lspconfig</a> - Quickstart configs for Nvim LSP</li>
+</ul>
+<p>There are a lot of useful plugins which enhance the C/C++
+workflow in NeoVim. A lot of them are generic plugins
+like <a href="https://github.com/ibhagwan/fzf-lua">fzf-lua</a>,
+<a href="https://github.com/stevearc/oil.nvim">oil.nvim</a> and
+<a href="https://github.com/MagicDuck/grug-far.nvim">grug-far.nvim</a>. I can&rsquo;t
+list all of them here, instead you can take a look at my NeoVim setup
+<a href="https://github.com/GasparVardanyan/nvconf">here</a>.</p>
 </div>
 
 		<p class="meta">Posted on <span class="postdate">25. May 2026</span></p>

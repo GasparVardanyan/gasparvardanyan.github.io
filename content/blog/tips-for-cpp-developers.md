@@ -532,7 +532,7 @@ diagnostics and exposes them through the null-ls LSP server.
 ## Use profilers
 
 Linux has a built in performance profiler called
-[perf](https://perfwiki.github.io/main/).  It helps you analyze
+[perf](https://perfwiki.github.io/main/). It helps you analyze
 your application's performance and pinpoint which functions consume
 the most CPU time. Other operating systems likely offer similar
 tools. If you're using NeoVim, you're in luck - there's an excellent
@@ -542,8 +542,8 @@ directly into NeoVim.
 [Valgrind](https://valgrind.org/) is an instrumentation framework for
 building dynamic analysis tools. There are Valgrind tools that can
 automatically detect many memory management and threading bugs, and
-profile your programs in detail.  In NeoVim you can use valgrind with
-[sanity.nvim](https://github.com/dlyongemallo/sanity.nvim/tree/main).
+profile your programs in detail. In NeoVim you can use valgrind with
+[sanity.nvim](https://github.com/dlyongemallo/sanity.nvim).
 
 This is how I automate the process of running perf and valgrind in NeoVim with
 [cmake-tools.nvim](https://github.com/Civitasv/cmake-tools.nvim):
@@ -674,3 +674,36 @@ learn programming plus your OS plus your programming tools, all at once. First
 learn programming and only then switch to powerful tools. For beginners,
 CachyOS is a great Linux distribution. VSCode is bloated but flexible and good
 enough IDE.
+
+## NeoVim plugins
+
+If you are working in NeoVim, consider using these additional plugins.
+
+C/C++ specific:
+- [clangd_extensions.nvim](https://git.sr.ht/~p00f/clangd_extensions.nvim) - Clangd's off-spec features for neovim's LSP client
+- [classlayout.nvim](https://github.com/J-Cowsert/classlayout.nvim) - Neovim plugin to visualize C/C++ class/struct memory layouts using clang
+- [compiler-explorer.nvim](https://github.com/krady21/compiler-explorer.nvim) - Run compilers and inspect assembly directly from Neovim with the help of https://godbolt.org
+- [insights.nvim](https://github.com/GasparVardanyan/insights.nvim) - Native neovim lua integration for cppinsights, with async, telescope, and optional HTTP support.
+- [nvim-treesitter-cpp-tools](https://github.com/Badhi/nvim-treesitter-cpp-tools) - C++ Helper Snippets Using Treesitter
+
+Generic LSP and DAP:
+- [compiler.nvim](https://github.com/Zeioth/compiler.nvim) - Neovim compiler for building and running your code without having to configure anything
+- [dropbar.nvim](https://github.com/Bekaboo/dropbar.nvim) - IDE-like breadcrumbs, out of the box
+- [goto-preview](https://github.com/rmagatti/goto-preview) - A small Neovim plugin for previewing definitions using floating windows.
+- [lspkind.nvim](https://github.com/onsails/lspkind.nvim) - VS Code–style pictograms for Neovim completion items
+- [mason.nvim](https://github.com/mason-org/mason.nvim) - Portable package manager for Neovim that runs everywhere Neovim runs. Easily install and manage LSP servers, DAP servers, linters, and formatters.
+- [neotest](https://github.com/nvim-neotest/neotest) - An extensible framework for interacting with tests within NeoVim.
+- [nvim-dap-ui](https://github.com/rcarriga/nvim-dap-ui) - A UI for nvim-dap
+- [nvim-gdb](https://github.com/sakhnik/nvim-gdb) - Neovim thin wrapper for GDB, LLDB, PDB/PDB++ and BashDB
+- [nvim-lint](https://github.com/mfussenegger/nvim-lint) - An asynchronous linter plugin for Neovim complementary to the built-in Language Server Protocol support.
+- [nvim-lsp-file-operations](https://github.com/antosha417/nvim-lsp-file-operations) - Neovim plugin that adds support for file operations using built-in LSP
+- [nvim-lspconfig](https://github.com/neovim/nvim-lspconfig) - Quickstart configs for Nvim LSP
+
+There are a lot of useful plugins which enhance the C/C++
+workflow in NeoVim. A lot of them are generic plugins
+like [fzf-lua](https://github.com/ibhagwan/fzf-lua),
+[oil.nvim](https://github.com/stevearc/oil.nvim) and
+[grug-far.nvim](https://github.com/MagicDuck/grug-far.nvim). I can't
+list all of them here, instead you can take a look at my NeoVim setup
+[here](https://github.com/GasparVardanyan/nvconf).
+
