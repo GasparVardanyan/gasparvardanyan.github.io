@@ -498,7 +498,77 @@ In NeoVim I set up clazy like this:</p>
 </span></span><span style="display:flex;"><span>        <span style="color:#719e07">..</span> <span style="color:#2aa198">&#34;,use-chrono-in-qtimer&#34;</span>
 </span></span><span style="display:flex;"><span>        <span style="color:#719e07">..</span> <span style="color:#2aa198">&#34;,used-qunused-variable&#34;</span>,
 </span></span><span style="display:flex;"><span>})
-</span></span></code></pre></div><h2 id="use-profilers">Use profilers</h2>
+</span></span></code></pre></div><h2 id="code-actions">Code actions</h2>
+<p>Code actions are automated fixes for problems in your code. When an LSP
+server reports a diagnostic, it may also provide a code action - an automated
+change that helps resolve the issue. For example, when clangd reports unused
+#include directives, it can also offer a code action to remove them.</p>
+<p>clangd already provides many code actions. clang-tidy can also provide code
+actions, but only when it is integrated directly with clangd instead of
+being run as a separate linter, as shown above. Since Neovim receives code
+actions from LSP servers, the only way to get clang-tidy code actions is to
+run clang-tidy through the clangd LSP server.</p>
+<p>You can enable this by passing the &ndash;clang-tidy flag to clangd:</p>
+<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-lua" data-lang="lua"><span style="display:flex;"><span>LspServers [<span style="color:#2aa198">&#34;clangd&#34;</span>] <span style="color:#719e07">=</span> {
+</span></span><span style="display:flex;"><span>    cmd <span style="color:#719e07">=</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#2aa198">&#34;clangd&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#2aa198">&#34;--background-index&#34;</span>,
+</span></span><span style="display:flex;"><span>        jnproc,
+</span></span><span style="display:flex;"><span>        <span style="color:#2aa198">&#34;--header-insertion=iwyu&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#2aa198">&#34;--clang-tidy&#34;</span>,
+</span></span><span style="display:flex;"><span>    },
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>To avoid duplicate diagnostics - or simply to avoid running clang-tidy
+twice - you should disable clang-tidy in nvim-lint. Once clang-tidy is
+running through clangd, you can configure its diagnostics either through
+a clang-tidy configuration file or through your clangd configuration (both
+project-local and global configurations are supported).
+For example, to configure clang-tidy globally through clangd, your
+*<em>~/.config/clangd/config.yaml</em> file could look something like this:</p>
+<div class="highlight"><pre tabindex="0" style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#268bd2">CompileFlags</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#268bd2">Add</span>: [-pedantic-errors, -Werror=pedantic, -Wall, -Wextra]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#268bd2">Diagnostics</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#268bd2">UnusedIncludes</span>: Strict
+</span></span><span style="display:flex;"><span>  <span style="color:#268bd2">MissingIncludes</span>: Strict
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#268bd2">ClangTidy</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#268bd2">Add</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#2aa198">&#39;*&#39;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#268bd2">Remove</span>:
+</span></span><span style="display:flex;"><span>      - darwin-*
+</span></span><span style="display:flex;"><span>      - linuxkernel-*
+</span></span><span style="display:flex;"><span>      - llvmlibc-*
+</span></span><span style="display:flex;"><span>      - objc-*
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      - altera-struct-pack-align
+</span></span><span style="display:flex;"><span>      - altera-unroll-loops
+</span></span><span style="display:flex;"><span>      - bugprone-easily-swappable-parameters
+</span></span><span style="display:flex;"><span>      - fuchsia-default-arguments-calls
+</span></span><span style="display:flex;"><span>      - fuchsia-default-arguments-declarations
+</span></span><span style="display:flex;"><span>      - fuchsia-overloaded-operator
+</span></span><span style="display:flex;"><span>      - fuchsia-trailing-return
+</span></span><span style="display:flex;"><span>      - google-readability-todo
+</span></span><span style="display:flex;"><span>      - hicpp-explicit-conversions
+</span></span><span style="display:flex;"><span>      - llvm-else-after-return
+</span></span><span style="display:flex;"><span>      - llvm-header-guard
+</span></span><span style="display:flex;"><span>      - misc-non-private-member-variables-in-classes
+</span></span><span style="display:flex;"><span>      - misc-use-anonymous-namespace
+</span></span><span style="display:flex;"><span>      - modernize-use-trailing-return-type
+</span></span><span style="display:flex;"><span>      - readability-convert-member-functions-to-static
+</span></span><span style="display:flex;"><span>      - readability-else-after-return
+</span></span><span style="display:flex;"><span>      - readability-function-cognitive-complexity
+</span></span><span style="display:flex;"><span>      - readability-identifier-length
+</span></span><span style="display:flex;"><span>      - readability-isolate-declaration
+</span></span><span style="display:flex;"><span>      - readability-magic-numbers
+</span></span><span style="display:flex;"><span>      - readability-redundant-access-specifiers
+</span></span><span style="display:flex;"><span>      - readability-redundant-inline-specifier
+</span></span><span style="display:flex;"><span>      - readability-simplify-boolean-expr
+</span></span></code></pre></div><p>Furthermore you can use
+<a href="https://github.com/GasparVardanyan/diactions.nvim">diactions.nvim</a> for
+additional code actions. It generates additional code actions from linter
+diagnostics and exposes them through the null-ls LSP server.</p>
+<h2 id="use-profilers">Use profilers</h2>
 <p>Linux has a built in performance profiler called
 <a href="https://perfwiki.github.io/main/">perf</a>.  It helps you analyze
 your application&rsquo;s performance and pinpoint which functions consume

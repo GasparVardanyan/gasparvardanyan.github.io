@@ -450,6 +450,85 @@ vim.list_extend (clazy.args, {
 })
 ```
 
+## Code actions
+
+Code actions are automated fixes for problems in your code. When an LSP
+server reports a diagnostic, it may also provide a code action - an automated
+change that helps resolve the issue. For example, when clangd reports unused
+#include directives, it can also offer a code action to remove them.
+
+clangd already provides many code actions. clang-tidy can also provide code
+actions, but only when it is integrated directly with clangd instead of
+being run as a separate linter, as shown above. Since Neovim receives code
+actions from LSP servers, the only way to get clang-tidy code actions is to
+run clang-tidy through the clangd LSP server.
+
+You can enable this by passing the --clang-tidy flag to clangd:
+```lua
+LspServers ["clangd"] = {
+    cmd = {
+        "clangd",
+        "--background-index",
+        jnproc,
+        "--header-insertion=iwyu",
+        "--clang-tidy",
+    },
+}
+```
+To avoid duplicate diagnostics - or simply to avoid running clang-tidy
+twice - you should disable clang-tidy in nvim-lint. Once clang-tidy is
+running through clangd, you can configure its diagnostics either through
+a clang-tidy configuration file or through your clangd configuration (both
+project-local and global configurations are supported).
+For example, to configure clang-tidy globally through clangd, your
+**~/.config/clangd/config.yaml* file could look something like this:
+```yaml
+CompileFlags:
+  Add: [-pedantic-errors, -Werror=pedantic, -Wall, -Wextra]
+
+Diagnostics:
+  UnusedIncludes: Strict
+  MissingIncludes: Strict
+
+  ClangTidy:
+    Add:
+      - '*'
+    Remove:
+      - darwin-*
+      - linuxkernel-*
+      - llvmlibc-*
+      - objc-*
+
+      - altera-struct-pack-align
+      - altera-unroll-loops
+      - bugprone-easily-swappable-parameters
+      - fuchsia-default-arguments-calls
+      - fuchsia-default-arguments-declarations
+      - fuchsia-overloaded-operator
+      - fuchsia-trailing-return
+      - google-readability-todo
+      - hicpp-explicit-conversions
+      - llvm-else-after-return
+      - llvm-header-guard
+      - misc-non-private-member-variables-in-classes
+      - misc-use-anonymous-namespace
+      - modernize-use-trailing-return-type
+      - readability-convert-member-functions-to-static
+      - readability-else-after-return
+      - readability-function-cognitive-complexity
+      - readability-identifier-length
+      - readability-isolate-declaration
+      - readability-magic-numbers
+      - readability-redundant-access-specifiers
+      - readability-redundant-inline-specifier
+      - readability-simplify-boolean-expr
+```
+
+Furthermore you can use
+[diactions.nvim](https://github.com/GasparVardanyan/diactions.nvim) for
+additional code actions. It generates additional code actions from linter
+diagnostics and exposes them through the null-ls LSP server.
+
 ## Use profilers
 
 Linux has a built in performance profiler called
