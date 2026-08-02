@@ -12,7 +12,7 @@ pygmentsStyle = "solarized-dark"
 [params]
 	scheme = "dark" # light, dark, gray or preference
 	# description = "gaspar's personel website"
-	description = "C++ Software Engineer and Instructor"
+	description = "C++20/C18 Software Engineer"
 
 [menu]
 	[[menu.1main]]

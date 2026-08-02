@@ -1,0 +1,7 @@
+{{ $url := .Get 0 }}
+
+<a href="{{ $url }}" data-fancybox="gallery">
+  <video width="100%">
+    <source src="{{ $url }}">
+  </video>
+</a>

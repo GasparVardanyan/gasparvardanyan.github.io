@@ -6,7 +6,27 @@
 	<description>Recent content on Gaspar Vardanyan</description>
 	<generator>Hugo -- gohugo.io</generator>
 	<language>en-us</language>
-	<lastBuildDate>Sat, 11 Jul 2026 07:03:05 +0400</lastBuildDate><atom:link href="https://gasparvardanyan.github.io/index.xml" rel="self" type="application/rss+xml" />
+	<lastBuildDate>Mon, 03 Aug 2026 00:03:25 +0400</lastBuildDate><atom:link href="https://gasparvardanyan.github.io/index.xml" rel="self" type="application/rss+xml" />
+	<item>
+	  <title>VIM IS the BEST</title>
+	  <link>https://gasparvardanyan.github.io/nanolog/vim-is-the-best/</link>
+	  <pubDate>Mon, 03 Aug 2026 00:03:25 +0400</pubDate>
+	  
+	  <guid>https://gasparvardanyan.github.io/nanolog/vim-is-the-best/</guid>
+	  <description>&lt;p&gt;This is an example of how Vim and NeoVim can save you a lot of time, eliminate
+annoying repetitive manual work, and make the entire workflow more interesting
+and enjoyable.
+
+
+&lt;a href=&#34;https://gasparvardanyan.github.io/nanolog/VIMISTHEBEST.mp4&#34; data-fancybox=&#34;gallery&#34;&gt;
+  &lt;video width=&#34;100%&#34;&gt;
+    &lt;source src=&#34;https://gasparvardanyan.github.io/nanolog/VIMISTHEBEST.mp4&#34;&gt;
+  &lt;/video&gt;
+&lt;/a&gt;
+&lt;/p&gt;
+</description>
+	</item>
+	
 	<item>
 	  <title>Another Reason Why NeoVim Is Superior to &#34;Modern&#34; IDEs.</title>
 	  <link>https://gasparvardanyan.github.io/nanolog/another-reason-why-neovim-is-superior-to-modern-ides/</link>
